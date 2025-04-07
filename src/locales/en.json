@@ -1,0 +1,26 @@
+{
+  "welcome": "Welcome to my app!",
+  "change_language": "Change language",
+  "menu": {
+    "dashboard": "Dashboard",
+    "schedules": "Schedules",
+    "ticket": "Ticket",
+    "payments": "Transaction",
+    "users": "Users",
+    "administration": "Administration",
+    "support": "Support",
+    "reservation": "Réservation",
+    "settings": "Settings",
+    "trajet": "Trajet"
+  },
+  "links": {
+    "company": "Company",
+    "driver": "Driver",
+    "bus": "Bus",
+    "seat": "Seat",
+    "trip": "Trip"
+  },
+  "administration": "Administration",
+  "compagnieliste": "List of Companies",
+  "conducteurList": "List of Drivers"
+}

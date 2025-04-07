@@ -1,0 +1,95 @@
+.justify-center {
+    justify-content: center;
+}
+
+.py-3 {
+    padding-top: 0.1rem;
+    padding-bottom: 0rem;
+}
+
+.\[\&_tr\]\:border-b tr {
+    border-bottom-width: 1px;
+    /* background: #e6e9ed; */
+}
+
+.text-muted-foreground {
+    color: hsl(var(--muted-foreground));
+    text-align: center;
+}
+
+.bg-black\/80 {
+    background-color: rgb(0 0 0 / 19%) !important;
+  }
+
+  .css-1xtozoh-MuiTableRow-root {
+    color: inherit;
+    display: table-row;
+    vertical-align: middle;
+    outline: 0;
+    background: #EEF2F5 !important;
+}
+
+.css-1e9a4b0-MuiTableCell-root {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    display: table-cell;
+    vertical-align: inherit;
+    border-bottom: 1px solid rgba(224, 224, 224, 1);
+    text-align: left;
+    padding: 9px !important;
+    color: rgba(0, 0, 0, 0.87);
+    line-height: 1.5rem;
+    font-weight: 500;
+    text-align: left;
+}
+  
+
+   .css-19syksp-MuiTableCell-root {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    display: table-cell;
+    vertical-align: inherit;
+    border-bottom: 1px solid rgba(224, 224, 224, 1);
+    text-align: left;
+    padding: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    text-align: left;
+    background: white !important;
+}
+
+.css-mfzv8e-MuiTableCell-root {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    display: table-cell;
+    vertical-align: inherit;
+    border-bottom: 1px solid rgba(224, 224, 224, 1);
+    text-align: left;
+    padding: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    width: 48px;
+    padding: 0 0 0 4px;
+    background: white !important;
+}
+
+
+.css-av90ce-MuiPaper-root {
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.87);
+    -webkit-transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 4px;
+    box-shadow: none !important;
+    border: #000000 !important;
+    background-image: var(--Paper-overlay);
+    width: 100%;
+    margin-bottom: 16px;
+}

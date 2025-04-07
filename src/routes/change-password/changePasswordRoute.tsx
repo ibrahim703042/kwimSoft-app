@@ -3,10 +3,10 @@ import UpdatePassword from "../../pages/login/UpdatePassword";
 import Login from "../../pages/login/Login";
 
 
-export const updatepassword_routes_items = {
+export const changePasswordRouteItem = {
     updatePassword: {
-        path: "update-password",
-        name: "Update Password",
+        path: "change-password",
+        name: "Change Password",
         component: UpdatePassword,
     },
     loginuser: {
@@ -16,7 +16,7 @@ export const updatepassword_routes_items = {
     },
 };
 
-const updatepassword_routes = Object.values(updatepassword_routes_items).map(
+const changepasswordRoute = Object.values(changePasswordRouteItem).map(
     (route) => (
         <Route
             path={route.path}
@@ -26,4 +26,4 @@ const updatepassword_routes = Object.values(updatepassword_routes_items).map(
     )
 );
 
-export default updatepassword_routes;
+export default changepasswordRoute;

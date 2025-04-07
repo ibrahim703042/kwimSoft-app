@@ -11,8 +11,6 @@ import User from "./User";
 import UserSession from "./UserSession";
 import userRoutes from "../../routes/user/userRoutes";
 
-
-
 type Option = {
     name: string;
     component: ComponentType;

@@ -1,10 +1,10 @@
 import { Route } from "react-router-dom";
-import PageTitle from "@/component/utilitie/PageTitle";
-import Administration from "@/pages/administration/Administration";
 import GareMap from "../../pages/gare/GareMap";
+import Administration from "../../pages/administration/Administration";
+import PageTitle from "../../component/utilitie/PageTitle";
 
-// Définir les objets de chaque route dans administration_routes_items
-export const administration_routes_items = {
+// Définir les objets de chaque route dans administratorRouteItems
+export const administratorRouteItems = {
   dashboard: {
     path: "/administration",
     name: "Administration",
@@ -18,7 +18,7 @@ export const administration_routes_items = {
 };
 
 // Générer les routes dynamiquement
-const administration_routes = Object.values(administration_routes_items).map(route => (
+const administratorRoute = Object.values(administratorRouteItems).map(route => (
   <Route
     key={route.path}
     path={route.path}
@@ -31,4 +31,4 @@ const administration_routes = Object.values(administration_routes_items).map(rou
   />
 ));
 
-export default administration_routes;
+export default administratorRoute;

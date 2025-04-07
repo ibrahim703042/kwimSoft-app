@@ -1,11 +1,10 @@
 import { Route } from "react-router-dom";
-import UserManagement from "../../pages/usermanagement/UserManagement";
+import UserManagement from "../../pages/user-management/UserManagement";
 import PageTitle from "../../component/utilitie/PageTitle";
 
-// Définir les objets de chaque route dans administration_routes_items
-export const usemanagement_routes_items = {
+export const userRouteItems = {
     usermanagement: {
-        path: "/user_management",
+        path: "/user-management",
         name: "User-management",
         component: UserManagement,
     },
@@ -13,7 +12,7 @@ export const usemanagement_routes_items = {
 };
 
 // Générer les routes dynamiquement
-const usemanagement_routes = Object.values(usemanagement_routes_items).map(route => (
+const userRoutes = Object.values(userRouteItems).map(route => (
     <Route
         key={route.path}
         path={route.path}
@@ -26,4 +25,4 @@ const usemanagement_routes = Object.values(usemanagement_routes_items).map(route
     />
 ));
 
-export default usemanagement_routes;
+export default userRoutes;

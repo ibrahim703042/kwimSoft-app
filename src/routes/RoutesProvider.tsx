@@ -1,9 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import NotFound from "../component/app/NotFound";
 
-// // Route modules
-// import SchedeleRoutes from "./horaire/horaire_ro
-
 import PageTitle from "../component/utilitie/PageTitle";
 import Login from "../pages/login/Login";
 import userRoutes from "./user/userRoutes";
@@ -24,14 +21,7 @@ export default function RoutesProvider() {
 
       {/* Route modules */}
       {/* {SchedeleRoutes} */}
-      {/* {administration_routes} */}
-      {/* {ticket_routes} */}
-      {/* {trip_routes} */}
-      {/* {bus_routes} */}
-      {/* {reservation_routes} */}
-      {/* {compagny_routes} */}
-      {/* {drive_routes} */}
-      {/* {seats_routes} */}
+      {/* {administratorRoute} */}
       {userRoutes}
 
       {/* Auth */}

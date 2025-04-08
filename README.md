@@ -1,39 +1,55 @@
-
 # Transport Management System
 
-A React-based transportation management system built with Vite, TypeScript, and TailwindCSS.
+A comprehensive transportation management system built with React, TypeScript, and modern web technologies.
 
 ## Features
-- Dashboard analytics
-- Route management
-- Driver management
-- Station/Terminal management
+- Real-time dashboard analytics
+- Route and station management
+- Driver tracking and management
 - Seat reservation system
-- User management
+- Interactive maps integration
 - Multi-language support (EN/FR)
+- Dark/Light theme support
 
-## Setup
-1. Install dependencies:
+## Tech Stack
+- React 18
+- TypeScript
+- Vite
+- TailwindCSS
+- Mapbox GL
+- Redux Toolkit
+- i18next
+- Shadcn UI
+
+## Getting Started
+
 ```bash
+# Install dependencies
 npm install
-```
 
-2. Start development server:
-```bash
+# Start development server
 npm run dev
-```
 
-## Available Scripts
-- `npm run dev`: Start development server
-- `npm run build`: Build for production
-- `npm run preview`: Preview production build
-- `npm run lint`: Run ESLint
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
 
 ## Project Structure
-- `/src/components`: Reusable UI components
-- `/src/pages`: Main application pages
-- `/src/hooks`: Custom React hooks
-- `/src/store`: State management
-- `/src/routes`: Route configurations
-- `/src/styles`: Global styles and themes
-- `/src/assets`: Images, fonts, and other static files
+```
+src/
+├── assets/      # Static assets (images, fonts)
+├── components/  # Reusable UI components
+├── hooks/       # Custom React hooks
+├── lib/         # Utility functions
+├── pages/       # Application pages
+├── routes/      # Route definitions
+├── store/       # State management
+├── styles/      # Global styles
+└── locales/     # Translation files
+```
+
+## Contributing
+Please follow the existing code style and file structure conventions.

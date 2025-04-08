@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import Breadcrumbs from "@/components/ui/breadcrumb";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
 
@@ -36,7 +36,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           {/* Breadcrumbs */}
           {!isTrajetPage && (
             <div className="mb-2">
-              <Breadcrumbs />
+              <Breadcrumb />
             </div>
           )}
 

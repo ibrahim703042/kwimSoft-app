@@ -15,7 +15,6 @@ export default function Sidebar() {
     // { title: t("menu.schedules"), path: "/horaires", icon: <CalendarEvent /> },
     // { title: t("menu.ticket"), path: "/ticket", icon: <Wallet /> },
     // { title: t("menu.payments"), path: "/paiements", icon: <CashStack /> },
-    // { title: t("menu.trajet"), path: "/trajet", gap: true, icon: <PinMapFill /> },
     // { title: t("menu.reservation"), path: "/reservation", icon: <JournalCheck /> },
     { title: t("menu.administration"), path: "/administration", icon: <Sliders2 /> },
     { title: "User Management", path: "/user-management", icon: <PersonLinesFill /> }

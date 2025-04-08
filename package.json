@@ -39,6 +39,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "formik": "^2.4.6",
+    "framer-motion": "^12.6.3",
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
     "i18next": "^24.2.2",

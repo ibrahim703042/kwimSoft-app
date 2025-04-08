@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import Breadcrumbs from "../app/Breadcrumbs";
-import Navbar from "../../components/navbar";
-import Sidebar from "../../components/sidebar";
+import Breadcrumbs from "@/components/ui/breadcrumb";
+import Navbar from "@/components/navbar";
+import Sidebar from "@/components/sidebar";
 
 interface AppLayoutProps {
   children: ReactNode;

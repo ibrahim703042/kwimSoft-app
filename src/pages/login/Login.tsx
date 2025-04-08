@@ -2,15 +2,12 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { Button } from "../../components/ui/button";
-import { FilledInput, FormControl, InputLabel } from "@mui/material";
+import { Button, FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useUserStore from "../../store/useUserStore";
-import waangulogo from "../../assets/img/img/waangulogo.png";
-import bgImg from "../../assets/img/img/busbge.jpg";
 import { API_ROUTE_PASSWORD } from "../../../config";
 import { jwtDecode } from "jwt-decode";
 import "./login.css";
+import useUserStore from "@/store/useUserStore";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -95,12 +92,14 @@ export default function Login() {
   });
 
   return (
-    <div style={{ backgroundImage: `url(${bgImg})`, backgroundSize: "cover", backgroundPosition: "center", height: "auto" }}>
+    // style={{ backgroundImage: `url(${bgImg})`, backgroundSize: "cover", backgroundPosition: "center", height: "auto" }}
+    <div >
       <div className="flex justify-center items-center h-screen">
         <div className="w-[37%] 2xl:w-[30%] 2xl:py-14 py-10 mx-auto bg-[#19181832] rounded-md border border-[#ffffff3d]">
           <div className="flex justify-center mx-auto">
             <div className="w-56 mx-auto">
-              <img src={waangulogo} alt="Logo" className="" />
+              {/* <img src={waangulogo} alt="Logo" className="" /> */}
+              Logo
             </div>
           </div>
           <p className="font-bold text-center text-[#ffffff] text-[1.5rem] m-0 p-0">Se connecter</p>

@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { Select } from '@/components/ui/select';
+import { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { useUserStore } from '@/store/useUserStore';
+import useUserStore from '@/store/useUserStore';
 
 export default function OrganizationPage() {
   const [filters, setFilters] = useState({

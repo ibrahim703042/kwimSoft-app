@@ -2,10 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { ChevronRight } from "lucide-react";
 
-import revenueIcon from "@/assets/img/utils/revenue.png";
-import ordersIcon from "@/assets/img/utils/orders.png";
-import inventoryIcon from "@/assets/img/utils/inventory.png";
-import employeesIcon from "@/assets/img/utils/employees.png";
+import { DollarSign, ShoppingCart, Package, Users } from "lucide-react";
 
 import { setBreadCrumbItemsAction } from "@/store/actions/appActions";
 import { Button } from "@/components/ui/button";
@@ -29,26 +26,26 @@ export default function Dashboard() {
 
   const metrics = [
     {
-      icon: revenueIcon,
+      icon: <DollarSign className="w-8 h-8" />,
       value: 128750,
       label: "Revenue",
       prefix: "$",
       trend: 12.5
     },
     {
-      icon: ordersIcon,
+      icon: <ShoppingCart className="w-8 h-8" />,
       value: 856,
       label: "Orders",
       trend: 8.2
     },
     {
-      icon: inventoryIcon,
+      icon: <Package className="w-8 h-8" />,
       value: 1250,
       label: "Products in Stock",
       trend: -2.4
     },
     {
-      icon: employeesIcon,
+      icon: <Users className="w-8 h-8" />,
       value: 142,
       label: "Active Employees",
       trend: 4.7

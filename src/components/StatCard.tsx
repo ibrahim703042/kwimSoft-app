@@ -3,7 +3,7 @@ import React from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
 interface StatCardProps {
-  icon: string;
+  icon: React.ReactNode;
   value: string | number;
   label: string;
   trend?: number;
@@ -22,8 +22,8 @@ const StatCard: React.FC<StatCardProps> = ({
   return (
     <div className="bg-white dark:bg-[#1a1f3b] rounded-lg shadow-sm p-6 transition-colors">
       <div className="flex items-center justify-between">
-        <div className="bg-primary/10 dark:bg-primary/20 rounded-full p-3">
-          <img src={icon} alt={`${label} icon`} className="w-8 h-8" />
+        <div className="bg-primary/10 dark:bg-primary/20 rounded-full p-3 text-primary">
+          {icon}
         </div>
         <div className="text-right">
           <p className="text-2xl font-semibold">

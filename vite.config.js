@@ -21,6 +21,6 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 3000,
     strictPort: true,
-    allowedHosts: "all"
+    allowedHosts: ["06a8cc0c-ad51-4e5f-a746-6d0a592ab522-00-ce1f9uri8qeo.riker.replit.dev", "all"],
   },
 });

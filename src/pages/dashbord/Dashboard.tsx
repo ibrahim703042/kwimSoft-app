@@ -10,7 +10,7 @@ import { setBreadCrumbItemsAction } from "../../store/actions/appActions";
 import { useUserData } from "../../hooks/useUserData";
 
 import { Button } from "../../components/ui/button";
-import TableDashbord from "../../component/updatecomponent/TableDashbord";
+import TableDashbord from "@/components/dashboard/TableDashbord";
 import PieChart from "../../component/highcharts/PieChart";
 import { dashbordRoutesItems } from "../../routes/dashbord/dashbordRoutes";
 import SkeletonCard from "../../components/SkeletonCard";

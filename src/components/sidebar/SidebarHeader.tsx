@@ -1,5 +1,7 @@
 import { IndentIncrease } from "lucide-react";
-import bus from "../../assets/img/utils/bus.png";
+import { useThemeStore } from "../../store/selectors/themeStore";
+import logoDark from "../../assets/img/logo/kwimsoft-dark.png";
+import logoLight from "../../assets/img/logo/kwimsoft-light.png";
 import { useSidebarStore } from "../../store/selectors/useSidebarStore";
 
 export default function SidebarHeader() {
@@ -10,8 +12,12 @@ export default function SidebarHeader() {
       <div className="justify-center mt-3 mb-0">
         <div className="text-white font-medium text-sm px-2">
           <div className="flex items-center space-x-3">
-            <div className="bg-[#b5bbc516] h-10 w-14 rounded-lg border-[#90959e96] border">
-              <img src={bus} alt="" className="p-1" />
+            <div className="h-10">
+              <img 
+                src={useThemeStore().theme === 'dark' ? logoDark : logoLight} 
+                alt="KwimSoft Logo" 
+                className="h-full w-auto object-contain" 
+              />
             </div>
             {isOpen && <h1 className="text-[1.1rem]">KwimSoft</h1>}
           </div>

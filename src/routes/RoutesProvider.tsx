@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import NotFound from "../component/app/NotFound";
+import NotFound from "@/components/NotFound";
 
-import PageTitle from "../component/utilitie/PageTitle";
-import Login from "../pages/login/Login";
-import userRoutes from "./user/userRoutes";
-import Dashboard from "../pages/dashbord/Dashboard";
+import PageTitle from "@/components/utilities/PageTitle";
+import Login from "@/pages/login/Login";
+import userRoutes from "@/routes/user/userRoutes";
+import Dashboard from "@/pages/dashbord/Dashboard";
 
 export default function RoutesProvider() {
   return (

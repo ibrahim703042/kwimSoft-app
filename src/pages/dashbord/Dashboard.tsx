@@ -3,19 +3,19 @@ import { ArrowRight } from "react-bootstrap-icons";
 import { ChevronRight, MoveRight } from "lucide-react";
 import { useDispatch } from "react-redux";
 
-import agenda from "../../assets/img/utils/agenda.png";
-import usersIcon from "../../assets/img/utils/usersIcon.png";
+import agenda from "@/assets/img/utils/agenda.png";
+import usersIcon from "@/assets/img/utils/usersIcon.png";
 
-import { setBreadCrumbItemsAction } from "../../store/actions/appActions";
-import { useUserData } from "../../hooks/useUserData";
+import { setBreadCrumbItemsAction } from "@/store/actions/appActions";
+import { useUserData } from "@/hooks/useUserData";
 
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import TableDashbord from "@/components/dashboard/TableDashbord";
-import PieChart from "../../component/highcharts/PieChart";
-import { dashbordRoutesItems } from "../../routes/dashbord/dashbordRoutes";
-import SkeletonCard from "../../components/SkeletonCard";
-import ErrorBanner from "../../components/utilities/ErrorBanner";
-import StatCard from "../../components/StatCard";
+import PieChart from "@/components/charts/PieChart";
+import { dashbordRoutesItems } from "@/routes/dashbord/dashbordRoutes";
+import SkeletonCard from "@/components/SkeletonCard";
+import ErrorBanner from "@/components/utilities/ErrorBanner";
+import StatCard from "@/components/StatCard";
 
 export default function Dashboard() {
   const dispatch = useDispatch();

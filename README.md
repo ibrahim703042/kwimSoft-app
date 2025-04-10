@@ -1,8 +1,55 @@
-# React + Vite
+# Transport Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive transportation management system built with React, TypeScript, and modern web technologies.
 
-Currently, two official plugins are available:
+## Features
+- Real-time dashboard analytics
+- Route and station management
+- Driver tracking and management
+- Seat reservation system
+- Interactive maps integration
+- Multi-language support (EN/FR)
+- Dark/Light theme support
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- React 18
+- TypeScript
+- Vite
+- TailwindCSS
+- Mapbox GL
+- Redux Toolkit
+- i18next
+- Shadcn UI
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## Project Structure
+```
+src/
+├── assets/      # Static assets (images, fonts)
+├── components/  # Reusable UI components
+├── hooks/       # Custom React hooks
+├── lib/         # Utility functions
+├── pages/       # Application pages
+├── routes/      # Route definitions
+├── store/       # State management
+├── styles/      # Global styles
+└── locales/     # Translation files
+```
+
+## Contributing
+Please follow the existing code style and file structure conventions.

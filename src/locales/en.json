@@ -1,26 +1,30 @@
+
 {
-  "welcome": "Welcome to my app!",
+  "welcome": "Welcome to Enterprise Suite",
   "change_language": "Change language",
   "menu": {
     "dashboard": "Dashboard",
-    "schedules": "Schedules",
-    "ticket": "Ticket",
-    "payments": "Transaction",
-    "users": "Users",
-    "administration": "Administration",
-    "support": "Support",
-    "reservation": "Réservation",
-    "settings": "Settings",
-    "trajet": "Trajet"
+    "inventory": "Inventory",
+    "orders": "Orders",
+    "customers": "Customers",
+    "products": "Products",
+    "employees": "Employees",
+    "payroll": "Payroll",
+    "hr": "Human Resources",
+    "reports": "Reports",
+    "settings": "Settings"
   },
   "links": {
-    "company": "Company",
-    "driver": "Driver",
-    "bus": "Bus",
-    "seat": "Seat",
-    "trip": "Trip"
+    "products": "Products",
+    "categories": "Categories",
+    "suppliers": "Suppliers",
+    "customers": "Customers",
+    "employees": "Employees"
   },
-  "administration": "Administration",
-  "compagnieliste": "List of Companies",
-  "conducteurList": "List of Drivers"
+  "dashboard": {
+    "revenue": "Revenue",
+    "orders": "Orders",
+    "inventory": "Stock Levels",
+    "employees": "Active Employees"
+  }
 }

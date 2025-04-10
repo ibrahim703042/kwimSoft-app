@@ -1,26 +1,29 @@
 {
-  "welcome": "Bienvenue sur mon application !",
+  "welcome": "Bienvenue dans la suite Enterprise",
   "change_language": "Changer de langue",
   "menu": {
     "dashboard": "Tableau de bord",
-    "schedules": "Horaires",
-    "ticket": "Ticket",
-    "payments": "Transaction",
-    "users": "Utilisateurs",
-    "administration": "Administration",
-    "support": "Support",
-    "reservation": "Réservation",
-    "settings": "Paramètres",
-    "trajet": "Trajet"
+    "inventory": "Inventaire",
+    "orders": "Commandes",
+    "customers": "Clients",
+    "products": "Produits",
+    "employees": "Employés",
+    "payroll": "Paie",
+    "hr": "Ressources humaines",
+    "reports": "Rapports",
+    "settings": "Paramètres"
   },
   "links": {
-    "company": "Compagnie",
-    "driver": "Chauffeur",
-    "bus": "Bus",
-    "seat": "Siège",
-    "trip": "Trajet"
+    "products": "Produits",
+    "categories": "Catégories",
+    "suppliers": "Fournisseurs",
+    "customers": "Clients",
+    "employees": "Employés"
   },
-  "administration": "Administration",
-  "compagnieliste": "Liste des Compagnies",
-  "conducteurList": "Liste des Conducteurs"
+  "dashboard": {
+    "revenue": "Revenu",
+    "orders": "Commandes",
+    "inventory": "Niveaux de stock",
+    "employees": "Employés actifs"
+  }
 }

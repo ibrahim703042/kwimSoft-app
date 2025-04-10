@@ -35,15 +35,6 @@ export default function UserManagement() {
         setSelectedOption(option);
     };
 
-    useEffect(() => {
-        dispatch(setBreadCrumbItemsAction([
-            userRoutes.usermanagement
-        ]));
-        return () => {
-            dispatch(setBreadCrumbItemsAction([]));
-        };
-    }, [dispatch]);
-
     const linksUp: Option[] = [
         { name: "Groupe", component: Groupe, icon: Group },
         { name: "Roles", component: Role, icon: GitFork },

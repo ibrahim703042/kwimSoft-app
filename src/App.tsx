@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import useUserStore from "./store/useUserStore";
-import AppLayout from "./component/layouts/AppLayout";
-import { useThemeStore } from "./store/selectors/themeStore";
-import RoutesProvider from "./routes/RoutesProvider";
+import useUserStore from "@/store/useUserStore";
+import AppLayout from "@/components/layouts/AppLayout";
+import { useThemeStore } from "@/store/selectors/themeStore";
+import RoutesProvider from "@/routes/RoutesProvider";
 
 const App: React.FC = () => {
   const { user, setUser } = useUserStore();
@@ -38,8 +38,6 @@ const App: React.FC = () => {
     media.addEventListener("change", listener);
     return () => media.removeEventListener("change", listener);
   }, [theme]);
-
-  console.log("USER STATE salim", user);
 
   return (
     <AppLayout>

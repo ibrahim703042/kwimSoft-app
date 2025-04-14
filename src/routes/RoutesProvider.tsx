@@ -4,7 +4,10 @@ import NotFound from "@/components/NotFound";
 import PageTitle from "@/components/utilities/PageTitle";
 import Login from "@/pages/login/Login";
 import userRoutes from "@/routes/user/userRoutes";
-import Dashboard from "@/pages/dashbord/Dashboard";
+import Dashboard from "@/pages/dashbord/DashboardPage";
+import settingsRoute from "./settings/settingsRoutes";
+import customersRoute from "./customer/customerRoutes";
+import inventoryRoute from "./inventory/inventoryRoute";
 
 export default function RoutesProvider() {
   return (
@@ -13,15 +16,16 @@ export default function RoutesProvider() {
         path="/"
         element={
           <>
-            <PageTitle title="Dashboard" />
+            {/* <PageTitle title="Dashboard" /> */}
             <Dashboard />
           </>
         }
       />
 
       {/* Route modules */}
-      {/* {SchedeleRoutes} */}
-      {/* {administratorRoute} */}
+      {inventoryRoute}
+      {customersRoute}
+      {settingsRoute}
       {userRoutes}
 
       {/* Auth */}

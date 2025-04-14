@@ -2,7 +2,7 @@
 {
   "welcome": "Welcome to Enterprise Suite",
   "change_language": "Change language",
-  "menu": {
+  "sidebar": {
     "dashboard": "Dashboard",
     "inventory": "Inventory",
     "orders": "Orders",
@@ -12,7 +12,8 @@
     "payroll": "Payroll",
     "hr": "Human Resources",
     "reports": "Reports",
-    "settings": "Settings"
+    "settings": "Settings",
+    "users": "users"
   },
   "links": {
     "products": "Products",
@@ -26,5 +27,10 @@
     "orders": "Orders",
     "inventory": "Stock Levels",
     "employees": "Active Employees"
+  },
+  "profile": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign out"
   }
 }

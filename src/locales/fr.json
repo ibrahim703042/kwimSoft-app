@@ -1,7 +1,7 @@
 {
-  "welcome": "Bienvenue dans la suite Enterprise",
+  "welcome": "Bienvenue dans Enterprise Suite",
   "change_language": "Changer de langue",
-  "menu": {
+  "sidebar": {
     "dashboard": "Tableau de bord",
     "inventory": "Inventaire",
     "orders": "Commandes",
@@ -11,7 +11,8 @@
     "payroll": "Paie",
     "hr": "Ressources humaines",
     "reports": "Rapports",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "users": "Utilisateurs"
   },
   "links": {
     "products": "Produits",
@@ -25,5 +26,10 @@
     "orders": "Commandes",
     "inventory": "Niveaux de stock",
     "employees": "Employés actifs"
+  },
+  "profile": {
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "signOut": "Se déconnecter"
   }
 }

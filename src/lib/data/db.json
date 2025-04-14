@@ -1,0 +1,22 @@
+{
+  "account": {
+    "name": "Admin User",
+    "email": "admin@example.com"
+  },
+  "notifications": {
+    "emailNotifications": true,
+    "pushNotifications": false,
+    "stockAlerts": true,
+    "orderUpdates": true,
+    "newCustomers": false
+  },
+  "security": {
+    "currentPassword": "",
+    "newPassword": "",
+    "confirmPassword": ""
+  },
+  "appearance": {
+    "theme": "system",
+    "sidebarCollapsed": false
+  }
+}

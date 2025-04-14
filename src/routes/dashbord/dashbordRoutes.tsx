@@ -1,16 +1,10 @@
 import { Route } from "react-router-dom";
-import Dashboard from "../../pages/dashbord/Dashboard";
+import Dashboard from "../../pages/dashbord/DashboardPage";
 import PageTitle from "@/components/utilities/PageTitle";
-
-// Define route config type
-type DashboardRouteItem = {
-  path: string;
-  name: string;
-  component: React.ComponentType;
-};
+import { RouteItem } from "../routeItem";
 
 // Route config object
-export const dashbordRoutesItems: Record<string, DashboardRouteItem> = {
+export const dashbordRoutesItems: Record<string, RouteItem> = {
   dashboard: {
     path: "dashboard",
     name: "Tableau de bord",

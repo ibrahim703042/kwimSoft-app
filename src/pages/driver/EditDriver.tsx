@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { API_ROUTE } from "../../../config";
 import axios from "axios";
 import ScaleLoader from "react-spinners/ScaleLoader";
-import { SEXES } from "../../../constants"
+import { SEXES } from "../../constants/constants"
 import ReusableDialogStepsEdit from "../../component/utilitie/ReusableDialogStepsEdit";
 
 const updateDriver = async ({ id, values }) => {

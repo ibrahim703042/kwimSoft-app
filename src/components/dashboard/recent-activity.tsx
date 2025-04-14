@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useQuery } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/queryClient';
+// import { useQuery } from '@tanstack/react-query';
+// import { apiRequest } from '@/lib/queryClient';
 
 type ActivityType = 'order' | 'inventory' | 'warning' | 'customer' | 'system';
 

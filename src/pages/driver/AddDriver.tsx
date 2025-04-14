@@ -10,7 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { API_ROUTE, API_ROUTE_PASSWORD, API_ROUTE_UPLOAD } from "../../../config";
 import axios from "axios";
-import { SEXES } from "../../../constants"
+import { SEXES } from "../../constants/constants"
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 const createDriver = async (values) => {

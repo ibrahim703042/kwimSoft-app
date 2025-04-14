@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { setBreadCrumbItemsAction } from "../../store/actions/appActions";
 import Driver from "../driver/Driver";
 import Gare from "../gare/Gare";
-import { administratorRouteItems } from "../../routes/administration/administratorRoute";
+import { administratorRouteItems } from "../../routes/user/administratorRoute";
 
 // Example components and icons (replace with real ones)
 

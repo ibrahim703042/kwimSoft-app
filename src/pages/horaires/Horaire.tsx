@@ -10,7 +10,7 @@ import HoraireComponent from "../../component/utilitie/HoraireComponent";
 import { API_ROUTE } from "../../../config";
 import { setBreadCrumbItemsAction } from "@/store/actions/appActions";
 import { horaire_routes_items } from "@/routes/horaire/horaire_routes";
-import { JOURS } from "../../../constants"
+import { JOURS } from "../../constants/constants"
 import MapHoraire from "../../component/utilitie/map/MapHoraire";
 import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";

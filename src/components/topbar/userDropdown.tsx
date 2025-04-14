@@ -2,6 +2,7 @@ import React from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { User, Settings, LogOut } from 'lucide-react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Button } from '../ui/button';
 
 const UserDropdown: React.FC = () => {
   return (
@@ -12,7 +13,7 @@ const UserDropdown: React.FC = () => {
             <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User avatar" />
             <AvatarFallback>AD</AvatarFallback>
           </Avatar>
-          <span className="text-sm font-medium hidden md:block">Admin User</span>
+          {/* <span className="text-sm font-medium hidden md:block">Admin User</span> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

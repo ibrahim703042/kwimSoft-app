@@ -4,12 +4,6 @@
   box-sizing: border-box;
 }
 
-
-/* .swal-custom {
-  width: 400px; 
-  font-size: 14px; 
-} */
-
 .swal-custom-zindex {
   z-index: 9999 !important;
 }

@@ -1,6 +1,6 @@
 import { RouteObject } from "react-router-dom";
-import Horaire from "../../pages/horaires/Horaire";
-import PageTitle from "../../component/utilitie/PageTitle";
+import Horaire from "../../modules/horaires/Horaire";
+import PageTitle from "@/components/utilitie/PageTitle";
 import { lazy } from "react";
 
 // Define route config interface

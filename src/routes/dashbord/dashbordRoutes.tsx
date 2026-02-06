@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
-import Dashboard from "../../pages/dashbord/Dashboard";
-import PageTitle from "../../component/utilitie/PageTitle";
+import Dashboard from "../../modules/dashbord/Dashboard";
+import PageTitle from "@/components/utilitie/PageTitle";
 
 // Define route config type
 type DashboardRouteItem = {

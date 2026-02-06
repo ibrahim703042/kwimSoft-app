@@ -1,3 +1,21 @@
-export const API_ROUTE = "http://127.0.0.1:5050/api/user-management" 
-export const API_ROUTE_UPLOAD = "http://127.0.0.1:5050/api/user-management" 
-export const API_ROUTE_PASSWORD = "http://127.0.0.1:5050/api/user-management" 
+/**
+ * Legacy Configuration File
+ * This file provides backward compatibility for existing imports
+ */
+
+// Re-export from new config system
+export { 
+  API_ROUTE, 
+  API_ROUTE_PASSWORD, 
+  API_ROUTE_UPLOAD,
+  API_CONFIG,
+  APP_CONFIG,
+  FEATURES,
+  buildApiUrl,
+  isDevelopment,
+  isProduction,
+} from './src/config';
+
+// For easier migration, also export as default
+import API_CONFIG from './src/config';
+export default API_CONFIG;

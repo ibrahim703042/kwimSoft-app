@@ -1,25 +1,23 @@
 import { NavLink } from "react-router-dom";
+import { MenuItem } from "@/app/ModuleRegistry";
 
-type MenuItem = {
-  title: string;
-  path: string;
-  icon: React.ReactNode;
-  gap?: boolean;
-};
+interface SidebarMenuItemProps {
+  item: MenuItem;
+  isOpen: boolean;
+  index: number;
+}
 
 export default function SidebarMenuItem({
   item,
   isOpen,
   index,
-}: {
-  item: MenuItem;
-  isOpen: boolean;
-  index: number;
-}) {
+}: SidebarMenuItemProps) {
+  const Icon = item.icon;
+
   return (
     <>
       <NavLink
-        to={item.path}
+        to={item.path || "#"}
         className={({ isActive }) =>
           `group relative flex items-center text-sm gap-3.5 p-2 rounded-md ${
             item.gap ? "mt-0" : ""
@@ -30,7 +28,7 @@ export default function SidebarMenuItem({
           }`
         }
       >
-        <div>{item.icon}</div>
+        <div>{Icon && <Icon />}</div>
         <h2
           style={{
             transitionDelay: `${index * 50}ms`,
@@ -39,11 +37,11 @@ export default function SidebarMenuItem({
             !isOpen && "opacity-0 translate-x-28 overflow-hidden"
           }`}
         >
-          {item.title}
+          {item.label}
         </h2>
         {!isOpen && (
           <h2 className="absolute left-48 z-50 bg-white font-medium text-gray-900 rounded-md drop-shadow-lg px-2 py-2 w-fit hidden group-hover:block group-hover:left-14 group-hover:duration-500">
-            {item.title}
+            {item.label}
           </h2>
         )}
       </NavLink>

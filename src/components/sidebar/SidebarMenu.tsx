@@ -1,10 +1,19 @@
 import SidebarMenuItem from "./SidebarMenuItem";
+import { Can } from "@/core/auth";
+import { MenuItem } from "@/app/ModuleRegistry";
 
-export default function SidebarMenu({ menus, isOpen }: { menus: any[]; isOpen: boolean }) {
+interface SidebarMenuProps {
+  menus: MenuItem[];
+  isOpen: boolean;
+}
+
+export default function SidebarMenu({ menus, isOpen }: SidebarMenuProps) {
   return (
     <div className="mt-4 flex flex-col gap-4 relative">
       {menus.map((menu, index) => (
-        <SidebarMenuItem key={menu.path} item={menu} isOpen={isOpen} index={index} />
+        <Can key={menu.id} permission={menu.permission}>
+          <SidebarMenuItem item={menu} isOpen={isOpen} index={index} />
+        </Can>
       ))}
     </div>
   );

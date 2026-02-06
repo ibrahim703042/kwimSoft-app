@@ -6,6 +6,7 @@
       "lib": ["ES2020", "DOM", "DOM.Iterable"],
       "module": "ESNext",
       "skipLibCheck": true,
+      "baseUrl": "./src",
   
       /* Bundler mode */
       "moduleResolution": "bundler",
@@ -14,6 +15,21 @@
       "moduleDetection": "force",
       "noEmit": true,
       "jsx": "react-jsx",
+  
+      /* Path Aliases */
+      "paths": {
+        "@/*": ["./*"],
+        "@/app/*": ["app/*"],
+        "@/core/*": ["core/*"],
+        "@/modules/*": ["modules/*"],
+        "@/components/*": ["components/*", "component/*"],
+        "@/hooks/*": ["hooks/*"],
+        "@/lib/*": ["lib/*"],
+        "@/assets/*": ["assets/*"],
+        "@/store/*": ["store/*"],
+        "@/styles/*": ["styles/*"],
+        "@/config": ["config/index.ts"]
+      },
   
       /* Linting */
       "strict": true,

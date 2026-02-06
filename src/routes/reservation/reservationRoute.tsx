@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
-import PageTitle from "../../component/utilitie/PageTitle";
-import Reservation from "../../pages/reservation/Reservation";
+import PageTitle from "@/components/utilitie/PageTitle";
+import Reservation from "../../modules/reservation/Reservation";
 import { ReactElement, ComponentType } from "react";
 
 // ✅ Define a route item type
@@ -18,8 +18,8 @@ export const reservationRouteItems: Record<string, RouteItem> = {
   },
 };
 
-const reservationRoute: ReactElement[] = Object.entries(reservationRouteItems).map(
-  ([key, route]) => (
+const reservationRoute: ReactElement[] = Object.values(reservationRouteItems).map(
+  (route) => (
     <Route
       key={route.path}
       path={route.path}

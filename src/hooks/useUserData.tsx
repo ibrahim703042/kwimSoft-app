@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "../store/useUserStore";
 import axios from "axios";
-import { API_ROUTE_PASSWORD } from "../../config";
+import { API_ROUTE_PASSWORD } from "@/config/index";
 
-const fetchUser = async (id) => {
+const fetchUser = async (id: string) => {
     try {
         const { data } = await axios.get(`${API_ROUTE_PASSWORD}/user/user-connected/${id}`);
         if (!data) {

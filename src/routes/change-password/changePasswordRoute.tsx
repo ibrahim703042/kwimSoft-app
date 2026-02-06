@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
-import UpdatePassword from "../../pages/login/UpdatePassword";
-import Login from "../../pages/login/Login";
+import UpdatePassword from "../../core/auth/login/UpdatePassword";
+import Login from "../../core/auth/login/Login";
 
 
 export const changePasswordRouteItem = {

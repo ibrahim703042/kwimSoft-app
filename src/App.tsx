@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import useUserStore from "./store/useUserStore";
-import AppLayout from "./component/layouts/AppLayout";
+import { useAuthStore } from "./core/auth";
+import { AppShell } from "./app/AppShell";
 import { useThemeStore } from "./store/selectors/themeStore";
-import RoutesProvider from "./routes/RoutesProvider";
 
 const App: React.FC = () => {
-  const { user, setUser } = useUserStore();
+  const { setUser } = useAuthStore();
   const { theme } = useThemeStore();
 
   // Load user on first mount
@@ -39,13 +38,7 @@ const App: React.FC = () => {
     return () => media.removeEventListener("change", listener);
   }, [theme]);
 
-  console.log("USER STATE salim", user);
-
-  return (
-    <AppLayout>
-      <RoutesProvider />
-    </AppLayout>
-  );
+  return <AppShell />;
 };
 
 export default App;

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import i18n from "../../i18n";
+import i18n from "../../locales/i18n";
 
 
 // Définition du type de notre état

@@ -1,0 +1,97 @@
+---
+description: React and TypeScript conventions for modular architecture
+globs: "**/*.ts,**/*.tsx"
+alwaysApply: false
+---
+
+# React & TypeScript Conventions
+
+## TypeScript
+
+- Prefer `.ts` and `.tsx` for new files. Do not add new `.js` or `.jsx` files.
+- Use proper types; avoid `any` when a concrete type is available.
+- Use path aliases: `@/core/*`, `@/modules/*`, `@/components/*`, etc.
+
+## Module Structure (Odoo-like)
+
+All features are self-contained modules under `src/modules/<feature>/`:
+
+```
+modules/driver/
+├── index.ts           # Module export
+├── routes.tsx         # Route definitions
+├── menu.ts            # Menu items
+├── pages/             # Page components
+├── api/               # API calls
+└── schemas/           # Zod schemas
+```
+
+Each module exports a `FrontModule` that declares routes, menus, and permissions:
+
+```tsx
+// modules/driver/index.ts
+export const driverModule: FrontModule = {
+  name: 'driver',
+  routes,
+  menu,
+  permissions: ['driver.read', 'driver.create', 'driver.update', 'driver.delete']
+};
+```
+
+## CRUD Pages
+
+Use `CrudPage` from `@/core/crud` for list views (70% less boilerplate):
+
+```tsx
+import { CrudPage } from '@/core/crud';
+
+export function DriverListPage() {
+  return (
+    <CrudPage config={{
+      title: 'Drivers',
+      queryKey: ['drivers'],
+      queryFn: driverApi.list,
+      columns: driverColumns,
+      permissions: {
+        read: 'driver.read',
+        create: 'driver.create',
+        update: 'driver.update',
+        delete: 'driver.delete',
+      }
+    }} />
+  );
+}
+```
+
+## Page Layout
+
+Use core UI components for consistent layouts:
+
+```tsx
+import { Page, PageHeader, PageToolbar, PageContent } from '@/core/ui';
+
+<Page>
+  <PageHeader title="My Page" actions={<Button>Action</Button>} />
+  <PageToolbar search={search} onSearchChange={setSearch} />
+  <PageContent>{/* content */}</PageContent>
+</Page>
+```
+
+## Permission Guards
+
+Wrap actions and routes with `<Can>` component:
+
+```tsx
+import { Can } from '@/core/auth';
+
+<Can permission="driver.create">
+  <Button>Add Driver</Button>
+</Can>
+```
+
+## Folder Structure
+
+- Modules: `src/modules/<feature>/`
+- Core systems: `src/core/` (auth, tenant, crud, ui, hooks, api)
+- Shared UI: `src/components/` (shadcn/ui)
+- Utils: `src/lib/utils.ts` (use `cn()` for class names)

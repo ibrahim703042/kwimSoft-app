@@ -6,10 +6,19 @@
   ],
   "compilerOptions": {
     "baseUrl": "./src",
+    "jsx": "react-jsx",
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["components/*"],
-      "@utils/*": ["utils/*"]
+      "@/app/*": ["app/*"],
+      "@/core/*": ["core/*"],
+      "@/modules/*": ["modules/*"],
+      "@/components/*": ["components/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/lib/*": ["lib/*"],
+      "@/assets/*": ["assets/*"],
+      "@/store/*": ["store/*"],
+      "@/styles/*": ["styles/*"],
+      "@/config": ["config/index.ts"]
     }
   }
 }

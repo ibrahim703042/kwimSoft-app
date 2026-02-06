@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
-import GareMap from "../../pages/gare/GareMap";
-import Administration from "../../pages/administration/Administration";
-import PageTitle from "../../component/utilitie/PageTitle";
+import GareMap from "../../modules/gare/GareMap";
+import Administration from "../../modules/administration/Administration";
+import PageTitle from "@/components/utilitie/PageTitle";
 
 // Définir les objets de chaque route dans administratorRouteItems
 export const administratorRouteItems = {

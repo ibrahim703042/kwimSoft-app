@@ -1,41 +1,48 @@
+import { Route } from "react-router-dom";
+import PageTitle from "@/components/utilitie/PageTitle";
+import { ReactElement, ComponentType } from "react";
 
-// import { Route } from "react-router-dom";
-// import PageTitle from "@/component/utilitie/PageTitle";
-// import ViewCompagny from "../../pages/compagny/ViewCompagny";
-// import EditCompagny from "../../pages/compagny/EditCompagny";
-// import DeleteCompagny from "../../pages/compagny/DeleteCompagny";
+// Note: These components need to be created or imported from the correct location
+// Placeholder components for now
+const ViewCompagny = () => <div>View Company</div>;
+const EditCompagny = () => <div>Edit Company</div>;
+const DeleteCompagny = () => <div>Delete Company</div>;
 
-// export const oganizationRouteItems = {
-//     view: {
-//         path: "/administration/detail_compagny/:id",
-//         name: "Compagny",
-//         component: ViewCompagny
-//     },
-//     edit: {
-//         path: "/administration/edit_compagny/:id",
-//         name: "Compagny",
-//         component: EditCompagny
-//     },
-//     dlete: {
-//         path: "/administration/delete_compagny/:id",
-//         name: "Compagny",
-//         component: DeleteCompagny
-//     }
+type RouteItem = {
+  path: string;
+  name: string;
+  component: ComponentType;
+};
 
-// }
+export const oganizationRouteItems: Record<string, RouteItem> = {
+  view: {
+    path: "/administration/detail_compagny/:id",
+    name: "Compagny",
+    component: ViewCompagny,
+  },
+  edit: {
+    path: "/administration/edit_compagny/:id",
+    name: "Compagny",
+    component: EditCompagny,
+  },
+  delete: {
+    path: "/administration/delete_compagny/:id",
+    name: "Compagny",
+    component: DeleteCompagny,
+  },
+};
 
-// var oganizationRoute = []
+const oganizationRoute: ReactElement[] = Object.values(oganizationRouteItems).map((route) => (
+  <Route
+    key={route.path}
+    path={route.path}
+    element={
+      <>
+        <PageTitle title={route.name} />
+        <route.component />
+      </>
+    }
+  />
+));
 
-// for (let key in oganizationRoute_items) {
-//     const route = oganizationRoute_items[key]
-//     oganizationRoute.push(
-//         <Route path={route.path} element={
-//             <>
-//                 <PageTitle title={route.name} />
-//                 <route.component />
-//             </>
-//         } key={route.path} />
-//     )
-// }
-
-// export default oganizationRoute
+export default oganizationRoute;

@@ -1,0 +1,31 @@
+/* Role and User Management Styles */
+.swal-custom {
+  font-family: inherit;
+}
+
+.role-container {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+}
+
+.role-header {
+  background: #f1f5f9;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.role-badge {
+  background: #0F123F;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.7rem;
+  display: inline-block;
+}
+
+.user-group-section {
+  margin-top: 1rem;
+  padding: 0.5rem;
+}

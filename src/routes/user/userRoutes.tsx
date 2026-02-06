@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
-import UserManagement from "../../pages/user-management/UserManagement";
-import PageTitle from "../../component/utilitie/PageTitle";
+import UserManagement from "../../modules/user/pages/UserManagement";
+import PageTitle from "@/components/utilitie/PageTitle";
 
 export const userRouteItems = {
     usermanagement: {

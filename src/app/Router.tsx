@@ -1,5 +1,5 @@
-import { Routes, Route } from "react-router-dom";
-import { Can } from "@/core/auth";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { Can, ProtectedRoute, useAuthStore } from "@/core/auth";
 import { getAllRoutes } from "./registerModules";
 import Login from "@/core/auth/login/Login";
 import ForgotPassword from "@/core/auth/login/ForgotPassword";
@@ -11,10 +11,19 @@ import NotFound from "@/components/others/app/NotFound";
  */
 export function AppRouter() {
   const routes = getAllRoutes();
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <Routes>
-      {/* Dynamic routes from modules */}
+      {/* Public auth routes */}
+      <Route 
+        path="/login" 
+        element={isAuthenticated ? <Navigate to="/" replace /> : <Login />} 
+      />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/update-password" element={<UpdatePassword />} />
+
+      {/* Protected dynamic routes from modules */}
       {routes.map((route) => {
         const element = route.permission ? (
           <Can permission={route.permission}>{route.element}</Can>
@@ -26,16 +35,11 @@ export function AppRouter() {
           <Route
             key={route.path}
             path={route.path}
-            element={element}
+            element={<ProtectedRoute>{element}</ProtectedRoute>}
             index={route.index}
           />
         );
       })}
-
-      {/* Auth routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/update-password" element={<UpdatePassword />} />
 
       {/* Fallback */}
       <Route path="*" element={<NotFound />} />

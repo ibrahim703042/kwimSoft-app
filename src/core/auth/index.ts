@@ -1,6 +1,7 @@
 export { useAuthStore } from "./auth.store";
 export { useAuth } from "./useAuth";
 export { Can, useCan } from "./PermissionGuard";
+export { ProtectedRoute } from "./ProtectedRoute";
 export type { User, AuthState, AuthActions, AuthStore } from "./types";
 
 // Auth pages

@@ -1,9 +1,18 @@
 export interface User {
-  tokenDecode: string | null;
-  token: string;
-  requiresPasswordReset: boolean;
-  userID: string;
-  permissions?: string[];
+  id: string;
+  username: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  tenantId?: string;
+  tenantCode?: string;
+  roles: string[];
+  permissions: string[];
+  avatar?: string;
+  isEmailVerified?: boolean;
+  status?: string;
+  accessToken: string;
+  refreshToken: string;
   entrepriseId?: string;
   etablissementId?: string;
 }

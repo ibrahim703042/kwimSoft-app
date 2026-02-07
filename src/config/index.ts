@@ -10,11 +10,11 @@ export const isProduction = import.meta.env?.PROD ?? process.env.NODE_ENV === 'p
 // Base URLs for different environments
 const BASE_URLS = {
   development: {
-    userManagement: "http://127.0.0.1:5050/api/user-management",
+    userManagement: "http://127.0.0.1:9080/api/user-management",
     busManagement: "http://127.0.0.1:5051/api/bus-management",
     finance: "http://127.0.0.1:5052/api/finance",
     flightManagement: "http://127.0.0.1:5053/api/flight-management",
-    upload: "http://127.0.0.1:5050/api/user-management",
+    upload: "http://127.0.0.1:9080/api/user-management",
   },
   production: {
     userManagement: "https://api.kwimsoft.com/api/user-management",

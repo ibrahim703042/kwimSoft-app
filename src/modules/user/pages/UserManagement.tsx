@@ -4,10 +4,10 @@ import { setBreadCrumbItemsAction } from "../../../store/actions/appActions";
 import { IndentDecrease, LucideIcon, Menu, Group, SquareUser, GitFork, BookUser } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { Dispatch } from "redux";
-import Groupe from "./Groupe";
-import Role from "./Role";
-import User from "./User";
-import UserSession from "./UserSession";
+import GroupNew from "./GroupNew";
+import RoleNew from "./RoleNew";
+import UserNew from "./UserNew";
+import UserSessionNew from "./UserSessionNew";
 
 type Option = {
     name: string;
@@ -20,7 +20,7 @@ export default function UserManagement() {
     const [openSide, setOpenSide] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<Option>({
         name: "Groupe",
-        component: Groupe,
+        component: GroupNew,
         icon: Group,
     });
     const linksDown: Option[] = [];
@@ -42,10 +42,10 @@ export default function UserManagement() {
     }, [dispatch]);
 
     const linksUp: Option[] = [
-        { name: "Groupe", component: Groupe, icon: Group },
-        { name: "Roles", component: Role, icon: GitFork },
-        { name: "User", component: User, icon: SquareUser },
-        { name: "User session", component: UserSession, icon: BookUser },
+        { name: "Groupe", component: GroupNew, icon: Group },
+        { name: "Roles", component: RoleNew, icon: GitFork },
+        { name: "User", component: UserNew, icon: SquareUser },
+        { name: "User session", component: UserSessionNew, icon: BookUser },
     ];
 
     return (

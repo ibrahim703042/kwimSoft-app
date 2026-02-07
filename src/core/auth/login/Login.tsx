@@ -5,10 +5,10 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useUserStore from "../../../store/useUserStore";
+import { useAuthStore } from "../auth.store";
 import waangulogo from "../../../assets/img/img/waangulogo.png";
 import bgImg from "../../../assets/img/img/busbge.jpg";
-import { API_ROUTE_PASSWORD } from "@/config/index";
+import { API_CONFIG } from "@/config/index";
 import { jwtDecode } from "jwt-decode";
 import "../../../styles/modules/login.css";
 
@@ -16,53 +16,42 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setUser } = useUserStore();
+  const { setUser } = useAuthStore();
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      pswd: "",
+      username: "",
+      password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("Email invalide").required("L'email est requis"),
-      pswd: Yup.string().min(6, "Le mot de passe doit contenir au moins 6 caractères").required("Le mot de passe est requis"),
+      username: Yup.string().required("Le nom d'utilisateur est requis"),
+      password: Yup.string().min(6, "Le mot de passe doit contenir au moins 6 caractères").required("Le mot de passe est requis"),
     }),
     onSubmit: async (values) => {
       setLoading(true);
       setError("");
 
       try {
-        const response = await axios.post(`${API_ROUTE_PASSWORD}/user/login`, values);
-        console.log("response.data", response.data);
-        if (!response?.data) throw new Error("Données de réponse invalides.");
-
-        const { requiresPasswordReset, userid, accessToken } = response.data;
-
-        // Convertir requiresPasswordReset en booléen si c'est une chaîne
-        const needsReset = requiresPasswordReset === true || requiresPasswordReset === "true";
-
-        // Si une mise à jour du mot de passe est requise, on stocke l'utilisateur sans décoder le token
-        if (needsReset) {
-          console.log("CONDITION VERIFIE AVEC SUCCEESS");
-          const user = {
-            tokenDecode: null,
-            token: typeof accessToken === "string" ? accessToken : "",
-            requiresPasswordReset: true,
-            userID: response?.data?.userId,
-          };
-
-          localStorage.setItem("user", JSON.stringify(user));
-          setUser(user);
-          navigate("/update-password");
-          return;
+        // Call the backend authentication API
+        const loginUrl = `${API_CONFIG.userManagement.baseUrl}${API_CONFIG.userManagement.endpoints.auth}/login`;
+        console.log("Calling login API:", loginUrl);
+        
+        const response = await axios.post(loginUrl, values);
+        console.log("Login response:", response.data);
+        
+        if (!response?.data) {
+          throw new Error("Données de réponse invalides.");
         }
 
-        // Pour le cas normal, vérifier que accessToken est bien une chaîne
+        const { accessToken, refreshToken, user: userData } = response.data;
+
+        // Verify we have a valid access token
         if (!accessToken || typeof accessToken !== "string") {
           throw new Error("Token non valide ou absent.");
         }
 
-        let decodedToken = null;
+        // Decode the JWT token
+        let decodedToken: any = null;
         try {
           decodedToken = jwtDecode(accessToken);
         } catch (decodeError) {
@@ -70,24 +59,39 @@ export default function Login() {
           throw new Error("Échec du décodage du token.");
         }
 
-        // Création de l'objet utilisateur
+        // Create user object with full data from backend
         const user = {
-          tokenDecode: decodedToken?.sub || null,
-          token: accessToken,
-          requiresPasswordReset: false,
-          userID: userid,
+          id: userData._id || decodedToken.sub,
+          username: userData.username,
+          email: userData.email,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          tenantId: userData.tenantId,
+          tenantCode: userData.tenantCode,
+          roles: userData.roles || [],
+          permissions: userData.permissions || [],
+          avatar: userData.avatar,
+          isEmailVerified: userData.isEmailVerified,
+          status: userData.status,
+          accessToken,
+          refreshToken,
         };
 
-        console.log("User avant stockage :", user);
+        console.log("User object created:", user);
 
-        // Stockage dans le localStorage et dans le store Zustand
-        localStorage.setItem("user", JSON.stringify(user));
+        // Store tokens separately
+        localStorage.setItem("access_token", accessToken);
+        localStorage.setItem("refresh_token", refreshToken);
+
+        // Store user in auth store and localStorage
         setUser(user);
 
+        // Navigate to home
         navigate("/");
       } catch (err: any) {
         console.error("Erreur de connexion :", err);
-        setError(err.message || "Échec de connexion. Vérifiez vos informations.");
+        const errorMessage = err.response?.data?.message || err.message || "Échec de connexion. Vérifiez vos informations.";
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -106,17 +110,17 @@ export default function Login() {
           <p className="font-bold text-center text-[#ffffff] text-[1.5rem] m-0 p-0">Se connecter</p>
           <form onSubmit={formik.handleSubmit} className="px-10 py-5">
             <FormControl variant="filled" sx={{ width: "100%", color: "#ffffff" }}>
-              <InputLabel htmlFor="email" sx={{ color: "#ffffff", fontSize: "0.9rem" }}>Adresse Email</InputLabel>
+              <InputLabel htmlFor="username" sx={{ color: "#ffffff", fontSize: "0.9rem" }}>Nom d'utilisateur</InputLabel>
               <FilledInput
-                id="email"
-                type="email"
-                placeholder="Entrez votre email"
+                id="username"
+                type="text"
+                placeholder="Entrez votre nom d'utilisateur"
                 sx={{ color: "#ffffff" }}
-                {...formik.getFieldProps("email")}
+                {...formik.getFieldProps("username")}
               />
             </FormControl>
-            {formik.touched.email && formik.errors.email && (
-              <p className="text-red-500 text-sm">{formik.errors.email}</p>
+            {formik.touched.username && formik.errors.username && (
+              <p className="text-red-500 text-sm">{formik.errors.username}</p>
             )}
             <div className="pt-5">
               <FormControl variant="filled" sx={{ width: "100%", color: "#ffffff" }}>
@@ -126,11 +130,11 @@ export default function Login() {
                   type="password"
                   placeholder="Entrez votre mot de passe"
                   sx={{ color: "#ffffff" }}
-                  {...formik.getFieldProps("pswd")}
+                  {...formik.getFieldProps("password")}
                 />
               </FormControl>
-              {formik.touched.pswd && formik.errors.pswd && (
-                <p className="text-red-500 text-sm">{formik.errors.pswd}</p>
+              {formik.touched.password && formik.errors.password && (
+                <p className="text-red-500 text-sm">{formik.errors.password}</p>
               )}
             </div>
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}

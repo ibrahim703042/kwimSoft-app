@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import { useAuthStore } from "@/core/auth";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 import { AppRouter } from "./Router";
@@ -10,6 +11,7 @@ import { getAllMenus } from "./registerModules";
  */
 export function AppShell() {
   const location = useLocation();
+  const { isAuthenticated } = useAuthStore();
   const menus = getAllMenus();
 
   // Check if current page needs special layout (no padding)
@@ -17,6 +19,15 @@ export function AppShell() {
     location.pathname.startsWith("/trajet") ||
     location.pathname.startsWith("/administration/map-detail");
 
+  // Check if current route is an auth route
+  const isAuthRoute = ["/login", "/forgot-password", "/update-password"].includes(location.pathname);
+
+  // For auth routes, show only the router without shell
+  if (isAuthRoute || !isAuthenticated) {
+    return <AppRouter />;
+  }
+
+  // For authenticated users, show full shell
   return (
     <div className="flex h-screen bg-white text-gray-800 dark:bg-[#0F123F] dark:text-gray-100">
       {/* Sidebar */}

@@ -5,12 +5,16 @@ export const useAuthStore = create<AuthStore>((set) => ({
   // Initial state from localStorage
   user: JSON.parse(localStorage.getItem("user") || "null"),
   isAuthenticated: !!localStorage.getItem("user"),
-  permissions: JSON.parse(localStorage.getItem("permissions") || "[]"),
+  permissions: (() => {
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    return user?.permissions || [];
+  })(),
 
   setUser: (user: User) => {
     localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("access_token", user.accessToken);
+    localStorage.setItem("refresh_token", user.refreshToken);
     const permissions = user.permissions || [];
-    localStorage.setItem("permissions", JSON.stringify(permissions));
     set({ 
       user, 
       isAuthenticated: true,
@@ -31,7 +35,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   setPermissions: (permissions: string[]) => {
-    localStorage.setItem("permissions", JSON.stringify(permissions));
     set({ permissions });
   },
 }));

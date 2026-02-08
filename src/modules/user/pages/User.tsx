@@ -7,7 +7,7 @@ import { Label } from "../../../components/ui/label";
 import { useFormik } from "formik";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { API_ROUTE_PASSWORD } from "../../../../config.tsx";
+import { API_ROUTE_PASSWORD } from "@/config";
 import axios from "axios";
 import { useUserData } from "../../../hooks/useUserData";
 import { useEffect, useState } from "react";

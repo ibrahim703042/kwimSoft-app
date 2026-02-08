@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_ROUTE } from "../../../config.tsx";
+import { API_ROUTE } from "@/config";
 import { useQuery } from "@tanstack/react-query";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Search } from "lucide-react";

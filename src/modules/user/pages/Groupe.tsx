@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_ROUTE_PASSWORD } from "../../../../config.tsx";
+import { API_ROUTE_PASSWORD } from "@/config";
 import { useUserData } from "@/hooks/useUserData";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";

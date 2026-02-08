@@ -46,7 +46,6 @@ const createServiceInstance = (baseURL: string): AxiosInstance => {
         _retry?: boolean;
       };
 
-      // Handle 401 errors (token expired)
       if (
         error.response?.status === 401 &&
         !originalRequest._retry &&
@@ -57,28 +56,24 @@ const createServiceInstance = (baseURL: string): AxiosInstance => {
         const refreshToken = localStorage.getItem(TOKEN_KEYS.REFRESH);
         if (refreshToken) {
           try {
-            // Attempt to refresh token
             const response = await axios.post(
-              `${API_CONFIG.userManagement.baseUrl}/api/token/refresh/`,
-              { refresh: refreshToken }
+              `${API_CONFIG.userManagement.baseUrl}${API_CONFIG.userManagement.endpoints.auth}/refresh`,
+              { refreshToken }
             );
 
-            const newAccessToken = response.data.access;
+            const newAccessToken = response.data.accessToken;
             localStorage.setItem(TOKEN_KEYS.ACCESS, newAccessToken);
 
-            // Retry original request with new token
             if (originalRequest.headers) {
               originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
             }
             return instance(originalRequest);
           } catch (refreshError) {
-            // Refresh failed - logout user
             console.error('Token refresh failed:', refreshError);
             handleLogout();
             return Promise.reject(refreshError);
           }
         } else {
-          // No refresh token - logout user
           handleLogout();
         }
       }
@@ -96,6 +91,7 @@ const createServiceInstance = (baseURL: string): AxiosInstance => {
 const handleLogout = () => {
   localStorage.removeItem(TOKEN_KEYS.ACCESS);
   localStorage.removeItem(TOKEN_KEYS.REFRESH);
+  localStorage.removeItem('user');
   window.location.href = '/login';
 };
 
@@ -104,14 +100,19 @@ const handleLogout = () => {
  */
 export const axiosInstances = {
   userManagement: createServiceInstance(API_CONFIG.userManagement.baseUrl),
-  busManagement: createServiceInstance(API_CONFIG.busManagement.baseUrl),
-  finance: createServiceInstance(API_CONFIG.finance.baseUrl),
-  flightManagement: createServiceInstance(API_CONFIG.flightManagement.baseUrl),
+  transport: createServiceInstance(API_CONFIG.transport.baseUrl),
+  product: createServiceInstance(API_CONFIG.product.baseUrl),
+  hr: createServiceInstance(API_CONFIG.hr.baseUrl),
+  stock: createServiceInstance(API_CONFIG.stock.baseUrl),
   upload: createServiceInstance(API_CONFIG.upload.baseUrl),
+  // Backward compat
+  busManagement: createServiceInstance(API_CONFIG.transport.baseUrl),
+  finance: createServiceInstance(API_CONFIG.stock.baseUrl),
+  flightManagement: createServiceInstance(API_CONFIG.transport.baseUrl),
 };
 
 /**
- * Default axios instance (user management for backward compatibility)
+ * Default axios instance (user management)
  */
 export const axiosInstance = axiosInstances.userManagement;
 
@@ -125,73 +126,34 @@ export const getAxiosInstance = (
 };
 
 /**
- * API Helper Functions
+ * Generic API helper for any service
+ */
+const createApiHelper = (instance: AxiosInstance) => ({
+  get: (url: string, config?: any) => instance.get(url, config),
+  post: (url: string, data?: any, config?: any) => instance.post(url, data, config),
+  put: (url: string, data?: any, config?: any) => instance.put(url, data, config),
+  patch: (url: string, data?: any, config?: any) => instance.patch(url, data, config),
+  delete: (url: string, config?: any) => instance.delete(url, config),
+});
+
+/**
+ * API Helper Functions for all services
  */
 export const api = {
-  // User Management
-  userManagement: {
-    get: (url: string, config?: any) =>
-      axiosInstances.userManagement.get(url, config),
-    post: (url: string, data?: any, config?: any) =>
-      axiosInstances.userManagement.post(url, data, config),
-    put: (url: string, data?: any, config?: any) =>
-      axiosInstances.userManagement.put(url, data, config),
-    delete: (url: string, config?: any) =>
-      axiosInstances.userManagement.delete(url, config),
-    patch: (url: string, data?: any, config?: any) =>
-      axiosInstances.userManagement.patch(url, data, config),
-  },
-
-  // Bus Management
-  busManagement: {
-    get: (url: string, config?: any) =>
-      axiosInstances.busManagement.get(url, config),
-    post: (url: string, data?: any, config?: any) =>
-      axiosInstances.busManagement.post(url, data, config),
-    put: (url: string, data?: any, config?: any) =>
-      axiosInstances.busManagement.put(url, data, config),
-    delete: (url: string, config?: any) =>
-      axiosInstances.busManagement.delete(url, config),
-    patch: (url: string, data?: any, config?: any) =>
-      axiosInstances.busManagement.patch(url, data, config),
-  },
-
-  // Finance
-  finance: {
-    get: (url: string, config?: any) => axiosInstances.finance.get(url, config),
-    post: (url: string, data?: any, config?: any) =>
-      axiosInstances.finance.post(url, data, config),
-    put: (url: string, data?: any, config?: any) =>
-      axiosInstances.finance.put(url, data, config),
-    delete: (url: string, config?: any) =>
-      axiosInstances.finance.delete(url, config),
-    patch: (url: string, data?: any, config?: any) =>
-      axiosInstances.finance.patch(url, data, config),
-  },
-
-  // Flight Management
-  flightManagement: {
-    get: (url: string, config?: any) =>
-      axiosInstances.flightManagement.get(url, config),
-    post: (url: string, data?: any, config?: any) =>
-      axiosInstances.flightManagement.post(url, data, config),
-    put: (url: string, data?: any, config?: any) =>
-      axiosInstances.flightManagement.put(url, data, config),
-    delete: (url: string, config?: any) =>
-      axiosInstances.flightManagement.delete(url, config),
-    patch: (url: string, data?: any, config?: any) =>
-      axiosInstances.flightManagement.patch(url, data, config),
-  },
-
-  // Upload
+  userManagement: createApiHelper(axiosInstances.userManagement),
+  transport: createApiHelper(axiosInstances.transport),
+  product: createApiHelper(axiosInstances.product),
+  hr: createApiHelper(axiosInstances.hr),
+  stock: createApiHelper(axiosInstances.stock),
+  // Backward compat
+  busManagement: createApiHelper(axiosInstances.transport),
+  finance: createApiHelper(axiosInstances.stock),
+  flightManagement: createApiHelper(axiosInstances.transport),
   upload: {
     post: (url: string, formData: FormData, config?: any) =>
       axiosInstances.upload.post(url, formData, {
         ...config,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          ...config?.headers,
-        },
+        headers: { 'Content-Type': 'multipart/form-data', ...config?.headers },
       }),
   },
 };

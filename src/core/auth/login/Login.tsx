@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../auth.store";
-import waangulogo from "../../../assets/img/img/waangulogo.png";
-import bgImg from "../../../assets/img/img/busbge.jpg";
+import waangulogo from "@/assets/img/img/waangulogo.png";
+import bgImg from "@/assets/img/img/busbge.jpg";
 import { API_CONFIG } from "@/config/index";
 import { jwtDecode } from "jwt-decode";
-import "../../../styles/modules/login.css";
+import "@/styles/modules/login.css";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -20,8 +20,8 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: "kwim274651",
+      password: "KwimSoft@2026",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Le nom d'utilisateur est requis"),

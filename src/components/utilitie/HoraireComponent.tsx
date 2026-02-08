@@ -2,7 +2,7 @@ import { CalendarFold, ArrowDownUp, Trash2, FilePenLine } from "lucide-react";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { API_ROUTE } from "../../../config.tsx";
+import { API_ROUTE } from "@/config";
 import { Button } from "../../components/ui/button";
 import { useState } from "react";
 import { MenuItem, Select } from "@mui/material";

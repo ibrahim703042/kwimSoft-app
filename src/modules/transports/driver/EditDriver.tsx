@@ -1,17 +1,16 @@
-import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import ReusableDialogSteps from "@/components/utilitie/ReusableDialogSteps";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue, SelectGroup } from "@/components/ui/select";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { API_ROUTE_PASSWORD, API_ROUTE_UPLOAD } from "@/config/index";
+import { API_ROUTE, API_ROUTE_UPLOAD } from "@/config";
 import axios from "axios";
-import { SEXES } from "../../types/constants"
 import ScaleLoader from "react-spinners/ScaleLoader";
+import { SEXES } from "@/types/constants"
+import ReusableDialogStepsEdit from "@/components/utilitie/ReusableDialogStepsEdit";
 
 interface DriverFormValues {
     fullName: string;
@@ -28,18 +27,46 @@ interface DriverFormValues {
     adresse: string;
 }
 
-const createDriver = async (values: DriverFormValues) => {
-    const response = await axios.post(
-        `${API_ROUTE_PASSWORD}/drivers`,
+interface DriverData {
+    _id: string;
+    fullName?: string;
+    licenseNumber?: string;
+    licenseDuration?: string;
+    phoneNumber?: string;
+    email?: string;
+    birthDate?: string;
+    company?: { _id?: string; name?: string };
+    image?: string;
+    sexe?: string;
+    nationality?: string;
+    begginingAt?: string;
+    adresse?: string;
+}
+
+interface EditDriverProps {
+    DriverData: DriverData | null;
+    openDialog: boolean;
+    setOpenDialog: (open: boolean) => void;
+}
+
+const updateDriver = async ({ id, values }: { id: string; values: DriverFormValues }) => {
+    const response = await axios.put(
+        `${API_ROUTE}/drivers/${id}`,
         values
     );
     return response.data;
 };
 
-export default function AddDriver() {
 
-    const [openDialog, setOpenDialog] = useState(false);
+export default function EditDriver({ DriverData, openDialog, setOpenDialog }: EditDriverProps) {
+    const queryClient = useQueryClient();
+
+    console.log("DriverData", DriverData);
     const [uploading, setUploading] = useState(false);
+
+    if (!DriverData) {
+        return null;
+    }
 
     const uploadImages = async (files: File[], setFieldValue: (field: string, value: any) => void) => {
         try {
@@ -69,78 +96,50 @@ export default function AddDriver() {
         }
     };
 
-    const queryClient = useQueryClient();
-
+    // Mutation React Query pour envoyer les données
     const mutation = useMutation({
-        mutationFn: async (values: DriverFormValues) => {
-            console.log("Mutation en cours avec valeurs :", values);
-            return await createDriver(values);
-        },
+        mutationFn: updateDriver,
         onSuccess: () => {
-            console.log("Mutation terminée avec succès !");
             Swal.fire({
                 title: "Succès!",
-                text: "Le chauffeur a été enregistré avec succès.",
+                text: "Le chauffeur a été modifier avec succès.",
                 icon: "success",
                 confirmButtonText: "OK",
+                customClass: { popup: "swal-custom" },
             });
             queryClient.invalidateQueries({ queryKey: ["drivers"] });
             setOpenDialog(false);
         },
-        onError: (error) => {
-            console.error("Erreur dans la mutation :", error);
+        onError: () => {
             Swal.fire({
                 title: "Erreur!",
                 text: "Une erreur est survenue. Veuillez réessayer.",
                 icon: "error",
                 confirmButtonText: "OK",
             });
+            setOpenDialog(false)
         },
-    });
-
-
-    const validationSchema = Yup.object({
-        fullName: Yup.string()
-            .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/, "Le nom complet ne doit contenir que des lettres")
-            .required("Le nom est requis"),
-        email: Yup.string()
-            .required("L'adresse e-mail est obligatoire @gmail.com")
-            .email("Veuillez entrer une adresse e-mail valide"),
-        sexe: Yup.string().required("Sexe est requis"),
-        nationality: Yup.string()
-            .matches(/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/, "La nationalité ne doit contenir que des lettres")
-            .required("La nationalité est requis"),
-        adresse: Yup.string().required("Adresse est requise"),
-        birthDate: Yup.date().required("Date de naissance est requise"),
-        licenseNumber: Yup.string().matches(/^[A-Z0-9]+$/, "Doit contenir seulement des majuscules et chiffres").required("Numéro de permis est requis"),
-        licenseDuration: Yup.number().positive("Doit être positif").integer("Doit être un nombre entier").required("Expiration du permis est requise"),
-        phoneNumber: Yup.string()
-            .matches(/^\+?[0-9]{10,15}$/, "Numéro de téléphone invalide")
-            .notRequired(),
-        begginingAt: Yup.date().required("Date d'entrée en fonction est requise"),
     });
 
     const formik = useFormik({
         initialValues: {
-            fullName: "",
-            licenseNumber: "",
-            licenseDuration: "",
-            phoneNumber: "",
-            email: "",
-            birthDate: "",
-            company: "67bc9002f682d26a7f7a9200",
-            image: "",
-            sexe: "",
-            nationality: "",
-            begginingAt: "",
-            adresse: "",
+            fullName: DriverData?.fullName || "",
+            licenseNumber: DriverData?.licenseNumber || "",
+            licenseDuration: DriverData?.licenseDuration || "",
+            phoneNumber: DriverData?.phoneNumber || "",
+            email: DriverData?.email || "",
+            birthDate: DriverData?.birthDate || "",
+            company: DriverData?.company?._id || "",
+            image: DriverData?.image || "",
+            sexe: DriverData?.sexe || "",
+            nationality: DriverData?.nationality || "",
+            begginingAt: DriverData?.begginingAt || "",
+            adresse: DriverData?.adresse || "",
         },
-        validationSchema,
         onSubmit: async (values) => {
             console.log("Submitted values:", values);
             try {
-                await mutation.mutateAsync(values);
-                console.log("Mutation réussie !");
+                await mutation.mutateAsync({ id: DriverData._id, values });
             } catch (error) {
                 console.error("Erreur lors de la soumission :", error);
             }
@@ -148,13 +147,13 @@ export default function AddDriver() {
     });
 
     const { values } = formik
+    console.log("INIT:::::::::", values);
     useEffect(() => {
-        console.log("INIT:::::::::", values);
     }, [values]);
 
     return (
         <div>
-            <ReusableDialogSteps
+            <ReusableDialogStepsEdit
                 dialogTitle="Chauffeur"
                 openDialog={openDialog}
                 setOpenDialog={setOpenDialog}
@@ -171,7 +170,7 @@ export default function AddDriver() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
-                            {formik.touched.fullName && formik.errors.fullName && <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.fullName}</p>}
+                            {formik.touched.fullName && formik.errors.fullName && <p className="text-red-500 text-[0.7rem] mt-1">{String(formik.errors.fullName)}</p>}
                         </div>
 
                         <div className="col-span-6">
@@ -195,21 +194,25 @@ export default function AddDriver() {
                                         Sexe <span className="text-red-500">*</span>
                                     </Label>
                                 </div>
-                                <Select onValueChange={(value) => formik.setFieldValue("sexe", value)}>
+                                <Select
+                                    value={formik.values.sexe} // Assure que la valeur actuelle est affichée
+                                    onValueChange={(value) => formik.setFieldValue("sexe", value)}
+                                >
                                     <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Sélectionner un pays" />
+                                        <SelectValue placeholder="Sélectionner un sexe" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            {SEXES.map((compagnieItem) => (
-                                                <SelectItem key={compagnieItem.value} value={compagnieItem.value}>
-                                                    {compagnieItem.label}
+                                            {SEXES.map((sexeItem) => (
+                                                <SelectItem key={sexeItem.value} value={sexeItem.value}>
+                                                    {sexeItem.label}
                                                 </SelectItem>
                                             ))}
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
-                                {formik.touched.sexe && formik.errors.sexe && <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.sexe}</p>}
+
+                                {formik.touched.sexe && formik.errors.sexe && <p className="text-red-500 text-[0.7rem] mt-1">{String(formik.errors.sexe)}</p>}
                             </div>
                         </div>
 
@@ -223,7 +226,7 @@ export default function AddDriver() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
-                            {formik.touched.nationality && formik.errors.nationality && <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.nationality}</p>}
+                            {formik.touched.nationality && formik.errors.nationality && <p className="text-red-500 text-[0.7rem] mt-1">{String(formik.errors.nationality)}</p>}
 
                         </div>
                         <div className="col-span-4">
@@ -283,7 +286,7 @@ export default function AddDriver() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
-                            {formik.touched.phoneNumber && formik.errors.phoneNumber && <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.phoneNumber}</p>}
+                            {formik.touched.phoneNumber && formik.errors.phoneNumber && <p className="text-red-500 text-[0.7rem] mt-1">{String(formik.errors.phoneNumber)}</p>}
                         </div>
 
                         <div className="col-span-6">
@@ -324,14 +327,14 @@ export default function AddDriver() {
                                         <span>Encours...</span>
                                     </div>
                                 ) : (
-                                    "Enregistrer"
+                                    "Modifier"
                                 )}
 
                             </Button>
                         </div>
                     </div>
                 </form>
-            </ReusableDialogSteps>
+            </ReusableDialogStepsEdit>
         </div>
     );
 }

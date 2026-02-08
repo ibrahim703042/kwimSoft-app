@@ -1,7 +1,6 @@
 import { RouteObject } from "react-router-dom";
-import Horaire from "../../modules/horaires/Horaire";
+import Horaire from "@/modules/transports/horaires/Horaire";
 import PageTitle from "@/components/utilitie/PageTitle";
-import { lazy } from "react";
 
 // Define route config interface
 interface ScheduleRouteItem {

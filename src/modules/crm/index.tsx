@@ -1,0 +1,85 @@
+import { createGroupedModule } from "@/core/crud/createModule";
+import { Contact } from "lucide-react";
+
+export const crmModule = createGroupedModule({
+  name: "crm",
+  label: "CRM",
+  icon: Contact,
+  basePath: "/crm",
+  permission: "contact.read",
+  entities: [
+    {
+      key: "contact",
+      label: "Contacts",
+      endpoint: "/contact",
+      service: "hr",
+      permissionPrefix: "contact",
+      columns: [
+        { header: "Name", accessorKey: "name" },
+        { header: "Email", accessorKey: "email" },
+        { header: "Phone", accessorKey: "phone" },
+        { header: "Company", accessorKey: "company" },
+        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").toUpperCase() },
+      ],
+    },
+    {
+      key: "lead",
+      label: "Leads",
+      endpoint: "/lead",
+      service: "hr",
+      permissionPrefix: "lead",
+      columns: [
+        { header: "Name", accessorKey: "name" },
+        { header: "Contact", accessorKey: "contact", cell: ({ row }: any) => row.original.contact?.name || "—" },
+        { header: "Source", accessorKey: "source" },
+        { header: "Value", accessorKey: "estimatedValue", cell: ({ row }: any) => `${row.original.estimatedValue || 0}` },
+        { header: "Stage", accessorKey: "stage", cell: ({ row }: any) => (row.original.stage || "").replace(/_/g, " ").toUpperCase() },
+        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").toUpperCase() },
+      ],
+    },
+    {
+      key: "opportunity",
+      label: "Opportunities",
+      endpoint: "/opportunity",
+      service: "hr",
+      permissionPrefix: "opportunity",
+      columns: [
+        { header: "Name", accessorKey: "name" },
+        { header: "Contact", accessorKey: "contact", cell: ({ row }: any) => row.original.contact?.name || "—" },
+        { header: "Value", accessorKey: "expectedRevenue", cell: ({ row }: any) => `${row.original.expectedRevenue || 0}` },
+        { header: "Probability", accessorKey: "probability", cell: ({ row }: any) => `${row.original.probability || 0}%` },
+        { header: "Close Date", accessorKey: "expectedCloseDate", cell: ({ row }: any) => row.original.expectedCloseDate ? new Date(row.original.expectedCloseDate).toLocaleDateString() : "—" },
+        { header: "Stage", accessorKey: "stage", cell: ({ row }: any) => (row.original.stage || "").replace(/_/g, " ").toUpperCase() },
+      ],
+    },
+    {
+      key: "campaign",
+      label: "Campaigns",
+      endpoint: "/campaign",
+      service: "hr",
+      permissionPrefix: "campaign",
+      columns: [
+        { header: "Name", accessorKey: "name" },
+        { header: "Type", accessorKey: "type" },
+        { header: "Start", accessorKey: "startDate", cell: ({ row }: any) => row.original.startDate ? new Date(row.original.startDate).toLocaleDateString() : "—" },
+        { header: "End", accessorKey: "endDate", cell: ({ row }: any) => row.original.endDate ? new Date(row.original.endDate).toLocaleDateString() : "—" },
+        { header: "Budget", accessorKey: "budget" },
+        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").toUpperCase() },
+      ],
+    },
+    {
+      key: "activity",
+      label: "Activities",
+      endpoint: "/activity",
+      service: "hr",
+      permissionPrefix: "activity",
+      columns: [
+        { header: "Subject", accessorKey: "subject" },
+        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
+        { header: "Due Date", accessorKey: "dueDate", cell: ({ row }: any) => row.original.dueDate ? new Date(row.original.dueDate).toLocaleDateString() : "—" },
+        { header: "Assigned To", accessorKey: "assignedTo" },
+        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").toUpperCase() },
+      ],
+    },
+  ],
+});

@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import ReusableDialogSteps from "@/components/utilitie/ReusableDialogSteps";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import mapboxgl from "mapbox-gl";
 import MapComponent from "@/components/others/cartoTrip/MapComponent";
 import axios from "axios";
-import { API_ROUTE } from "../../../config.tsx";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { API_ROUTE } from "@/config";
+import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import * as Yup from "yup";
+import ReusableDialogStepsEdit from "@/components/utilitie/ReusableDialogStepsEdit";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 // Clé d'API Mapbox
 mapboxgl.accessToken = "pk.eyJ1IjoibWFydGlubWJ4IiwiYSI6ImNrMDc0dnBzNzA3c3gzZmx2bnpqb2NwNXgifQ.D6Fm6UO9bWViernvxZFW_A";
-
-
 
 interface StationFormValues {
     name: string;
@@ -32,30 +29,45 @@ interface StationFormValues {
     };
 }
 
-const createGare = async (values: StationFormValues) => {
-    console.log("DATA SENDER >>>>>", values);
-    const response = await axios.post(
-        `${API_ROUTE}/stations`,
+interface StationData {
+    _id: string;
+    name?: string;
+    state?: string;
+    country?: string;
+    city?: string;
+    address?: string;
+    postalCode?: string;
+    locations?: {
+        type?: string;
+        coordinates?: number[];
+    };
+}
+
+interface EditStationProps {
+    BusData: StationData;
+    openDialog: boolean;
+    setOpenDialog: (open: boolean) => void;
+}
+
+const createGare = async ({ id, values }: { id: string; values: StationFormValues }) => {
+    const response = await axios.patch(
+        `${API_ROUTE}/stations/${id}`,
         values
     );
     return response.data;
 };
 
-export default function AddGare() {
-    const [openDialog, setOpenDialog] = useState(false);
-    const queryClient = useQueryClient();
-
+export default function EditStation({ BusData, openDialog, setOpenDialog }: EditStationProps) {
     const mutation = useMutation({
         mutationFn: createGare,
         onSuccess: () => {
             Swal.fire({
                 title: "Succès!",
-                text: "Le bus a été enregistrée avec succès.",
+                text: "Le station a été modifier avec succès.",
                 icon: "success",
                 confirmButtonText: "OK",
                 customClass: { popup: "swal-custom" },
             });
-            queryClient.invalidateQueries({ queryKey: ["statations"] });
             setOpenDialog(false);
         },
         onError: (error: any) => {
@@ -75,39 +87,26 @@ export default function AddGare() {
         },
     });
 
-    const validationSchema = Yup.object({
-        name: Yup.string().required("Le nom de la station est requis"),
-        country: Yup.string().required("Le pays est requis"),
-        // city: Yup.string().required("La ville est requise"),
-        state: Yup.string().required("L'état est requis"),
-        address: Yup.string().required("L'adresse est requise"),
-        postalCode: Yup.string().required("Le code postal est requis"),
-        locations: Yup.object({
-            coordinates: Yup.array().of(Yup.number()).length(2, "Les coordonnées doivent être un tableau de 2 éléments").required("Les coordonnées sont requises"),
-        }).required("Les coordonnées sont requises"),
-    });
-
-
     // Initialisation du formulaire avec Formik
     const formik = useFormik({
         initialValues: {
-            name: "",
-            country: "",
-            city: "",
-            state: "",
-            address: "",
-            postalCode: "",
+            name: BusData?.name || "",
+            country: BusData?.country || "",
+            city: BusData?.city || "",
+            state: BusData?.state || "",
+            address: BusData?.address || "",
+            postalCode: BusData?.postalCode || "",
             company: "67bc9002f682d26a7f7a9200",
             locations: {
                 type: "Point",
-                coordinates: [29.3640, -3.3792], // Coordonnées par défaut
+                coordinates: BusData?.locations?.coordinates || [29.3640, -3.3792],
             },
         },
-        validationSchema: validationSchema,
+        enableReinitialize: true,
         onSubmit: async (values) => {
             console.log("Submitted values:", values);
             try {
-                await mutation.mutateAsync(values);
+                await mutation.mutateAsync({ id: BusData?._id, values });
             } catch (error) {
                 console.error("Erreur lors de la soumission :", error);
             }
@@ -198,8 +197,9 @@ export default function AddGare() {
 
     return (
         <div>
-            <ReusableDialogSteps
+            <ReusableDialogStepsEdit
                 dialogTitle="Ajouter un Station"
+                onSubmit={formik.handleSubmit}
                 openDialog={openDialog}
                 setOpenDialog={setOpenDialog}
             >
@@ -209,13 +209,12 @@ export default function AddGare() {
                             <MapComponent
                                 latitude={selectedLocation.latitude}
                                 longitude={selectedLocation.longitude}
-                                height="200px"
                                 onClick={handleMapClick}
                             />
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Pays <span className="text-red-500 text-[0.7rem]">*</span></Label>
+                            <Label>Pays</Label>
                             <Input
                                 type="text"
                                 name="departureStation.country"
@@ -225,13 +224,10 @@ export default function AddGare() {
                                 readOnly
                                 disabled
                             />
-                            {formik.touched.country && formik.errors.country && (
-                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.country}</p>
-                            )}
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Région <span className="text-red-500 text-[0.7rem]">*</span></Label>
+                            <Label>Région</Label>
                             <Input
                                 type="text"
                                 name="city"
@@ -241,13 +237,10 @@ export default function AddGare() {
                                 readOnly
                                 disabled
                             />
-                            {/* {formik.touched.city && formik.errors.city && (
-                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.city}</p>
-                            )} */}
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Longitude <span className="text-red-500 text-[0.7rem]">*</span></Label>
+                            <Label>Longitude</Label>
                             <Input
                                 type="number"
                                 placeholder="Longitude"
@@ -256,13 +249,10 @@ export default function AddGare() {
                                 className="cursor-pointer"
                                 disabled
                             />
-                            {formik.touched.locations?.coordinates && formik.errors.locations?.coordinates && formik.errors.locations.coordinates[0] && (
-                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.locations.coordinates[0]}</p>
-                            )}
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Latitude <span className="text-red-500 text-[0.7rem]">*</span></Label>
+                            <Label>Latitude</Label>
                             <Input
                                 type="number"
                                 placeholder="Latitude"
@@ -271,13 +261,10 @@ export default function AddGare() {
                                 className="cursor-pointer"
                                 disabled
                             />
-                            {formik.touched.locations?.coordinates && formik.errors.locations?.coordinates && formik.errors.locations.coordinates[1] && (
-                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.locations.coordinates[1]}</p>
-                            )}
                         </div>
 
                         <div className="col-span-4">
-                            <Label>Gare <span className="text-red-500 text-[0.7rem]">*</span></Label>
+                            <Label>Gare</Label>
                             <Input
                                 type="text"
                                 name="name"
@@ -285,13 +272,10 @@ export default function AddGare() {
                                 value={formik.values.name}
                                 onChange={formik.handleChange}
                             />
-                            {formik.touched.name && formik.errors.name && (
-                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.name}</p>
-                            )}
                         </div>
 
                         <div className="col-span-4">
-                            <Label>Station <span className="text-red-500 text-[0.7rem]">*</span></Label>
+                            <Label>Station</Label>
                             <Input
                                 type="text"
                                 name="state"
@@ -299,12 +283,9 @@ export default function AddGare() {
                                 value={formik.values.state}
                                 onChange={formik.handleChange}
                             />
-                            {formik.touched.state && formik.errors.state && (
-                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.state}</p>
-                            )}
                         </div>
                         <div className="col-span-4">
-                            <Label>Code Trajet <span className="text-red-500 text-[0.7rem]">*</span></Label>
+                            <Label>Code Trajet</Label>
                             <Input
                                 type="text"
                                 name="postalCode"
@@ -312,9 +293,6 @@ export default function AddGare() {
                                 value={formik.values.postalCode}
                                 onChange={formik.handleChange}
                             />
-                            {formik.touched.postalCode && formik.errors.postalCode && (
-                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.postalCode}</p>
-                            )}
                         </div>
 
 
@@ -326,22 +304,13 @@ export default function AddGare() {
                                         <span>Encours...</span>
                                     </div>
                                 ) : (
-                                    "Enregistrer"
+                                    "Modifier"
                                 )}
                             </Button>
                         </div>
                     </div>
                 </form>
-            </ReusableDialogSteps>
-
-            {/* Map dialog commented out - DialogMap component needs to be created */}
-            {/* {openMapDialog && (
-                <DialogMap
-                    open={openMapDialog}
-                    setOpen={setOpenMapDialog}
-                    formik={formik}
-                />
-            )} */}
+            </ReusableDialogStepsEdit>
         </div>
     );
 }

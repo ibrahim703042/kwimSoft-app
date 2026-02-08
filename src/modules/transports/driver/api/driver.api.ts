@@ -1,5 +1,5 @@
 import { apiClient } from "@/core/api";
-import { API_ROUTE, API_ROUTE_PASSWORD } from "../../../../config.tsx";
+import { API_ROUTE, API_ROUTE_PASSWORD } from "@/config";
 
 export const driverApi = {
   list: async (params: { search?: string } = {}) => {

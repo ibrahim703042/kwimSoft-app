@@ -1,7 +1,7 @@
 import { Route } from "react-router-dom";
 import PageTitle from "@/components/utilitie/PageTitle";
-import Reservation from "../../modules/reservation/Reservation";
 import { ReactElement, ComponentType } from "react";
+import Reservation from "@/modules/transports/reservation/Reservation";
 
 // ✅ Define a route item type
 type RouteItem = {

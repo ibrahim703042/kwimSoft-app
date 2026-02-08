@@ -1,0 +1,97 @@
+import { createGroupedModule } from "@/core/crud/createModule";
+import { Warehouse } from "lucide-react";
+
+export const inventoryModule = createGroupedModule({
+  name: "inventory",
+  label: "Inventory",
+  icon: Warehouse,
+  basePath: "/inventory",
+  permission: "warehouse.read",
+  entities: [
+    {
+      key: "warehouse",
+      label: "Warehouses",
+      endpoint: "/warehouse",
+      service: "stock",
+      permissionPrefix: "warehouse",
+      columns: [
+        { header: "Name", accessorKey: "name" },
+        { header: "Code", accessorKey: "code" },
+        { header: "Address", accessorKey: "address", cell: ({ row }: any) => row.original.address?.city || row.original.address || "—" },
+        { header: "Active", accessorKey: "isActive", cell: ({ row }: any) => row.original.isActive !== false ? "✓ Yes" : "✗ No" },
+      ],
+    },
+    {
+      key: "location",
+      label: "Locations",
+      endpoint: "/location",
+      service: "stock",
+      permissionPrefix: "location",
+      columns: [
+        { header: "Name", accessorKey: "name" },
+        { header: "Code", accessorKey: "code" },
+        { header: "Warehouse", accessorKey: "warehouse", cell: ({ row }: any) => row.original.warehouse?.name || "—" },
+        { header: "Type", accessorKey: "type" },
+      ],
+    },
+    {
+      key: "stock",
+      label: "Stock Levels",
+      endpoint: "/stock",
+      service: "stock",
+      permissionPrefix: "stock",
+      columns: [
+        { header: "Product", accessorKey: "product", cell: ({ row }: any) => row.original.product?.name || "—" },
+        { header: "Warehouse", accessorKey: "warehouse", cell: ({ row }: any) => row.original.warehouse?.name || "—" },
+        { header: "Quantity", accessorKey: "quantity" },
+        { header: "Reserved", accessorKey: "reservedQuantity" },
+        { header: "Available", accessorKey: "availableQuantity" },
+      ],
+    },
+    {
+      key: "stock-movement",
+      label: "Stock Movements",
+      endpoint: "/stock-movement",
+      service: "stock",
+      permissionPrefix: "stock_movement",
+      columns: [
+        { header: "Reference", accessorKey: "reference" },
+        { header: "Product", accessorKey: "product", cell: ({ row }: any) => row.original.product?.name || "—" },
+        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
+        { header: "Quantity", accessorKey: "quantity" },
+        { header: "From", accessorKey: "sourceLocation", cell: ({ row }: any) => row.original.sourceLocation?.name || "—" },
+        { header: "To", accessorKey: "destinationLocation", cell: ({ row }: any) => row.original.destinationLocation?.name || "—" },
+        { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
+        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
+      ],
+    },
+    {
+      key: "transfer",
+      label: "Transfers",
+      endpoint: "/transfer",
+      service: "stock",
+      permissionPrefix: "transfer",
+      columns: [
+        { header: "Reference", accessorKey: "reference" },
+        { header: "From", accessorKey: "sourceWarehouse", cell: ({ row }: any) => row.original.sourceWarehouse?.name || "—" },
+        { header: "To", accessorKey: "destinationWarehouse", cell: ({ row }: any) => row.original.destinationWarehouse?.name || "—" },
+        { header: "Items", accessorKey: "items", cell: ({ row }: any) => row.original.items?.length || 0 },
+        { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
+        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
+      ],
+    },
+    {
+      key: "inventory-count",
+      label: "Inventory Counts",
+      endpoint: "/inventory-count",
+      service: "stock",
+      permissionPrefix: "inventory_count",
+      columns: [
+        { header: "Reference", accessorKey: "reference" },
+        { header: "Warehouse", accessorKey: "warehouse", cell: ({ row }: any) => row.original.warehouse?.name || "—" },
+        { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
+        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
+      ],
+    },
+  ],
+});

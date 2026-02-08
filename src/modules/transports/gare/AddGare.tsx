@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
+import ReusableDialogSteps from "@/components/utilitie/ReusableDialogSteps";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import mapboxgl from "mapbox-gl";
 import MapComponent from "@/components/others/cartoTrip/MapComponent";
 import axios from "axios";
-import { API_ROUTE } from "../../../config.tsx";
-import { useMutation } from "@tanstack/react-query";
+import { API_ROUTE } from "@/config";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import ReusableDialogStepsEdit from "@/components/utilitie/ReusableDialogStepsEdit";
+import * as Yup from "yup";
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 // Clé d'API Mapbox
 mapboxgl.accessToken = "pk.eyJ1IjoibWFydGlubWJ4IiwiYSI6ImNrMDc0dnBzNzA3c3gzZmx2bnpqb2NwNXgifQ.D6Fm6UO9bWViernvxZFW_A";
+
+
 
 interface StationFormValues {
     name: string;
@@ -29,45 +32,30 @@ interface StationFormValues {
     };
 }
 
-interface StationData {
-    _id: string;
-    name?: string;
-    state?: string;
-    country?: string;
-    city?: string;
-    address?: string;
-    postalCode?: string;
-    locations?: {
-        type?: string;
-        coordinates?: number[];
-    };
-}
-
-interface EditStationProps {
-    BusData: StationData;
-    openDialog: boolean;
-    setOpenDialog: (open: boolean) => void;
-}
-
-const createGare = async ({ id, values }: { id: string; values: StationFormValues }) => {
-    const response = await axios.patch(
-        `${API_ROUTE}/stations/${id}`,
+const createGare = async (values: StationFormValues) => {
+    console.log("DATA SENDER >>>>>", values);
+    const response = await axios.post(
+        `${API_ROUTE}/stations`,
         values
     );
     return response.data;
 };
 
-export default function EditStation({ BusData, openDialog, setOpenDialog }: EditStationProps) {
+export default function AddGare() {
+    const [openDialog, setOpenDialog] = useState(false);
+    const queryClient = useQueryClient();
+
     const mutation = useMutation({
         mutationFn: createGare,
         onSuccess: () => {
             Swal.fire({
                 title: "Succès!",
-                text: "Le station a été modifier avec succès.",
+                text: "Le bus a été enregistrée avec succès.",
                 icon: "success",
                 confirmButtonText: "OK",
                 customClass: { popup: "swal-custom" },
             });
+            queryClient.invalidateQueries({ queryKey: ["statations"] });
             setOpenDialog(false);
         },
         onError: (error: any) => {
@@ -87,26 +75,39 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
         },
     });
 
+    const validationSchema = Yup.object({
+        name: Yup.string().required("Le nom de la station est requis"),
+        country: Yup.string().required("Le pays est requis"),
+        // city: Yup.string().required("La ville est requise"),
+        state: Yup.string().required("L'état est requis"),
+        address: Yup.string().required("L'adresse est requise"),
+        postalCode: Yup.string().required("Le code postal est requis"),
+        locations: Yup.object({
+            coordinates: Yup.array().of(Yup.number()).length(2, "Les coordonnées doivent être un tableau de 2 éléments").required("Les coordonnées sont requises"),
+        }).required("Les coordonnées sont requises"),
+    });
+
+
     // Initialisation du formulaire avec Formik
     const formik = useFormik({
         initialValues: {
-            name: BusData?.name || "",
-            country: BusData?.country || "",
-            city: BusData?.city || "",
-            state: BusData?.state || "",
-            address: BusData?.address || "",
-            postalCode: BusData?.postalCode || "",
+            name: "",
+            country: "",
+            city: "",
+            state: "",
+            address: "",
+            postalCode: "",
             company: "67bc9002f682d26a7f7a9200",
             locations: {
                 type: "Point",
-                coordinates: BusData?.locations?.coordinates || [29.3640, -3.3792],
+                coordinates: [29.3640, -3.3792], // Coordonnées par défaut
             },
         },
-        enableReinitialize: true,
+        validationSchema: validationSchema,
         onSubmit: async (values) => {
             console.log("Submitted values:", values);
             try {
-                await mutation.mutateAsync({ id: BusData?._id, values });
+                await mutation.mutateAsync(values);
             } catch (error) {
                 console.error("Erreur lors de la soumission :", error);
             }
@@ -197,9 +198,8 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
 
     return (
         <div>
-            <ReusableDialogStepsEdit
+            <ReusableDialogSteps
                 dialogTitle="Ajouter un Station"
-                onSubmit={formik.handleSubmit}
                 openDialog={openDialog}
                 setOpenDialog={setOpenDialog}
             >
@@ -209,12 +209,13 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                             <MapComponent
                                 latitude={selectedLocation.latitude}
                                 longitude={selectedLocation.longitude}
+                                height="200px"
                                 onClick={handleMapClick}
                             />
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Pays</Label>
+                            <Label>Pays <span className="text-red-500 text-[0.7rem]">*</span></Label>
                             <Input
                                 type="text"
                                 name="departureStation.country"
@@ -224,10 +225,13 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                                 readOnly
                                 disabled
                             />
+                            {formik.touched.country && formik.errors.country && (
+                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.country}</p>
+                            )}
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Région</Label>
+                            <Label>Région <span className="text-red-500 text-[0.7rem]">*</span></Label>
                             <Input
                                 type="text"
                                 name="city"
@@ -237,10 +241,13 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                                 readOnly
                                 disabled
                             />
+                            {/* {formik.touched.city && formik.errors.city && (
+                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.city}</p>
+                            )} */}
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Longitude</Label>
+                            <Label>Longitude <span className="text-red-500 text-[0.7rem]">*</span></Label>
                             <Input
                                 type="number"
                                 placeholder="Longitude"
@@ -249,10 +256,13 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                                 className="cursor-pointer"
                                 disabled
                             />
+                            {formik.touched.locations?.coordinates && formik.errors.locations?.coordinates && formik.errors.locations.coordinates[0] && (
+                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.locations.coordinates[0]}</p>
+                            )}
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Latitude</Label>
+                            <Label>Latitude <span className="text-red-500 text-[0.7rem]">*</span></Label>
                             <Input
                                 type="number"
                                 placeholder="Latitude"
@@ -261,10 +271,13 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                                 className="cursor-pointer"
                                 disabled
                             />
+                            {formik.touched.locations?.coordinates && formik.errors.locations?.coordinates && formik.errors.locations.coordinates[1] && (
+                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.locations.coordinates[1]}</p>
+                            )}
                         </div>
 
                         <div className="col-span-4">
-                            <Label>Gare</Label>
+                            <Label>Gare <span className="text-red-500 text-[0.7rem]">*</span></Label>
                             <Input
                                 type="text"
                                 name="name"
@@ -272,10 +285,13 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                                 value={formik.values.name}
                                 onChange={formik.handleChange}
                             />
+                            {formik.touched.name && formik.errors.name && (
+                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.name}</p>
+                            )}
                         </div>
 
                         <div className="col-span-4">
-                            <Label>Station</Label>
+                            <Label>Station <span className="text-red-500 text-[0.7rem]">*</span></Label>
                             <Input
                                 type="text"
                                 name="state"
@@ -283,9 +299,12 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                                 value={formik.values.state}
                                 onChange={formik.handleChange}
                             />
+                            {formik.touched.state && formik.errors.state && (
+                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.state}</p>
+                            )}
                         </div>
                         <div className="col-span-4">
-                            <Label>Code Trajet</Label>
+                            <Label>Code Trajet <span className="text-red-500 text-[0.7rem]">*</span></Label>
                             <Input
                                 type="text"
                                 name="postalCode"
@@ -293,6 +312,9 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                                 value={formik.values.postalCode}
                                 onChange={formik.handleChange}
                             />
+                            {formik.touched.postalCode && formik.errors.postalCode && (
+                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.postalCode}</p>
+                            )}
                         </div>
 
 
@@ -304,13 +326,22 @@ export default function EditStation({ BusData, openDialog, setOpenDialog }: Edit
                                         <span>Encours...</span>
                                     </div>
                                 ) : (
-                                    "Modifier"
+                                    "Enregistrer"
                                 )}
                             </Button>
                         </div>
                     </div>
                 </form>
-            </ReusableDialogStepsEdit>
+            </ReusableDialogSteps>
+
+            {/* Map dialog commented out - DialogMap component needs to be created */}
+            {/* {openMapDialog && (
+                <DialogMap
+                    open={openMapDialog}
+                    setOpen={setOpenMapDialog}
+                    formik={formik}
+                />
+            )} */}
         </div>
     );
 }

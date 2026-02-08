@@ -4,9 +4,11 @@ import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { setBreadCrumbItemsAction } from "../../store/actions/appActions";
-import Driver from "../driver/Driver";
-import Gare from "../gare/Gare";
 import { administratorRouteItems } from "../../routes/administration/administratorRoute";
+
+// Stub components - previously in separate modules, now handled by transport module system
+const Driver = () => <div className="p-4"><h2 className="text-lg font-semibold">Drivers</h2><p className="text-muted-foreground mt-2">Please use the Transport &gt; Drivers module from the sidebar for full driver management.</p></div>;
+const Gare = () => <div className="p-4"><h2 className="text-lg font-semibold">Stations</h2><p className="text-muted-foreground mt-2">Please use the Transport &gt; Stations module from the sidebar for full station management.</p></div>;
 
 // Example components and icons (replace with real ones)
 

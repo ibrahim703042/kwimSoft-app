@@ -1,8 +1,8 @@
 import axios from "axios";
-import { API_ROUTE } from "../../../config.tsx";
+import { API_ROUTE } from "@/config";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
-import { JOURS } from "../../types/constants"
+import { JOURS } from "@/types/constants"
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { TimeTableStatus } from "../../types/constants"
+import { TimeTableStatus } from "@/types/constants"
 import ScaleLoader from "react-spinners/ScaleLoader";
 
 const fetchBus = async () => {

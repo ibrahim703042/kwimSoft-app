@@ -4,13 +4,13 @@ import { ReusableDataTable } from "@/components/utilitie/ReusableDataTable";
 import SearchBar from "@/components/utilitie/SearchBar";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { API_ROUTE } from "../../../config.tsx";
+import { API_ROUTE } from "@/config";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import Loading from "@/components/utilitie/Loading";
-import EditSeat from "./EditSeat";
+import EditSeat from "./EditSeat.tsx";
 
 const fetchBus = async () => {
     const { data } = await axios.get(`${API_ROUTE}/buses`);

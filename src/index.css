@@ -101,3 +101,14 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide scrollbar on sidebar and main content while keeping scroll */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

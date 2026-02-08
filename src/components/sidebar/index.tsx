@@ -22,8 +22,8 @@ export default function Sidebar({ menus = [] }: SidebarProps) {
         <SidebarSearch isOpen={isOpen} />
       </div>
 
-      {/* Middle: scrollable menu */}
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden mt-2">
+      {/* Middle: scrollable menu — scrollbar hidden */}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden mt-2 scrollbar-hide">
         <SidebarMenu menus={menus} isOpen={isOpen} />
       </div>
 

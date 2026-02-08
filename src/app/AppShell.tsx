@@ -42,9 +42,9 @@ export function AppShell() {
           <Navbar />
         </div>
 
-        {/* Content Area */}
+        {/* Content Area — scrollbar hidden on all pages */}
         <div
-          className={`flex-1 overflow-y-auto ${isSpecialPage ? "p-0" : "p-4"}`}
+          className={`flex-1 overflow-y-auto scrollbar-hide ${isSpecialPage ? "p-0" : "p-4"}`}
         >
           {/* Router renders page content */}
           <AppRouter />

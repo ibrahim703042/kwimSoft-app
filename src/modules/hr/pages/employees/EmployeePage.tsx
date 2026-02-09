@@ -13,7 +13,7 @@ import { useFormik } from "formik";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
-import { employeeApi, departmentApi, positionApi } from "../api/hr.api";
+import { employeeApi, departmentApi, positionApi } from "../../api/hr.api";
 import EnhancedTable from "@/modules/user/pages/EnhancedTable";
 
 // ─── Types ────────────────────────────────────────────────────

@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
-import { payrollApi, employeeApi } from "../api/hr.api";
+import { payrollApi, employeeApi } from "../../api/hr.api";
 import EnhancedTable from "@/modules/user/pages/EnhancedTable";
 
 interface PayrollFormValues {
@@ -222,7 +222,7 @@ export default function PayrollPage() {
               <div><span className="font-medium text-muted-foreground">Brut:</span> {fmt(viewing.grossSalary, viewing.currency)}</div>
               <div><span className="font-medium text-muted-foreground">Déductions:</span> {fmt(viewing.deductions, viewing.currency)}</div>
               <div><span className="font-medium text-muted-foreground">Bonus:</span> {fmt(viewing.bonuses, viewing.currency)}</div>
-              <div><span className="font-medium text-muted-foreground font-bold">Net:</span> <span className="font-bold">{fmt(viewing.netSalary, viewing.currency)}</span></div>
+              <div><span className="font-medium text-muted-foreground">Net:</span> <span className="font-bold">{fmt(viewing.netSalary, viewing.currency)}</span></div>
             </div>
           )}
         </DialogContent>

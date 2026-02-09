@@ -1,90 +1,42 @@
-import { createGroupedModule } from "@/core/crud/createModule";
-import { Contact, Target, Lightbulb, Megaphone, CalendarCheck } from "lucide-react";
+/**
+ * CRM Module
+ *
+ * Entities:
+ * - Contacts, Leads, Opportunities, Campaigns, Activities
+ */
+import { FrontModule, AppRoute, MenuItem } from "@/app/ModuleRegistry";
+import { Contact } from "lucide-react";
+import PageTitle from "@/components/utilitie/PageTitle";
+import CrmShell from "./CrmShell";
 
-export const crmModule = createGroupedModule({
+export const crmModule: FrontModule = {
   name: "crm",
-  label: "CRM",
-  icon: Contact,
-  basePath: "/crm",
-  permission: "contact.read",
-  entities: [
+  routes: [
     {
-      key: "contact",
-      label: "Contacts",
-      endpoint: "/contact",
-      service: "hr",
-      permissionPrefix: "contact",
+      path: "/crm",
+      element: (
+        <>
+          <PageTitle title="CRM" />
+          <CrmShell />
+        </>
+      ),
+      permission: "contact.read",
+    },
+  ] as AppRoute[],
+  menu: [
+    {
+      id: "crm",
+      label: "CRM",
+      path: "/crm",
       icon: Contact,
-      columns: [
-        { header: "Name", accessorKey: "name" },
-        { header: "Email", accessorKey: "email" },
-        { header: "Phone", accessorKey: "phone" },
-        { header: "Company", accessorKey: "company" },
-        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").toUpperCase() },
-      ],
+      permission: "contact.read",
     },
-    {
-      key: "lead",
-      label: "Leads",
-      endpoint: "/lead",
-      service: "hr",
-      permissionPrefix: "lead",
-      icon: Target,
-      columns: [
-        { header: "Name", accessorKey: "name" },
-        { header: "Contact", accessorKey: "contact", cell: ({ row }: any) => row.original.contact?.name || "—" },
-        { header: "Source", accessorKey: "source" },
-        { header: "Value", accessorKey: "estimatedValue", cell: ({ row }: any) => `${row.original.estimatedValue || 0}` },
-        { header: "Stage", accessorKey: "stage", cell: ({ row }: any) => (row.original.stage || "").replace(/_/g, " ").toUpperCase() },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").toUpperCase() },
-      ],
-    },
-    {
-      key: "opportunity",
-      label: "Opportunities",
-      endpoint: "/opportunity",
-      service: "hr",
-      permissionPrefix: "opportunity",
-      icon: Lightbulb,
-      columns: [
-        { header: "Name", accessorKey: "name" },
-        { header: "Contact", accessorKey: "contact", cell: ({ row }: any) => row.original.contact?.name || "—" },
-        { header: "Value", accessorKey: "expectedRevenue", cell: ({ row }: any) => `${row.original.expectedRevenue || 0}` },
-        { header: "Probability", accessorKey: "probability", cell: ({ row }: any) => `${row.original.probability || 0}%` },
-        { header: "Close Date", accessorKey: "expectedCloseDate", cell: ({ row }: any) => row.original.expectedCloseDate ? new Date(row.original.expectedCloseDate).toLocaleDateString() : "—" },
-        { header: "Stage", accessorKey: "stage", cell: ({ row }: any) => (row.original.stage || "").replace(/_/g, " ").toUpperCase() },
-      ],
-    },
-    {
-      key: "campaign",
-      label: "Campaigns",
-      endpoint: "/campaign",
-      service: "hr",
-      permissionPrefix: "campaign",
-      icon: Megaphone,
-      columns: [
-        { header: "Name", accessorKey: "name" },
-        { header: "Type", accessorKey: "type" },
-        { header: "Start", accessorKey: "startDate", cell: ({ row }: any) => row.original.startDate ? new Date(row.original.startDate).toLocaleDateString() : "—" },
-        { header: "End", accessorKey: "endDate", cell: ({ row }: any) => row.original.endDate ? new Date(row.original.endDate).toLocaleDateString() : "—" },
-        { header: "Budget", accessorKey: "budget" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").toUpperCase() },
-      ],
-    },
-    {
-      key: "activity",
-      label: "Activities",
-      endpoint: "/activity",
-      service: "hr",
-      permissionPrefix: "activity",
-      icon: CalendarCheck,
-      columns: [
-        { header: "Subject", accessorKey: "subject" },
-        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
-        { header: "Due Date", accessorKey: "dueDate", cell: ({ row }: any) => row.original.dueDate ? new Date(row.original.dueDate).toLocaleDateString() : "—" },
-        { header: "Assigned To", accessorKey: "assignedTo" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").toUpperCase() },
-      ],
-    },
+  ] as MenuItem[],
+  permissions: [
+    "contact.read", "contact.create", "contact.update", "contact.delete",
+    "lead.read", "lead.create", "lead.update", "lead.delete",
+    "opportunity.read", "opportunity.create", "opportunity.update", "opportunity.delete",
+    "campaign.read", "campaign.create", "campaign.update", "campaign.delete",
+    "activity.read", "activity.create", "activity.update", "activity.delete",
   ],
-});
+};

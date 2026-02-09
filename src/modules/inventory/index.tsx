@@ -1,106 +1,44 @@
-import { createGroupedModule } from "@/core/crud/createModule";
-import {
-  Warehouse, MapPin, BarChart3, ArrowLeftRight,
-  Repeat, ClipboardCheck,
-} from "lucide-react";
+/**
+ * Inventory & Warehouse Management Module
+ *
+ * Entities:
+ * - Warehouses, Locations, Stock Levels, Stock Movements,
+ *   Transfers, Inventory Counts
+ */
+import { FrontModule, AppRoute, MenuItem } from "@/app/ModuleRegistry";
+import { Warehouse } from "lucide-react";
+import PageTitle from "@/components/utilitie/PageTitle";
+import InventoryShell from "./InventoryShell";
 
-export const inventoryModule = createGroupedModule({
+export const inventoryModule: FrontModule = {
   name: "inventory",
-  label: "Inventory",
-  icon: Warehouse,
-  basePath: "/inventory",
-  permission: "warehouse.read",
-  entities: [
+  routes: [
     {
-      key: "warehouse",
-      label: "Warehouses",
-      endpoint: "/warehouse",
-      service: "stock",
-      permissionPrefix: "warehouse",
+      path: "/inventory",
+      element: (
+        <>
+          <PageTitle title="Inventory" />
+          <InventoryShell />
+        </>
+      ),
+      permission: "warehouse.read",
+    },
+  ] as AppRoute[],
+  menu: [
+    {
+      id: "inventory",
+      label: "Inventory",
+      path: "/inventory",
       icon: Warehouse,
-      columns: [
-        { header: "Name", accessorKey: "name" },
-        { header: "Code", accessorKey: "code" },
-        { header: "Address", accessorKey: "address", cell: ({ row }: any) => row.original.address?.city || row.original.address || "—" },
-        { header: "Active", accessorKey: "isActive", cell: ({ row }: any) => row.original.isActive !== false ? "✓ Yes" : "✗ No" },
-      ],
+      permission: "warehouse.read",
     },
-    {
-      key: "location",
-      label: "Locations",
-      endpoint: "/location",
-      service: "stock",
-      permissionPrefix: "location",
-      icon: MapPin,
-      columns: [
-        { header: "Name", accessorKey: "name" },
-        { header: "Code", accessorKey: "code" },
-        { header: "Warehouse", accessorKey: "warehouse", cell: ({ row }: any) => row.original.warehouse?.name || "—" },
-        { header: "Type", accessorKey: "type" },
-      ],
-    },
-    {
-      key: "stock",
-      label: "Stock Levels",
-      endpoint: "/stock",
-      service: "stock",
-      permissionPrefix: "stock",
-      icon: BarChart3,
-      columns: [
-        { header: "Product", accessorKey: "product", cell: ({ row }: any) => row.original.product?.name || "—" },
-        { header: "Warehouse", accessorKey: "warehouse", cell: ({ row }: any) => row.original.warehouse?.name || "—" },
-        { header: "Quantity", accessorKey: "quantity" },
-        { header: "Reserved", accessorKey: "reservedQuantity" },
-        { header: "Available", accessorKey: "availableQuantity" },
-      ],
-    },
-    {
-      key: "stock-movement",
-      label: "Stock Movements",
-      endpoint: "/stock-movement",
-      service: "stock",
-      permissionPrefix: "stock_movement",
-      icon: ArrowLeftRight,
-      columns: [
-        { header: "Reference", accessorKey: "reference" },
-        { header: "Product", accessorKey: "product", cell: ({ row }: any) => row.original.product?.name || "—" },
-        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
-        { header: "Quantity", accessorKey: "quantity" },
-        { header: "From", accessorKey: "sourceLocation", cell: ({ row }: any) => row.original.sourceLocation?.name || "—" },
-        { header: "To", accessorKey: "destinationLocation", cell: ({ row }: any) => row.original.destinationLocation?.name || "—" },
-        { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
-      ],
-    },
-    {
-      key: "transfer",
-      label: "Transfers",
-      endpoint: "/transfer",
-      service: "stock",
-      permissionPrefix: "transfer",
-      icon: Repeat,
-      columns: [
-        { header: "Reference", accessorKey: "reference" },
-        { header: "From", accessorKey: "sourceWarehouse", cell: ({ row }: any) => row.original.sourceWarehouse?.name || "—" },
-        { header: "To", accessorKey: "destinationWarehouse", cell: ({ row }: any) => row.original.destinationWarehouse?.name || "—" },
-        { header: "Items", accessorKey: "items", cell: ({ row }: any) => row.original.items?.length || 0 },
-        { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
-      ],
-    },
-    {
-      key: "inventory-count",
-      label: "Inventory Counts",
-      endpoint: "/inventory-count",
-      service: "stock",
-      permissionPrefix: "inventory_count",
-      icon: ClipboardCheck,
-      columns: [
-        { header: "Reference", accessorKey: "reference" },
-        { header: "Warehouse", accessorKey: "warehouse", cell: ({ row }: any) => row.original.warehouse?.name || "—" },
-        { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
-      ],
-    },
+  ] as MenuItem[],
+  permissions: [
+    "warehouse.read", "warehouse.create", "warehouse.update", "warehouse.delete",
+    "location.read", "location.create", "location.update", "location.delete",
+    "stock.read", "stock.create", "stock.update", "stock.delete",
+    "stock_movement.read", "stock_movement.create", "stock_movement.update", "stock_movement.delete",
+    "transfer.read", "transfer.create", "transfer.update", "transfer.delete",
+    "inventory_count.read", "inventory_count.create", "inventory_count.update", "inventory_count.delete",
   ],
-});
+};

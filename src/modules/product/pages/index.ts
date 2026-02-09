@@ -1,0 +1,9 @@
+export { default as CategoryPage } from "./CategoryPage";
+export { default as SubCategoryPage } from "./SubCategoryPage";
+export { default as BrandPage } from "./BrandPage";
+export { default as ProductListPage } from "./ProductListPage";
+export { default as AttributePage } from "./AttributePage";
+export { default as TagPage } from "./TagPage";
+export { default as BundlePage } from "./BundlePage";
+export { default as PricingPage } from "./PricingPage";
+export { default as ReviewPage } from "./ReviewPage";

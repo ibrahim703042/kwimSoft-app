@@ -1,3 +1,4 @@
+export { default as ProcurementDashboard } from "./ProcurementDashboard";
 export { default as SupplierPage } from "./SupplierPage";
 export { default as PurchaseOrderPage } from "./PurchaseOrderPage";
 export { default as RfqPage } from "./RfqPage";

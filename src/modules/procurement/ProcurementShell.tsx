@@ -1,7 +1,10 @@
-import { Truck, ShoppingCart, FileQuestion, PackageCheck } from "lucide-react";
+import {
+  LayoutDashboard, Truck, ShoppingCart, FileQuestion, PackageCheck,
+} from "lucide-react";
 import { ModuleShell, ShellNavItem } from "@/core/ui";
 
 import {
+  ProcurementDashboard,
   SupplierPage,
   PurchaseOrderPage,
   RfqPage,
@@ -9,10 +12,11 @@ import {
 } from "./pages";
 
 const items: ShellNavItem[] = [
-  { key: "suppliers",       label: "Fournisseurs",       icon: Truck,        component: SupplierPage },
-  { key: "purchase-orders", label: "Bons de commande",   icon: ShoppingCart,  component: PurchaseOrderPage },
-  { key: "rfq",             label: "Demandes de prix",   icon: FileQuestion,  component: RfqPage },
-  { key: "goods-receipts",  label: "Réceptions",         icon: PackageCheck,  component: GoodsReceiptPage },
+  { key: "dashboard",       label: "Tableau de bord",    icon: LayoutDashboard, component: ProcurementDashboard },
+  { key: "suppliers",       label: "Fournisseurs",       icon: Truck,           component: SupplierPage },
+  { key: "purchase-orders", label: "Bons de commande",   icon: ShoppingCart,    component: PurchaseOrderPage },
+  { key: "rfq",             label: "Demandes de prix",   icon: FileQuestion,    component: RfqPage },
+  { key: "goods-receipts",  label: "Réceptions",         icon: PackageCheck,    component: GoodsReceiptPage },
 ];
 
 export default function ProcurementShell() {

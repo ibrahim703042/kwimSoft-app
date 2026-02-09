@@ -1,3 +1,4 @@
+export { default as FinanceDashboard } from "./FinanceDashboard";
 export { default as AccountPage } from "./AccountPage";
 export { default as InvoicePage } from "./InvoicePage";
 export { default as PaymentPage } from "./PaymentPage";

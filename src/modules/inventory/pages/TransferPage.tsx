@@ -1,21 +1,50 @@
-import { createListPage } from "@/core/crud/createModule";
-import { Repeat } from "lucide-react";
+import { z } from "zod";
+import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
+import { FieldConfig } from "@/core/crud/DynamicFormFields";
 
-const TransferPage = createListPage({
+const columns = [
+  { header: "Reference", accessorKey: "reference" },
+  { header: "From", accessorKey: "sourceWarehouse", cell: ({ row }: any) => row.original.sourceWarehouse?.name || "—" },
+  { header: "To", accessorKey: "destinationWarehouse", cell: ({ row }: any) => row.original.destinationWarehouse?.name || "—" },
+  { header: "Items", accessorKey: "items", cell: ({ row }: any) => row.original.items?.length || 0 },
+  { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
+  { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
+];
+
+const formFields: FieldConfig[] = [
+  { name: "reference", label: "Référence", type: "text", placeholder: "Réf. transfert" },
+  { name: "date", label: "Date", type: "date", required: true },
+  { name: "sourceWarehouse", label: "Entrepôt source (ID)", type: "text", required: true },
+  { name: "destinationWarehouse", label: "Entrepôt destination (ID)", type: "text", required: true },
+  { name: "status", label: "Statut", type: "select", options: [
+    { value: "draft", label: "Brouillon" },
+    { value: "in_transit", label: "En transit" },
+    { value: "received", label: "Reçu" },
+    { value: "cancelled", label: "Annulé" },
+  ]},
+  { name: "notes", label: "Notes", type: "textarea", colSpan: 2 },
+];
+
+const formSchema = z.object({
+  reference: z.string().optional(),
+  date: z.string().min(1, "La date est requise"),
+  sourceWarehouse: z.string().min(1, "L'entrepôt source est requis"),
+  destinationWarehouse: z.string().min(1, "L'entrepôt destination est requis"),
+  status: z.string().default("draft"),
+  notes: z.string().optional(),
+});
+
+const TransferPage = createFullEntityPage({
   key: "transfer",
-  label: "Transfers",
+  title: "Transferts",
+  singular: "Transfert",
   endpoint: "/transfer",
   service: "stock",
   permissionPrefix: "transfer",
-  icon: Repeat,
-  columns: [
-    { header: "Reference", accessorKey: "reference" },
-    { header: "From", accessorKey: "sourceWarehouse", cell: ({ row }: any) => row.original.sourceWarehouse?.name || "—" },
-    { header: "To", accessorKey: "destinationWarehouse", cell: ({ row }: any) => row.original.destinationWarehouse?.name || "—" },
-    { header: "Items", accessorKey: "items", cell: ({ row }: any) => row.original.items?.length || 0 },
-    { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
-    { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
-  ],
+  columns,
+  formFields,
+  formSchema,
+  defaultValues: { reference: "", date: "", sourceWarehouse: "", destinationWarehouse: "", status: "draft", notes: "" },
 });
 
 export default TransferPage;

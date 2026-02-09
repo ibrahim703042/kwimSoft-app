@@ -1,20 +1,63 @@
-import { createListPage } from "@/core/crud/createModule";
-import { SlidersHorizontal } from "lucide-react";
+import { z } from "zod";
+import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
+import { FieldConfig } from "@/core/crud/DynamicFormFields";
 
-const AttributePage = createListPage({
+const columns = [
+  { header: "Nom", accessorKey: "name" },
+  { header: "Code", accessorKey: "code" },
+  { header: "Type", accessorKey: "type" },
+  {
+    header: "Filtrable",
+    accessorKey: "isFilterable",
+    cell: ({ row }: any) =>
+      row.original.isFilterable ? "✓ Oui" : "✗ Non",
+  },
+  {
+    header: "Variant",
+    accessorKey: "isVariant",
+    cell: ({ row }: any) =>
+      row.original.isVariant ? "✓ Oui" : "✗ Non",
+  },
+];
+
+const formFields: FieldConfig[] = [
+  { name: "name", label: "Nom", type: "text", placeholder: "Nom de l'attribut", required: true },
+  { name: "code", label: "Code", type: "text", placeholder: "Ex: color, size" },
+  {
+    name: "type",
+    label: "Type",
+    type: "select",
+    placeholder: "Sélectionner le type",
+    options: [
+      { value: "text", label: "Texte" },
+      { value: "number", label: "Nombre" },
+      { value: "color", label: "Couleur" },
+      { value: "size", label: "Taille" },
+    ],
+  },
+  { name: "isFilterable", label: "Filtrable", type: "checkbox", description: "Cet attribut peut être utilisé comme filtre" },
+  { name: "isVariant", label: "Variant", type: "checkbox", description: "Cet attribut définit une variante" },
+];
+
+const formSchema = z.object({
+  name: z.string().min(1, "Le nom est requis"),
+  code: z.string().optional(),
+  type: z.string().optional(),
+  isFilterable: z.boolean().default(false),
+  isVariant: z.boolean().default(false),
+});
+
+const AttributePage = createFullEntityPage({
   key: "attribute",
-  label: "Attributes",
+  title: "Attributs",
+  singular: "Attribut",
   endpoint: "/attribute",
   service: "product",
   permissionPrefix: "attribute",
-  icon: SlidersHorizontal,
-  columns: [
-    { header: "Name", accessorKey: "name" },
-    { header: "Code", accessorKey: "code" },
-    { header: "Type", accessorKey: "type" },
-    { header: "Filterable", accessorKey: "isFilterable", cell: ({ row }: any) => row.original.isFilterable ? "Yes" : "No" },
-    { header: "Variant", accessorKey: "isVariant", cell: ({ row }: any) => row.original.isVariant ? "Yes" : "No" },
-  ],
+  columns,
+  formFields,
+  formSchema,
+  defaultValues: { name: "", code: "", type: "", isFilterable: false, isVariant: false },
 });
 
 export default AttributePage;

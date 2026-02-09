@@ -1,10 +1,11 @@
 import {
-  Landmark, FileText, CreditCard,
+  LayoutDashboard, Landmark, FileText, CreditCard,
   PiggyBank, BookOpen, Calculator,
 } from "lucide-react";
 import { ModuleShell, ShellNavItem } from "@/core/ui";
 
 import {
+  FinanceDashboard,
   AccountPage,
   InvoicePage,
   PaymentPage,
@@ -14,6 +15,7 @@ import {
 } from "./pages";
 
 const items: ShellNavItem[] = [
+  { key: "dashboard", label: "Tableau de bord", icon: LayoutDashboard, component: FinanceDashboard },
   { key: "accounts", label: "Comptes", icon: Landmark, component: AccountPage },
   { key: "invoices", label: "Factures", icon: FileText, component: InvoicePage },
   { key: "payments", label: "Paiements", icon: CreditCard, component: PaymentPage },

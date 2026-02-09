@@ -1,3 +1,4 @@
+export { default as InventoryDashboard } from "./InventoryDashboard";
 export { default as WarehousePage } from "./WarehousePage";
 export { default as LocationPage } from "./LocationPage";
 export { default as StockLevelPage } from "./StockLevelPage";

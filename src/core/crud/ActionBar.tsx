@@ -18,7 +18,7 @@ export function ActionBar({ actions, className = "" }: ActionBarProps) {
         const Icon = action.icon;
         
         return (
-          <Can key={action.id} permission={action.permission}>
+          <Can key={action.id} permission={action.permission} silent>
             <Button
               variant={action.variant || "default"}
               onClick={action.onClick}

@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 import { FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../auth.store";
-import waangulogo from "@/assets/img/img/waangulogo.png";
-import bgImg from "@/assets/img/img/busbge.jpg";
+import bgImg from "@/assets/img/auth/expressway.png";
 import { API_CONFIG } from "@/config/index";
 import { jwtDecode } from "jwt-decode";
+import { showErrorAlert } from "@/components/utilitie/AlertPopup";
 import "@/styles/modules/login.css";
 
 export default function Login() {
@@ -34,10 +34,7 @@ export default function Login() {
       try {
         // Call the backend authentication API
         const loginUrl = `${API_CONFIG.userManagement.baseUrl}${API_CONFIG.userManagement.endpoints.auth}/login`;
-        console.log("Calling login API:", loginUrl);
-        
         const response = await axios.post(loginUrl, values);
-        console.log("Login response:", response.data);
         
         if (!response?.data) {
           throw new Error("Données de réponse invalides.");
@@ -54,8 +51,7 @@ export default function Login() {
         let decodedToken: any = null;
         try {
           decodedToken = jwtDecode(accessToken);
-        } catch (decodeError) {
-          console.error("Erreur lors du décodage du token:", decodeError);
+        } catch {
           throw new Error("Échec du décodage du token.");
         }
 
@@ -77,8 +73,6 @@ export default function Login() {
           refreshToken,
         };
 
-        console.log("User object created:", user);
-
         // Store tokens separately
         localStorage.setItem("access_token", accessToken);
         localStorage.setItem("refresh_token", refreshToken);
@@ -89,9 +83,12 @@ export default function Login() {
         // Navigate to home
         navigate("/");
       } catch (err: any) {
-        console.error("Erreur de connexion :", err);
-        const errorMessage = err.response?.data?.message || err.message || "Échec de connexion. Vérifiez vos informations.";
+        const isNetworkError = err.message === "Network Error" || err.code === "ERR_NETWORK";
+        const errorMessage = isNetworkError
+          ? "Erreur réseau. Vérifiez votre connexion et réessayez."
+          : err.response?.data?.message || err.message || "Échec de connexion. Vérifiez vos informations.";
         setError(errorMessage);
+        showErrorAlert(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -102,10 +99,8 @@ export default function Login() {
     <div style={{ backgroundImage: `url(${bgImg})`, backgroundSize: "cover", backgroundPosition: "center", height: "auto" }}>
       <div className="flex justify-center items-center h-screen">
         <div className="w-[37%] 2xl:w-[30%] 2xl:py-14 py-10 mx-auto bg-[#19181832] rounded-md border border-[#ffffff3d]">
-          <div className="flex justify-center mx-auto">
-            <div className="w-56 mx-auto">
-              <img src={waangulogo} alt="Logo" className="" />
-            </div>
+          <div className="flex justify-center mx-auto py-4">
+            <h1 className="font-bold text-[#ffffff] text-2xl tracking-wide uppercase">Kwim Trans</h1>
           </div>
           <p className="font-bold text-center text-[#ffffff] text-[1.5rem] m-0 p-0">Se connecter</p>
           <form onSubmit={formik.handleSubmit} className="px-10 py-5">

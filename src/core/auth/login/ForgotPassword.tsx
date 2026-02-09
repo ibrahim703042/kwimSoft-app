@@ -5,8 +5,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import waangulogo from "../../../assets/img/img/waangulogo.png";
-import bgImg from "../../../assets/img/img/busbge.jpg";
+import bgImg from "@/assets/img/auth/expressway.png";
 import { API_ROUTE_PASSWORD } from "@/config/index";
 import "../../../styles/modules/login.css";
 import Swal from "sweetalert2";
@@ -32,7 +31,7 @@ export default function ForgotPassword() {
             setLoading(true);
             setError("");
             try {
-                const response = await axios.post(
+                await axios.post(
                     `${API_ROUTE_PASSWORD}/forgot-password`,
                     { email: values.email }
                 );
@@ -192,7 +191,7 @@ export default function ForgotPassword() {
             <div className="login-right">
                 <div className="login-form-container">
                     <div className="login-logo">
-                        <img src={waangulogo} alt="Logo" />
+                        <h1 className="font-bold text-[#ffffff] text-2xl tracking-wide uppercase">Kwim Trans</h1>
                     </div>
 
                     <h2 className="login-title">

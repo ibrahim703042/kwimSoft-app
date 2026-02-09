@@ -102,7 +102,7 @@ export function CrudTable<T>({
     return (
       <div className="flex items-center space-x-2">
         {onEdit && (
-          <Can permission={permissions?.update}>
+          <Can permission={permissions?.update} silent>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -121,7 +121,7 @@ export function CrudTable<T>({
         )}
 
         {onView && (
-          <Can permission={permissions?.read}>
+          <Can permission={permissions?.read} silent>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -140,7 +140,7 @@ export function CrudTable<T>({
         )}
 
         {onDelete && (
-          <Can permission={permissions?.delete}>
+          <Can permission={permissions?.delete} silent>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

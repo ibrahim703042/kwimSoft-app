@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../../store/useUserStore.tsx";
-import waangulogo from "../../../assets/img/img/waangulogo.png";
-import bgImg from "../../../assets/img/img/busbge.jpg";
+import bgImg from "@/assets/img/auth/expressway.png";
 import { API_ROUTE_PASSWORD } from "@/config/index";
 import "../../../styles/modules/login.css";
 
@@ -59,8 +58,8 @@ export default function UpdatePassword() {
         >
             <div className="flex justify-center items-center h-screen">
                 <div className="w-[37%] 2xl:w-[30%] 2xl:py-14 py-5 mx-32 bg-[#514d4d3b] rounded-md border border-[#ffffff3d]">
-                    <div className="flex justify-center">
-                        <img src={waangulogo} alt="Logo" className="w-56" />
+                    <div className="flex justify-center py-4">
+                        <h1 className="font-bold text-[#ffffff] text-2xl tracking-wide uppercase">Kwim Trans</h1>
                     </div>
                     <p className="font-semibold text-center text-[#ffffff] text-[1.2rem] m-0 p-0">
                         Changer le mot de passe

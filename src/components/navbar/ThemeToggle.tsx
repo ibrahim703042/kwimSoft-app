@@ -1,6 +1,6 @@
 import React from "react";
 import { Moon, Sun, Laptop2 } from "lucide-react";
-import { useThemeStore } from "../../store/selectors/themeStore";
+import { Theme, useThemeStore } from "../../store/selectors/themeStore";
 
 const ThemeToggle: React.FC = () => {
     const { theme, setTheme } = useThemeStore();
@@ -25,7 +25,7 @@ const ThemeToggle: React.FC = () => {
                 {themes.map((t) => (
                     <button
                         key={t.value}
-                        onClick={() => setTheme(t.value)}
+                        onClick={() => setTheme(t.value as Theme)}
                         className={`flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${theme === t.value ? "font-semibold" : ""
                             }`}
                     >

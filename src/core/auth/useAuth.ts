@@ -8,17 +8,30 @@ export const useAuth = () => {
     setUser(userData);
   };
 
+  /**
+   * Check if the current user is a super admin (bypasses all permission checks).
+   * Returns true when the permissions array contains the wildcard "*"
+   * (injected at login time by buildPermissions in auth.store).
+   */
+  const isSuperAdmin = (): boolean => {
+    if (!user) return false;
+    return permissions.includes("*");
+  };
+
   const hasPermission = (permission: string): boolean => {
     if (!permission) return true;
+    if (isSuperAdmin()) return true;
     return permissions.includes(permission);
   };
 
   const hasAnyPermission = (requiredPermissions: string[]): boolean => {
-    return requiredPermissions.some(permission => permissions.includes(permission));
+    if (isSuperAdmin()) return true;
+    return requiredPermissions.some((p) => permissions.includes(p));
   };
 
   const hasAllPermissions = (requiredPermissions: string[]): boolean => {
-    return requiredPermissions.every(permission => permissions.includes(permission));
+    if (isSuperAdmin()) return true;
+    return requiredPermissions.every((p) => permissions.includes(p));
   };
 
   return {
@@ -28,6 +41,7 @@ export const useAuth = () => {
     login,
     logout,
     setPermissions,
+    isSuperAdmin,
     hasPermission,
     hasAnyPermission,
     hasAllPermissions,

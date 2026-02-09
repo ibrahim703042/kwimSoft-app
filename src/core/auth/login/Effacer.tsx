@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../../store/useUserStore.tsx";
-import waangulogo from "../../../assets/img/img/waangulogo.png";
-import bgImg from "../../../assets/img/img/busbge.jpg";
+import bgImg from "@/assets/img/auth/expressway.png";
 import { API_ROUTE_PASSWORD } from "@/config/index";
 import { jwtDecode } from "jwt-decode";
 import "../../../styles/modules/login.css";
@@ -98,8 +97,8 @@ export default function Login() {
     <div style={{ backgroundImage: `url(${bgImg})`, backgroundSize: "cover", backgroundPosition: "center", height: "auto" }}>
       <div className="flex justify-center items-center h-screen">
         <div className="w-[37%] 2xl:w-[30%] 2xl:py-14 py-10 mx-32 bg-[#00000032] rounded-md border border-[#ffffff3d]">
-          <div className="flex justify-center">
-            <img src={waangulogo} alt="Logo" className="w-56" />
+          <div className="flex justify-center py-4">
+            <h1 className="font-bold text-[#ffffff] text-2xl tracking-wide uppercase">Kwim Trans</h1>
           </div>
           <p className="font-bold text-center text-[#ffffff] text-[1.5rem] m-0 p-0">Se connecter</p>
           <form onSubmit={formik.handleSubmit} className="px-10 py-5">

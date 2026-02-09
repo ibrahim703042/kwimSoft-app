@@ -5,7 +5,7 @@ import { CrudTable } from "./CrudTable";
 import { ConfirmDialog } from "@/core/ui/ConfirmDialog";
 import { Can } from "@/core/auth";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, AlertCircle, RefreshCw } from "lucide-react";
 import { CrudConfig } from "./types";
 import Swal from "sweetalert2";
 import { useDebounce } from "@/core/hooks";
@@ -37,7 +37,7 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
   const queryClient = useQueryClient();
 
   // Fetch data
-  const { data: responseData, isLoading } = useQuery({
+  const { data: responseData, isLoading, error, refetch } = useQuery({
     queryKey: [...config.queryKey, debouncedSearch],
     queryFn: () => config.queryFn({ search: debouncedSearch }),
     staleTime: 5000,
@@ -45,10 +45,11 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
 
   // Extract data from response
   const data = responseData?.data?.content || responseData?.data || [];
-  const total = responseData?.data?.total || data.length;
+  const _total = responseData?.data?.total || data.length;
+  void _total; // may be used later for server-side pagination
 
   // Delete mutation
-  const { mutate: deleteMutate, isLoading: isDeleting } = useMutation({
+  const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => {
       if (!config.deleteFn) {
         throw new Error("Delete function not provided");
@@ -63,7 +64,7 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
         confirmButtonText: "OK",
         customClass: { popup: "swal-custom" },
       });
-      queryClient.invalidateQueries(config.queryKey);
+      queryClient.invalidateQueries({ queryKey: config.queryKey });
       setDeleteDialogOpen(false);
       setSelectedItem(null);
     },
@@ -97,7 +98,7 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
         title={config.title}
         description={`Manage ${config.title.toLowerCase()}`}
         actions={
-          <Can permission={config.permissions?.create}>
+          <Can permission={config.permissions?.create} silent>
             {addButton || (
               <Button>
                 <Plus className="h-4 w-4 mr-2" />
@@ -113,7 +114,25 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
       )}
 
       <PageContent>
-        {children || (
+        {error ? (
+          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground gap-3">
+            <AlertCircle className="h-10 w-10 text-destructive" />
+            <p className="text-sm font-medium">
+              {(error as any)?.response?.status === 404
+                ? "Ce service n'est pas encore disponible."
+                : (error as any)?.message === "Network Error"
+                  ? "Erreur réseau. Vérifiez votre connexion."
+                  : "Erreur lors du chargement des données."}
+            </p>
+            <p className="text-xs max-w-md text-center">
+              {(error as any)?.response?.data?.message || (error as any)?.message || "Veuillez réessayer."}
+            </p>
+            <Button variant="outline" size="sm" onClick={() => refetch()} className="mt-2">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Réessayer
+            </Button>
+          </div>
+        ) : children || (
           <CrudTable
             data={data}
             columns={config.columns}

@@ -62,13 +62,13 @@ export function useProductTabs(form: UseFormReturn<ProductFormValues>): FormTab[
     });
   }
 
-  // 5. Inventory (goods only)
-  if (isGoods) {
+  // 5. Inventory (goods + trackInventory checked)
+  if (isGoods && trackInventory) {
     tabs.push({
       key: "inventory",
       label: "Inventaire",
       icon: <Warehouse size={14} />,
-      render: (f) => <InventoryTab form={f} trackInventory={trackInventory} />,
+      render: (f) => <InventoryTab form={f} />,
     });
   }
 

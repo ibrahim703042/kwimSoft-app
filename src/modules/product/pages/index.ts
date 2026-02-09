@@ -1,4 +1,4 @@
-export { default as ProductDashboard } from "./ProductDashboard";
+export { default as ProductDashboard } from "../ProductDashboard";
 export { default as CategoryPage } from "./CategoryPage";
 export { default as SubCategoryPage } from "./SubCategoryPage";
 export { default as BrandPage } from "./BrandPage";

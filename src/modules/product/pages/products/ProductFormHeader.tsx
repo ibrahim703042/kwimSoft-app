@@ -43,6 +43,12 @@ export function ProductFormHeader({ form }: { form: UseFormReturn<ProductFormVal
               <Label htmlFor="canBePurchased" className="text-sm font-medium cursor-pointer">Peut être acheté</Label>
             </div>
           )} />
+          <FormField control={form.control} name="trackInventory" render={({ field }) => (
+            <div className="flex items-center gap-2">
+              <Checkbox id="trackInventory" checked={field.value} onCheckedChange={field.onChange} />
+              <Label htmlFor="trackInventory" className="text-sm font-medium cursor-pointer">Suivre l&#39;inventaire</Label>
+            </div>
+          )} />
         </div>
       </div>
 

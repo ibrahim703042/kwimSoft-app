@@ -8,7 +8,7 @@
  *   Attendance, Payroll, Recruitment, Training, Expenses (HR entities)
  */
 import {
-  Users, 
+  Users,
   Building2, Briefcase, FileText, CalendarOff,
   Clock, Wallet, UserPlus, GraduationCap, Receipt,
   LayoutGrid,
@@ -30,35 +30,31 @@ import {
   TrainingPage,
   ExpensePage,
 } from "./pages";
-import HrTabbedView from "./HrTabbedView";
-import UserManagement from "../user/pages/UserManagement";
+import { UserTabbedView } from "../user";
 
 // ── All tabs organized by section ─────────────────────────────
 const items: ShellNavItem[] = [
 
-  { key: "hr-tabs", label: "Gestion RH", icon: LayoutGrid, component: HrTabbedView },
-  
+  // { key: "hr-tabs", label: "Gestion RH", icon: LayoutGrid, component: HrTabbedView },
+
   // ▸ People
-  { key: "employees",   label: "Employés",         icon: Users,          component: EmployeePage },
-  
+  { key: "employees", label: "Employés", icon: Users, component: EmployeePage },
+
   // ▸ Organization
-  { key: "departments", label: "Départements",     icon: Building2,      component: DepartmentPage },
-  { key: "positions",   label: "Postes",           icon: Briefcase,      component: PositionPage },
+  { key: "departments", label: "Départements", icon: Building2, component: DepartmentPage },
+  { key: "positions", label: "Postes", icon: Briefcase, component: PositionPage },
 
   // ▸ HR Operations
-  { key: "contracts",   label: "Contrats",         icon: FileText,       component: ContractPage },
-  { key: "leave",       label: "Congés",           icon: CalendarOff,    component: LeavePage },
-  { key: "attendance",  label: "Présences",        icon: Clock,          component: AttendancePage },
-  { key: "payroll",     label: "Paie",             icon: Wallet,         component: PayrollPage },
-  { key: "recruitment", label: "Recrutement",      icon: UserPlus,       component: RecruitmentPage },
-  { key: "training",    label: "Formations",       icon: GraduationCap,  component: TrainingPage },
-  { key: "expenses",    label: "Notes de frais",   icon: Receipt,        component: ExpensePage },
-  
+  { key: "contracts", label: "Contrats", icon: FileText, component: ContractPage },
+  { key: "leave", label: "Congés", icon: CalendarOff, component: LeavePage },
+  { key: "attendance", label: "Présences", icon: Clock, component: AttendancePage },
+  { key: "payroll", label: "Paie", icon: Wallet, component: PayrollPage },
+  { key: "recruitment", label: "Recrutement", icon: UserPlus, component: RecruitmentPage },
+  { key: "training", label: "Formations", icon: GraduationCap, component: TrainingPage },
+  { key: "expenses", label: "Notes de frais", icon: Receipt, component: ExpensePage },
+
   // ▸ Access & Security
-  // { key: "groups",      label: "Groupes",          icon: Group,          component: GroupNew },
-  // { key: "roles",       label: "Rôles",            icon: GitFork,        component: RoleNew },
-  // { key: "sessions",    label: "Sessions",         icon: BookUser,       component: UserSessionNew },
-  { key: "user-tabs", label: "Gestion Utilisateurs", icon: LayoutGrid, component: UserManagement },
+  { key: "user-tabs", label: "Gestion Utilisateurs", icon: LayoutGrid, component: UserTabbedView },
 ];
 
 export default function HrShell() {

@@ -1,71 +1,51 @@
 /**
- * HrTabbedView — Digital HR-style tabbed content
+ * UserTabbedView — Same structure as HrTabbedView
  *
- * Shows HR entities (Employees, Departments, Payroll, etc.) as horizontal tabs
- * in the content area instead of a long sidebar list.
+ * Shows user/access entities (Utilisateurs, Groupes, Rôles, Sessions)
+ * as horizontal tabs in the content area.
  */
 import { useState } from "react";
 import { ComponentType } from "react";
 import {
-  Users,
-  Building2,
-  Briefcase,
-  FileText,
-  CalendarOff,
-  Clock,
-  Wallet,
-  UserPlus,
-  GraduationCap,
-  Receipt,
+  SquareUser,
+  Group,
+  GitFork,
+  BookUser,
   LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  EmployeePage,
-  DepartmentPage,
-  PositionPage,
-  ContractPage,
-  LeavePage,
-  AttendancePage,
-  PayrollPage,
-  RecruitmentPage,
-  TrainingPage,
-  ExpensePage,
-} from "./pages";
+import UserNew from "./pages/users/UserNew";
+import GroupNew from "./pages/groups/GroupNew";
+import RoleNew from "./pages/roles/RoleNew";
+import UserSessionNew from "./pages/sessions/UserSessionNew";
 
 // ─── Tab config: key, label, icon, component ───────────────────
-const HR_TABS: {
+const USER_TABS: {
   key: string;
   label: string;
   icon: LucideIcon;
   component: ComponentType;
 }[] = [
-  { key: "employees", label: "Employés", icon: Users, component: EmployeePage },
-  { key: "departments", label: "Départements", icon: Building2, component: DepartmentPage },
-  { key: "positions", label: "Postes", icon: Briefcase, component: PositionPage },
-  { key: "contracts", label: "Contrats", icon: FileText, component: ContractPage },
-  { key: "leave", label: "Congés", icon: CalendarOff, component: LeavePage },
-  { key: "attendance", label: "Présences", icon: Clock, component: AttendancePage },
-  { key: "payroll", label: "Paie", icon: Wallet, component: PayrollPage },
-  { key: "recruitment", label: "Recrutement", icon: UserPlus, component: RecruitmentPage },
-  { key: "training", label: "Formations", icon: GraduationCap, component: TrainingPage },
-  { key: "expenses", label: "Notes de frais", icon: Receipt, component: ExpensePage },
+  { key: "users", label: "Utilisateurs", icon: SquareUser, component: UserNew },
+  { key: "groups", label: "Groupes", icon: Group, component: GroupNew },
+  { key: "roles", label: "Rôles", icon: GitFork, component: RoleNew },
+  { key: "sessions", label: "Sessions", icon: BookUser, component: UserSessionNew },
 ];
 
-export default function HrTabbedView() {
-  const [activeKey, setActiveKey] = useState(HR_TABS[0].key);
-  const activeTab = HR_TABS.find((t) => t.key === activeKey);
+export default function UserTabbedView() {
+  const [activeKey, setActiveKey] = useState(USER_TABS[0].key);
+  const activeTab = USER_TABS.find((t) => t.key === activeKey);
   const ActiveComponent = activeTab?.component ?? (() => null);
 
   return (
     <div className="flex flex-col h-full">
-      {/* Horizontal tabs — Digital HR style */}
+      {/* Horizontal tabs — same style as HR */}
       <div className="border-b bg-muted/30 shrink-0">
         <nav
           className="flex gap-0 overflow-x-auto scrollbar-thin"
-          aria-label="Sections RH"
+          aria-label="Gestion utilisateurs"
         >
-          {HR_TABS.map((tab) => {
+          {USER_TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeKey === tab.key;
             return (

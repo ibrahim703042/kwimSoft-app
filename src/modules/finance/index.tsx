@@ -1,5 +1,8 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { DollarSign } from "lucide-react";
+import {
+  DollarSign, Landmark, FileText, CreditCard,
+  PiggyBank, BookOpen, Calculator,
+} from "lucide-react";
 
 export const financeModule = createGroupedModule({
   name: "finance",
@@ -14,6 +17,7 @@ export const financeModule = createGroupedModule({
       endpoint: "/account",
       service: "stock",
       permissionPrefix: "account",
+      icon: Landmark,
       columns: [
         { header: "Code", accessorKey: "code" },
         { header: "Name", accessorKey: "name" },
@@ -28,6 +32,7 @@ export const financeModule = createGroupedModule({
       endpoint: "/invoice",
       service: "stock",
       permissionPrefix: "invoice",
+      icon: FileText,
       columns: [
         { header: "Invoice #", accessorKey: "invoiceNumber" },
         { header: "Customer", accessorKey: "customerName" },
@@ -48,6 +53,7 @@ export const financeModule = createGroupedModule({
       endpoint: "/payment",
       service: "stock",
       permissionPrefix: "payment",
+      icon: CreditCard,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
@@ -67,6 +73,7 @@ export const financeModule = createGroupedModule({
       endpoint: "/budget",
       service: "stock",
       permissionPrefix: "budget",
+      icon: PiggyBank,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Period", accessorKey: "period" },
@@ -82,6 +89,7 @@ export const financeModule = createGroupedModule({
       endpoint: "/journal-entry",
       service: "stock",
       permissionPrefix: "journal_entry",
+      icon: BookOpen,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
@@ -97,6 +105,7 @@ export const financeModule = createGroupedModule({
       endpoint: "/tax-config",
       service: "stock",
       permissionPrefix: "tax_config",
+      icon: Calculator,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Code", accessorKey: "code" },

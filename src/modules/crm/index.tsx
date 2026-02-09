@@ -1,5 +1,5 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { Contact } from "lucide-react";
+import { Contact, Target, Lightbulb, Megaphone, CalendarCheck } from "lucide-react";
 
 export const crmModule = createGroupedModule({
   name: "crm",
@@ -14,6 +14,7 @@ export const crmModule = createGroupedModule({
       endpoint: "/contact",
       service: "hr",
       permissionPrefix: "contact",
+      icon: Contact,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Email", accessorKey: "email" },
@@ -28,6 +29,7 @@ export const crmModule = createGroupedModule({
       endpoint: "/lead",
       service: "hr",
       permissionPrefix: "lead",
+      icon: Target,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Contact", accessorKey: "contact", cell: ({ row }: any) => row.original.contact?.name || "—" },
@@ -43,6 +45,7 @@ export const crmModule = createGroupedModule({
       endpoint: "/opportunity",
       service: "hr",
       permissionPrefix: "opportunity",
+      icon: Lightbulb,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Contact", accessorKey: "contact", cell: ({ row }: any) => row.original.contact?.name || "—" },
@@ -58,6 +61,7 @@ export const crmModule = createGroupedModule({
       endpoint: "/campaign",
       service: "hr",
       permissionPrefix: "campaign",
+      icon: Megaphone,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Type", accessorKey: "type" },
@@ -73,6 +77,7 @@ export const crmModule = createGroupedModule({
       endpoint: "/activity",
       service: "hr",
       permissionPrefix: "activity",
+      icon: CalendarCheck,
       columns: [
         { header: "Subject", accessorKey: "subject" },
         { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },

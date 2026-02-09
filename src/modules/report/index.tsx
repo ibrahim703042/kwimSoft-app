@@ -14,6 +14,7 @@ export const reportModule = createGroupedModule({
       endpoint: "/report",
       service: "transport",
       permissionPrefix: "report",
+      icon: BarChart3,
       columns: [
         { header: "Report #", accessorKey: "reportNumber" },
         { header: "Title", accessorKey: "title" },

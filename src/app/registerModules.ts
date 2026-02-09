@@ -10,15 +10,8 @@ import { dashboardModule } from "@/modules/dashboard";
 import { userModule } from "@/modules/user";
 import { administrationModule } from "@/modules/administration";
 
-// ─── Transport & Logistics ────────────────────────────────────
-import { driverModule } from "@/modules/transports/driver";
-import { stationModule } from "@/modules/transports/station";
-import { reservationModule } from "@/modules/transports/reservation";
-import { scheduleModule } from "@/modules/transports/schedule";
-import { vehicleModule } from "@/modules/transport/vehicle";
-import { tripModule } from "@/modules/transport/trip";
-import { ticketModule } from "@/modules/transport/ticket";
-import { seatModule } from "@/modules/transport/seat";
+// ─── Transport (unified: Drivers, Vehicles, Stations, Schedules, Trips, Seats, Tickets, Reservations) ──
+import { transportModule } from "@/modules/transport";
 
 // ─── Carwash ──────────────────────────────────────────────────
 import { carwashModule } from "@/modules/carwash";
@@ -57,16 +50,9 @@ import { salesModule } from "@/modules/sales";
 export const modules: FrontModule[] = [
   // Core
   dashboardModule,
-  
-  // Transport & Logistics (grouped in sidebar)
-  driverModule,
-  vehicleModule,
-  stationModule,
-  scheduleModule,
-  tripModule,
-  seatModule,
-  ticketModule,
-  reservationModule,
+
+  // Transport & Logistics (single sidebar item → internal shell with tabs)
+  transportModule,
 
   // Carwash
   carwashModule,

@@ -1,5 +1,8 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { Users } from "lucide-react";
+import {
+  Users, Building2, Briefcase, FileText, CalendarOff,
+  Clock, Wallet, UserPlus, GraduationCap, Receipt,
+} from "lucide-react";
 
 export const hrModule = createGroupedModule({
   name: "hr",
@@ -14,6 +17,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/employee",
       service: "hr",
       permissionPrefix: "employee",
+      icon: Users,
       columns: [
         { header: "Employee ID", accessorKey: "employeeId" },
         { header: "Full Name", accessorKey: "fullName", cell: ({ row }: any) => `${row.original.firstName || ""} ${row.original.lastName || ""}`.trim() || row.original.fullName },
@@ -34,6 +38,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/department",
       service: "hr",
       permissionPrefix: "department",
+      icon: Building2,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Code", accessorKey: "code" },
@@ -48,6 +53,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/position",
       service: "hr",
       permissionPrefix: "position",
+      icon: Briefcase,
       columns: [
         { header: "Title", accessorKey: "title" },
         { header: "Code", accessorKey: "code" },
@@ -62,6 +68,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/contract",
       service: "hr",
       permissionPrefix: "contract",
+      icon: FileText,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
@@ -82,6 +89,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/leave",
       service: "hr",
       permissionPrefix: "leave",
+      icon: CalendarOff,
       columns: [
         { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
         { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
@@ -101,6 +109,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/attendance",
       service: "hr",
       permissionPrefix: "attendance",
+      icon: Clock,
       columns: [
         { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
         { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
@@ -116,6 +125,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/payroll",
       service: "hr",
       permissionPrefix: "payroll",
+      icon: Wallet,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
@@ -135,6 +145,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/recruitment",
       service: "hr",
       permissionPrefix: "recruitment",
+      icon: UserPlus,
       columns: [
         { header: "Title", accessorKey: "title" },
         { header: "Department", accessorKey: "department", cell: ({ row }: any) => row.original.department?.name || "—" },
@@ -149,6 +160,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/training",
       service: "hr",
       permissionPrefix: "training",
+      icon: GraduationCap,
       columns: [
         { header: "Title", accessorKey: "title" },
         { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
@@ -163,6 +175,7 @@ export const hrModule = createGroupedModule({
       endpoint: "/expense",
       service: "hr",
       permissionPrefix: "expense",
+      icon: Receipt,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },

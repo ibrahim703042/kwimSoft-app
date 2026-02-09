@@ -1,5 +1,5 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Truck, FileQuestion, PackageCheck } from "lucide-react";
 
 export const procurementModule = createGroupedModule({
   name: "procurement",
@@ -14,6 +14,7 @@ export const procurementModule = createGroupedModule({
       endpoint: "/supplier",
       service: "stock",
       permissionPrefix: "supplier",
+      icon: Truck,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Code", accessorKey: "code" },
@@ -30,6 +31,7 @@ export const procurementModule = createGroupedModule({
       endpoint: "/purchase-order",
       service: "stock",
       permissionPrefix: "purchase_order",
+      icon: ShoppingCart,
       columns: [
         { header: "PO #", accessorKey: "orderNumber" },
         { header: "Supplier", accessorKey: "supplier", cell: ({ row }: any) => row.original.supplier?.name || "—" },
@@ -49,6 +51,7 @@ export const procurementModule = createGroupedModule({
       endpoint: "/rfq",
       service: "stock",
       permissionPrefix: "rfq",
+      icon: FileQuestion,
       columns: [
         { header: "RFQ #", accessorKey: "rfqNumber" },
         { header: "Title", accessorKey: "title" },
@@ -64,6 +67,7 @@ export const procurementModule = createGroupedModule({
       endpoint: "/goods-receipt",
       service: "stock",
       permissionPrefix: "goods_receipt",
+      icon: PackageCheck,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "PO", accessorKey: "purchaseOrder", cell: ({ row }: any) => row.original.purchaseOrder?.orderNumber || "—" },

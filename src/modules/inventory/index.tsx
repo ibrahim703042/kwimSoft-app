@@ -1,5 +1,8 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { Warehouse } from "lucide-react";
+import {
+  Warehouse, MapPin, BarChart3, ArrowLeftRight,
+  Repeat, ClipboardCheck,
+} from "lucide-react";
 
 export const inventoryModule = createGroupedModule({
   name: "inventory",
@@ -14,6 +17,7 @@ export const inventoryModule = createGroupedModule({
       endpoint: "/warehouse",
       service: "stock",
       permissionPrefix: "warehouse",
+      icon: Warehouse,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Code", accessorKey: "code" },
@@ -27,6 +31,7 @@ export const inventoryModule = createGroupedModule({
       endpoint: "/location",
       service: "stock",
       permissionPrefix: "location",
+      icon: MapPin,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Code", accessorKey: "code" },
@@ -40,6 +45,7 @@ export const inventoryModule = createGroupedModule({
       endpoint: "/stock",
       service: "stock",
       permissionPrefix: "stock",
+      icon: BarChart3,
       columns: [
         { header: "Product", accessorKey: "product", cell: ({ row }: any) => row.original.product?.name || "—" },
         { header: "Warehouse", accessorKey: "warehouse", cell: ({ row }: any) => row.original.warehouse?.name || "—" },
@@ -54,6 +60,7 @@ export const inventoryModule = createGroupedModule({
       endpoint: "/stock-movement",
       service: "stock",
       permissionPrefix: "stock_movement",
+      icon: ArrowLeftRight,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "Product", accessorKey: "product", cell: ({ row }: any) => row.original.product?.name || "—" },
@@ -71,6 +78,7 @@ export const inventoryModule = createGroupedModule({
       endpoint: "/transfer",
       service: "stock",
       permissionPrefix: "transfer",
+      icon: Repeat,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "From", accessorKey: "sourceWarehouse", cell: ({ row }: any) => row.original.sourceWarehouse?.name || "—" },
@@ -86,6 +94,7 @@ export const inventoryModule = createGroupedModule({
       endpoint: "/inventory-count",
       service: "stock",
       permissionPrefix: "inventory_count",
+      icon: ClipboardCheck,
       columns: [
         { header: "Reference", accessorKey: "reference" },
         { header: "Warehouse", accessorKey: "warehouse", cell: ({ row }: any) => row.original.warehouse?.name || "—" },

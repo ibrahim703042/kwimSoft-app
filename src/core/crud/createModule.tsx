@@ -1,6 +1,9 @@
 /**
  * Module Factory - Creates standardized CRUD modules
  * Inspired by Odoo's modular architecture
+ *
+ * Grouped modules now render inside a ModuleShell with sidebar navigation
+ * (same pattern as Administration and UserManagement).
  */
 import { ComponentType } from "react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -8,6 +11,8 @@ import { FrontModule, AppRoute, MenuItem } from "@/app/ModuleRegistry";
 import { api } from "@/lib/axios";
 import PageTitle from "@/components/utilitie/PageTitle";
 import { CrudPage } from "./CrudPage";
+import { GroupedModuleShell } from "./GroupedModuleShell";
+import { LucideIcon } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────
 export type ServiceName = "userManagement" | "transport" | "product" | "hr" | "stock";
@@ -27,6 +32,8 @@ export interface ModuleEntityConfig<T = any> {
   permissionPrefix: string;
   /** Search fields for the API query param */
   searchFields?: string[];
+  /** Optional Lucide icon for the sidebar item */
+  icon?: LucideIcon;
 }
 
 export interface GroupedModuleConfig {
@@ -79,7 +86,7 @@ export function createListPage(config: ModuleEntityConfig) {
           queryKey: [config.key],
           queryFn: entityApi.list,
           columns: config.columns,
-          deleteFn: entityApi.delete,
+          deleteFn: async (id: string) => { await entityApi.delete(id); },
           permissions: {
             read: `${config.permissionPrefix}.read`,
             create: `${config.permissionPrefix}.create`,
@@ -93,33 +100,16 @@ export function createListPage(config: ModuleEntityConfig) {
 }
 
 // ─── Module Factory ───────────────────────────────────────────
+/**
+ * Creates a FrontModule.
+ *
+ * - **Multiple entities** → Single route with a ModuleShell (sidebar + tabs)
+ * - **Single entity**     → Simple CrudPage (no extra sidebar)
+ */
 export function createGroupedModule(config: GroupedModuleConfig): FrontModule {
-  const routes: AppRoute[] = [];
-  const children: MenuItem[] = [];
   const permissions: string[] = [];
 
   for (const entity of config.entities) {
-    const ListPage = createListPage(entity);
-    const path = `${config.basePath}/${entity.key}`;
-
-    routes.push({
-      path,
-      element: (
-        <>
-          <PageTitle title={entity.label} />
-          <ListPage />
-        </>
-      ),
-      permission: `${entity.permissionPrefix}.read`,
-    });
-
-    children.push({
-      id: `${config.name}-${entity.key}`,
-      label: entity.label,
-      path,
-      permission: `${entity.permissionPrefix}.read`,
-    });
-
     permissions.push(
       `${entity.permissionPrefix}.read`,
       `${entity.permissionPrefix}.create`,
@@ -128,21 +118,72 @@ export function createGroupedModule(config: GroupedModuleConfig): FrontModule {
     );
   }
 
+  // ── Single entity: simple CrudPage (no shell) ──────────────
+  if (config.entities.length === 1) {
+    const entity = config.entities[0];
+    const ListPage = createListPage(entity);
+
+    const routes: AppRoute[] = [
+      {
+        path: config.basePath,
+        element: (
+          <>
+            <PageTitle title={entity.label} />
+            <ListPage />
+          </>
+        ),
+        permission: config.permission,
+      },
+    ];
+
+    const menu: MenuItem[] = [
+      {
+        id: config.name,
+        label: config.label,
+        path: config.basePath,
+        icon: config.icon,
+        permission: config.permission,
+      },
+    ];
+
+    return { name: config.name, routes, menu, permissions };
+  }
+
+  // ── Multiple entities: ModuleShell with sidebar tabs ────────
+  const entityIcons: Record<string, LucideIcon> = {};
+  for (const entity of config.entities) {
+    if (entity.icon) {
+      entityIcons[entity.key] = entity.icon;
+    }
+  }
+
+  const routes: AppRoute[] = [
+    {
+      path: config.basePath,
+      element: (
+        <>
+          <PageTitle title={config.label} />
+          <GroupedModuleShell
+            title={config.label}
+            basePath={config.basePath}
+            entities={config.entities}
+            icons={Object.keys(entityIcons).length > 0 ? entityIcons : undefined}
+          />
+        </>
+      ),
+      permission: config.permission,
+    },
+  ];
+
   const menu: MenuItem[] = [
     {
       id: config.name,
       label: config.label,
-      path: config.entities.length === 1 ? `${config.basePath}/${config.entities[0].key}` : undefined,
+      path: config.basePath,
       icon: config.icon,
       permission: config.permission,
-      children: config.entities.length > 1 ? children : undefined,
     },
   ];
 
-  return {
-    name: config.name,
-    routes,
-    menu,
-    permissions,
-  };
+  return { name: config.name, routes, menu, permissions };
 }

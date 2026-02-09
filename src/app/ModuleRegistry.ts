@@ -3,7 +3,7 @@ import { ReactNode, ComponentType } from "react";
 /**
  * Route definition for a module
  */
-export interface AppRoute {
+export type AppRoute = {
   path: string;
   element: ReactNode;
   permission?: string;
@@ -13,7 +13,7 @@ export interface AppRoute {
 /**
  * Menu item definition
  */
-export interface MenuItem {
+export type MenuItem = {
   id: string;
   label: string;
   icon?: ComponentType<any>;
@@ -27,7 +27,7 @@ export interface MenuItem {
  * Front-end module definition (Odoo-like)
  * Each module declares its routes, menus, and permissions
  */
-export interface FrontModule {
+export type FrontModule = {
   name: string;
   routes: AppRoute[];
   menu: MenuItem[];

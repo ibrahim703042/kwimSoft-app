@@ -1,5 +1,8 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { TrendingUp } from "lucide-react";
+import {
+  TrendingUp, UserCheck, ShoppingBag, FileText,
+  Users, Percent,
+} from "lucide-react";
 
 export const salesModule = createGroupedModule({
   name: "sales",
@@ -14,6 +17,7 @@ export const salesModule = createGroupedModule({
       endpoint: "/customer",
       service: "stock",
       permissionPrefix: "customer",
+      icon: UserCheck,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Email", accessorKey: "email" },
@@ -30,6 +34,7 @@ export const salesModule = createGroupedModule({
       endpoint: "/order",
       service: "stock",
       permissionPrefix: "order",
+      icon: ShoppingBag,
       columns: [
         { header: "Order #", accessorKey: "orderNumber" },
         { header: "Customer", accessorKey: "customer", cell: ({ row }: any) => row.original.customer?.name || "—" },
@@ -49,6 +54,7 @@ export const salesModule = createGroupedModule({
       endpoint: "/quotation",
       service: "stock",
       permissionPrefix: "quotation",
+      icon: FileText,
       columns: [
         { header: "Quotation #", accessorKey: "quotationNumber" },
         { header: "Customer", accessorKey: "customer", cell: ({ row }: any) => row.original.customer?.name || "—" },
@@ -68,6 +74,7 @@ export const salesModule = createGroupedModule({
       endpoint: "/sales-team",
       service: "stock",
       permissionPrefix: "sales_team",
+      icon: Users,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Leader", accessorKey: "leader", cell: ({ row }: any) => row.original.leader?.name || "—" },
@@ -83,6 +90,7 @@ export const salesModule = createGroupedModule({
       endpoint: "/pricing-rule",
       service: "stock",
       permissionPrefix: "pricing_rule",
+      icon: Percent,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Type", accessorKey: "type" },

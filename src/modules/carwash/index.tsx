@@ -1,5 +1,5 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { Droplets } from "lucide-react";
+import { Droplets, Warehouse, ShoppingCart } from "lucide-react";
 
 export const carwashModule = createGroupedModule({
   name: "carwash",
@@ -14,6 +14,7 @@ export const carwashModule = createGroupedModule({
       endpoint: "/wash-service",
       service: "transport",
       permissionPrefix: "wash_service",
+      icon: Droplets,
       columns: [
         { header: "Code", accessorKey: "code" },
         { header: "Name", accessorKey: "name" },
@@ -29,6 +30,7 @@ export const carwashModule = createGroupedModule({
       endpoint: "/bay",
       service: "transport",
       permissionPrefix: "bay",
+      icon: Warehouse,
       columns: [
         { header: "Code", accessorKey: "code" },
         { header: "Name", accessorKey: "name" },
@@ -46,6 +48,7 @@ export const carwashModule = createGroupedModule({
       endpoint: "/wash-order",
       service: "transport",
       permissionPrefix: "wash_order",
+      icon: ShoppingCart,
       columns: [
         { header: "Order #", accessorKey: "orderNumber" },
         { header: "Vehicle Plate", accessorKey: "vehiclePlateNumber" },

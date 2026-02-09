@@ -1,5 +1,5 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { Wrench } from "lucide-react";
+import { Wrench, ClipboardCheck } from "lucide-react";
 
 export const maintenanceModule = createGroupedModule({
   name: "maintenance",
@@ -14,6 +14,7 @@ export const maintenanceModule = createGroupedModule({
       endpoint: "/maintenance-request",
       service: "transport",
       permissionPrefix: "maintenance",
+      icon: Wrench,
       columns: [
         { header: "Request #", accessorKey: "requestNumber" },
         { header: "Title", accessorKey: "title" },
@@ -38,6 +39,7 @@ export const maintenanceModule = createGroupedModule({
       endpoint: "/inspection",
       service: "transport",
       permissionPrefix: "inspection",
+      icon: ClipboardCheck,
       columns: [
         { header: "Inspection #", accessorKey: "inspectionNumber" },
         { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },

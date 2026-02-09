@@ -1,5 +1,8 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { Package } from "lucide-react";
+import {
+  Package, FolderTree, Layers, Award, Box,
+  SlidersHorizontal, Tag, PackagePlus, BadgeDollarSign, Star,
+} from "lucide-react";
 
 export const productModule = createGroupedModule({
   name: "product",
@@ -14,6 +17,7 @@ export const productModule = createGroupedModule({
       endpoint: "/category",
       service: "product",
       permissionPrefix: "category",
+      icon: FolderTree,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Slug", accessorKey: "slug" },
@@ -27,6 +31,7 @@ export const productModule = createGroupedModule({
       endpoint: "/sub-category",
       service: "product",
       permissionPrefix: "sub_category",
+      icon: Layers,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Slug", accessorKey: "slug" },
@@ -40,6 +45,7 @@ export const productModule = createGroupedModule({
       endpoint: "/brand",
       service: "product",
       permissionPrefix: "brand",
+      icon: Award,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Slug", accessorKey: "slug" },
@@ -54,6 +60,7 @@ export const productModule = createGroupedModule({
       endpoint: "/product",
       service: "product",
       permissionPrefix: "product",
+      icon: Box,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "SKU", accessorKey: "sku" },
@@ -73,6 +80,7 @@ export const productModule = createGroupedModule({
       endpoint: "/attribute",
       service: "product",
       permissionPrefix: "attribute",
+      icon: SlidersHorizontal,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Code", accessorKey: "code" },
@@ -87,6 +95,7 @@ export const productModule = createGroupedModule({
       endpoint: "/product-tag",
       service: "product",
       permissionPrefix: "product_tag",
+      icon: Tag,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "Slug", accessorKey: "slug" },
@@ -100,6 +109,7 @@ export const productModule = createGroupedModule({
       endpoint: "/product-bundle",
       service: "product",
       permissionPrefix: "product_bundle",
+      icon: PackagePlus,
       columns: [
         { header: "Name", accessorKey: "name" },
         { header: "SKU", accessorKey: "sku" },
@@ -114,6 +124,7 @@ export const productModule = createGroupedModule({
       endpoint: "/product-price",
       service: "product",
       permissionPrefix: "product_price",
+      icon: BadgeDollarSign,
       columns: [
         { header: "Type", accessorKey: "type" },
         { header: "Amount", accessorKey: "amount" },
@@ -128,6 +139,7 @@ export const productModule = createGroupedModule({
       endpoint: "/product-review",
       service: "product",
       permissionPrefix: "product_review",
+      icon: Star,
       columns: [
         { header: "Customer", accessorKey: "customerName" },
         { header: "Rating", accessorKey: "rating", cell: ({ row }: any) => "⭐".repeat(row.original.rating || 0) },

@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "
 import Loading from "@/components/utilitie/Loading";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import useUserStore from "../../store/useUserStore";
+import useUserStore from "@/store/useUserStore";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Row } from "@tanstack/react-table";
 import { API_ROUTE, API_ROUTE_PASSWORD } from "@/config/index";

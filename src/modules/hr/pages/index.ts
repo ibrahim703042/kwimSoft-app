@@ -1,0 +1,10 @@
+export { default as EmployeePage } from "./EmployeePage";
+export { default as DepartmentPage } from "./DepartmentPage";
+export { default as PositionPage } from "./PositionPage";
+export { default as ContractPage } from "./ContractPage";
+export { default as LeavePage } from "./LeavePage";
+export { default as AttendancePage } from "./AttendancePage";
+export { default as PayrollPage } from "./PayrollPage";
+export { default as RecruitmentPage } from "./RecruitmentPage";
+export { default as TrainingPage } from "./TrainingPage";
+export { default as ExpensePage } from "./ExpensePage";

@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router-dom";
-import Horaire from "@/modules/transports/horaires/Horaire";
+import Horaire from "@/modules/transport/horaires/Horaire";
 import PageTitle from "@/components/utilitie/PageTitle";
 
 // Define route config interface

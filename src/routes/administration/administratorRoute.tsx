@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import GareMap from "../../modules/transports/gare/GareMap";
+import GareMap from "../../modules/transport/gare/GareMap";
 import Administration from "../../modules/administration/Administration";
 import PageTitle from "@/components/utilitie/PageTitle";
 

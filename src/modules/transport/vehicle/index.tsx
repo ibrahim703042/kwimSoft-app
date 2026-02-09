@@ -1,5 +1,5 @@
 import { createGroupedModule } from "@/core/crud/createModule";
-import { Bus, Train, Ship, Truck } from "lucide-react";
+import { Truck } from "lucide-react";
 
 export const vehicleModule = createGroupedModule({
   name: "vehicle",

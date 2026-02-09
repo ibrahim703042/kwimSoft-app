@@ -5,10 +5,10 @@ import {
 import { ModuleShell, ShellNavItem } from "@/core/ui";
 
 // ── Real pages (with custom implementations) ──────────────────
-import DriverListPage from "@/modules/transports/driver/pages/DriverListPage";
-import Gare from "@/modules/transports/gare/Gare";
-import Reservation from "@/modules/transports/reservation/Reservation";
-import Horaire from "@/modules/transports/horaires/Horaire";
+import DriverListPage from "@/modules/transport/driver/pages/DriverListPage";
+import Gare from "@/modules/transport/gare/Gare";
+import Reservation from "@/modules/transport/reservation/Reservation";
+import Horaire from "@/modules/transport/horaires/Horaire";
 
 // ── Generated CrudPages for entities without custom pages ─────
 import { createListPage } from "@/core/crud/createModule";

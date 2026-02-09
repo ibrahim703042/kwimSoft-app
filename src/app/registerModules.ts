@@ -5,12 +5,10 @@ import { FrontModule } from "./ModuleRegistry";
  * Organized like Odoo/QuickBooks with grouped navigation
  */
 
-// ─── Core Modules ─────────────────────────────────────────────
+// ─── Core ─────────────────────────────────────────────────────
 import { dashboardModule } from "@/modules/dashboard";
-import { userModule } from "@/modules/user";
-import { administrationModule } from "@/modules/administration";
 
-// ─── Transport (unified: Drivers, Vehicles, Stations, Schedules, Trips, Seats, Tickets, Reservations) ──
+// ─── Transport (Drivers, Vehicles, Stations, Schedules, Trips, Seats, Tickets, Reservations) ──
 import { transportModule } from "@/modules/transport";
 
 // ─── Carwash ──────────────────────────────────────────────────
@@ -25,7 +23,7 @@ import { reportModule } from "@/modules/report";
 // ─── Product Management ───────────────────────────────────────
 import { productModule } from "@/modules/product";
 
-// ─── Human Resources ──────────────────────────────────────────
+// ─── HR & People (Employees, Staff, Users, Groups, Roles, Sessions, Departments, etc.) ──
 import { hrModule } from "@/modules/hr";
 
 // ─── Inventory & Warehouse ────────────────────────────────────
@@ -43,6 +41,9 @@ import { procurementModule } from "@/modules/procurement";
 // ─── Sales ────────────────────────────────────────────────────
 import { salesModule } from "@/modules/sales";
 
+// ─── Legacy (deep-link routes only, no sidebar entries) ───────
+import { userModule } from "@/modules/user";
+
 /**
  * Array of all registered modules
  * Order determines sidebar menu order
@@ -51,7 +52,7 @@ export const modules: FrontModule[] = [
   // Core
   dashboardModule,
 
-  // Transport & Logistics (single sidebar item → internal shell with tabs)
+  // Transport & Logistics
   transportModule,
 
   // Carwash
@@ -66,7 +67,7 @@ export const modules: FrontModule[] = [
   // Products
   productModule,
 
-  // HR
+  // HR & People (replaces old Admin + User Management)
   hrModule,
 
   // Inventory
@@ -84,9 +85,8 @@ export const modules: FrontModule[] = [
   // Sales
   salesModule,
 
-  // User & Admin (bottom of sidebar)
+  // Legacy modules (routes only, no sidebar)
   userModule,
-  administrationModule,
 ];
 
 /**

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { CrudPage } from "@/core/crud";
-import { driverApi } from "../api/driver.api";
+import { driverApi } from "../../api/transport.api";
 import { Button } from "@/components/ui/button";
 import { ClipboardPen, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";

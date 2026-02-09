@@ -1,193 +1,58 @@
-import { createGroupedModule } from "@/core/crud/createModule";
-import {
-  Users, Building2, Briefcase, FileText, CalendarOff,
-  Clock, Wallet, UserPlus, GraduationCap, Receipt,
-} from "lucide-react";
+/**
+ * Unified HR & People Management Module
+ *
+ * Consolidates:
+ * - Old "Administration" → Staff/Drivers
+ * - Old "User Management" → Users, Groups, Roles, Sessions
+ * - HR entities → Employees, Departments, Positions, Contracts,
+ *   Leave, Attendance, Payroll, Recruitment, Training, Expenses
+ */
+import { FrontModule, AppRoute, MenuItem } from "@/app/ModuleRegistry";
+import { Users } from "lucide-react";
+import PageTitle from "@/components/utilitie/PageTitle";
+import HrShell from "./HrShell";
 
-export const hrModule = createGroupedModule({
+export const hrModule: FrontModule = {
   name: "hr",
-  label: "HR",
-  icon: Users,
-  basePath: "/hr",
-  permission: "employee.read",
-  entities: [
+  routes: [
     {
-      key: "employee",
-      label: "Employees",
-      endpoint: "/employee",
-      service: "hr",
-      permissionPrefix: "employee",
+      path: "/hr",
+      element: (
+        <>
+          <PageTitle title="HR & People" />
+          <HrShell />
+        </>
+      ),
+      permission: "employee.read",
+    },
+  ] as AppRoute[],
+  menu: [
+    {
+      id: "hr",
+      label: "HR",
+      path: "/hr",
       icon: Users,
-      columns: [
-        { header: "Employee ID", accessorKey: "employeeId" },
-        { header: "Full Name", accessorKey: "fullName", cell: ({ row }: any) => `${row.original.firstName || ""} ${row.original.lastName || ""}`.trim() || row.original.fullName },
-        { header: "Email", accessorKey: "email" },
-        { header: "Phone", accessorKey: "phone" },
-        { header: "Department", accessorKey: "department", cell: ({ row }: any) => row.original.department?.name || row.original.departmentName || "—" },
-        { header: "Position", accessorKey: "position", cell: ({ row }: any) => row.original.position?.title || row.original.positionTitle || "—" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => {
-          const s = row.original.status;
-          const colors: Record<string, string> = { active: "text-green-600", inactive: "text-gray-500", on_leave: "text-yellow-600", terminated: "text-red-600", probation: "text-blue-600" };
-          return <span className={`font-medium ${colors[s] || ""}`}>{(s || "").replace(/_/g, " ").toUpperCase()}</span>;
-        }},
-      ],
+      permission: "employee.read",
     },
-    {
-      key: "department",
-      label: "Departments",
-      endpoint: "/department",
-      service: "hr",
-      permissionPrefix: "department",
-      icon: Building2,
-      columns: [
-        { header: "Name", accessorKey: "name" },
-        { header: "Code", accessorKey: "code" },
-        { header: "Manager", accessorKey: "manager", cell: ({ row }: any) => row.original.manager?.fullName || "—" },
-        { header: "Employees", accessorKey: "employeeCount" },
-        { header: "Active", accessorKey: "isActive", cell: ({ row }: any) => row.original.isActive !== false ? "✓ Yes" : "✗ No" },
-      ],
-    },
-    {
-      key: "position",
-      label: "Positions",
-      endpoint: "/position",
-      service: "hr",
-      permissionPrefix: "position",
-      icon: Briefcase,
-      columns: [
-        { header: "Title", accessorKey: "title" },
-        { header: "Code", accessorKey: "code" },
-        { header: "Department", accessorKey: "department", cell: ({ row }: any) => row.original.department?.name || "—" },
-        { header: "Level", accessorKey: "level" },
-        { header: "Active", accessorKey: "isActive", cell: ({ row }: any) => row.original.isActive !== false ? "✓ Yes" : "✗ No" },
-      ],
-    },
-    {
-      key: "contract",
-      label: "Contracts",
-      endpoint: "/contract",
-      service: "hr",
-      permissionPrefix: "contract",
-      icon: FileText,
-      columns: [
-        { header: "Reference", accessorKey: "reference" },
-        { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
-        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
-        { header: "Start", accessorKey: "startDate", cell: ({ row }: any) => row.original.startDate ? new Date(row.original.startDate).toLocaleDateString() : "—" },
-        { header: "End", accessorKey: "endDate", cell: ({ row }: any) => row.original.endDate ? new Date(row.original.endDate).toLocaleDateString() : "—" },
-        { header: "Salary", accessorKey: "salary", cell: ({ row }: any) => `${row.original.salary || 0} ${row.original.currency || "CDF"}` },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => {
-          const s = row.original.status;
-          const colors: Record<string, string> = { active: "text-green-600", expired: "text-red-600", draft: "text-gray-500" };
-          return <span className={`font-medium ${colors[s] || ""}`}>{(s || "").toUpperCase()}</span>;
-        }},
-      ],
-    },
-    {
-      key: "leave",
-      label: "Leave",
-      endpoint: "/leave",
-      service: "hr",
-      permissionPrefix: "leave",
-      icon: CalendarOff,
-      columns: [
-        { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
-        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
-        { header: "From", accessorKey: "startDate", cell: ({ row }: any) => row.original.startDate ? new Date(row.original.startDate).toLocaleDateString() : "—" },
-        { header: "To", accessorKey: "endDate", cell: ({ row }: any) => row.original.endDate ? new Date(row.original.endDate).toLocaleDateString() : "—" },
-        { header: "Days", accessorKey: "totalDays" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => {
-          const s = row.original.status;
-          const colors: Record<string, string> = { approved: "text-green-600", pending: "text-yellow-600", rejected: "text-red-600" };
-          return <span className={`font-medium ${colors[s] || ""}`}>{(s || "").toUpperCase()}</span>;
-        }},
-      ],
-    },
-    {
-      key: "attendance",
-      label: "Attendance",
-      endpoint: "/attendance",
-      service: "hr",
-      permissionPrefix: "attendance",
-      icon: Clock,
-      columns: [
-        { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
-        { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
-        { header: "Check In", accessorKey: "checkInTime" },
-        { header: "Check Out", accessorKey: "checkOutTime" },
-        { header: "Hours", accessorKey: "totalHours" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
-      ],
-    },
-    {
-      key: "payroll",
-      label: "Payroll",
-      endpoint: "/payroll",
-      service: "hr",
-      permissionPrefix: "payroll",
-      icon: Wallet,
-      columns: [
-        { header: "Reference", accessorKey: "reference" },
-        { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
-        { header: "Period", accessorKey: "period" },
-        { header: "Gross", accessorKey: "grossSalary", cell: ({ row }: any) => `${row.original.grossSalary || 0}` },
-        { header: "Net", accessorKey: "netSalary", cell: ({ row }: any) => `${row.original.netSalary || 0}` },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => {
-          const s = row.original.status;
-          const colors: Record<string, string> = { draft: "text-gray-500", confirmed: "text-blue-600", paid: "text-green-600" };
-          return <span className={`font-medium ${colors[s] || ""}`}>{(s || "").toUpperCase()}</span>;
-        }},
-      ],
-    },
-    {
-      key: "recruitment",
-      label: "Recruitment",
-      endpoint: "/recruitment",
-      service: "hr",
-      permissionPrefix: "recruitment",
-      icon: UserPlus,
-      columns: [
-        { header: "Title", accessorKey: "title" },
-        { header: "Department", accessorKey: "department", cell: ({ row }: any) => row.original.department?.name || "—" },
-        { header: "Position", accessorKey: "position", cell: ({ row }: any) => row.original.position?.title || "—" },
-        { header: "Applications", accessorKey: "applicationCount" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
-      ],
-    },
-    {
-      key: "training",
-      label: "Training",
-      endpoint: "/training",
-      service: "hr",
-      permissionPrefix: "training",
-      icon: GraduationCap,
-      columns: [
-        { header: "Title", accessorKey: "title" },
-        { header: "Type", accessorKey: "type", cell: ({ row }: any) => (row.original.type || "").replace(/_/g, " ").toUpperCase() },
-        { header: "Start", accessorKey: "startDate", cell: ({ row }: any) => row.original.startDate ? new Date(row.original.startDate).toLocaleDateString() : "—" },
-        { header: "Participants", accessorKey: "participantCount" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => (row.original.status || "").replace(/_/g, " ").toUpperCase() },
-      ],
-    },
-    {
-      key: "expense",
-      label: "Expenses",
-      endpoint: "/expense",
-      service: "hr",
-      permissionPrefix: "expense",
-      icon: Receipt,
-      columns: [
-        { header: "Reference", accessorKey: "reference" },
-        { header: "Employee", accessorKey: "employee", cell: ({ row }: any) => row.original.employee?.fullName || "—" },
-        { header: "Type", accessorKey: "type" },
-        { header: "Amount", accessorKey: "amount", cell: ({ row }: any) => `${row.original.amount || 0} ${row.original.currency || "CDF"}` },
-        { header: "Date", accessorKey: "date", cell: ({ row }: any) => row.original.date ? new Date(row.original.date).toLocaleDateString() : "—" },
-        { header: "Status", accessorKey: "status", cell: ({ row }: any) => {
-          const s = row.original.status;
-          const colors: Record<string, string> = { draft: "text-gray-500", submitted: "text-blue-600", approved: "text-green-600", rejected: "text-red-600", paid: "text-green-800" };
-          return <span className={`font-medium ${colors[s] || ""}`}>{(s || "").toUpperCase()}</span>;
-        }},
-      ],
-    },
+  ] as MenuItem[],
+  permissions: [
+    // People
+    "employee.read", "employee.create", "employee.update", "employee.delete",
+    "driver.read", "driver.create", "driver.update", "driver.delete",
+    // Access
+    "user.read", "user.create", "user.update", "user.delete",
+    "role.read", "role.create", "role.update", "role.delete",
+    "group.read", "group.create", "group.update", "group.delete",
+    // Organization
+    "department.read", "department.create", "department.update", "department.delete",
+    "position.read", "position.create", "position.update", "position.delete",
+    // HR Operations
+    "contract.read", "contract.create", "contract.update", "contract.delete",
+    "leave.read", "leave.create", "leave.update", "leave.delete",
+    "attendance.read", "attendance.create", "attendance.update", "attendance.delete",
+    "payroll.read", "payroll.create", "payroll.update", "payroll.delete",
+    "recruitment.read", "recruitment.create", "recruitment.update", "recruitment.delete",
+    "training.read", "training.create", "training.update", "training.delete",
+    "expense.read", "expense.create", "expense.update", "expense.delete",
   ],
-});
+};

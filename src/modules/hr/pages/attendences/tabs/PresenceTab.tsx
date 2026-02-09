@@ -12,6 +12,14 @@ const STATUS_OPTIONS = [
   { value: "remote", label: "Télétravail" },
 ];
 
+const ATTENDANCE_TYPE_OPTIONS = [
+  { value: "manual", label: "Manuel" },
+  { value: "biometric", label: "Biométrique" },
+  { value: "wifi", label: "WiFi" },
+  { value: "qr", label: "QR Code" },
+  { value: "ip", label: "IP" },
+];
+
 interface PresenceTabProps {
   form: UseFormReturn<AttendanceFormValues>;
   employees: { _id: string; firstName: string; lastName: string }[];
@@ -75,6 +83,45 @@ export function PresenceTab({ form, employees }: PresenceTabProps) {
                 ))}
               </SelectContent>
             </Select>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="attendanceType"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Type (trace)</FormLabel>
+            <Select value={field.value || "manual"} onValueChange={field.onChange}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {ATTENDANCE_TYPE_OPTIONS.map((t) => (
+                  <SelectItem key={t.value} value={t.value}>
+                    {t.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="identifier"
+        render={({ field }) => (
+          <FormItem className="sm:col-span-2">
+            <FormLabel>Identifiant (MAC / IP / appareil)</FormLabel>
+            <FormControl>
+              <Input
+                placeholder="ex: 98:ba:5f:c8:74:d3 ou adresse IP"
+                {...field}
+                value={field.value ?? ""}
+              />
+            </FormControl>
           </FormItem>
         )}
       />

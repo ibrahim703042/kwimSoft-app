@@ -35,3 +35,4 @@ export const payrollApi     = crudApi(EP.payroll);
 export const recruitmentApi = crudApi(EP.recruitment);
 export const trainingApi    = crudApi(EP.training);
 export const expenseApi     = crudApi(EP.expense);
+export const idCardTemplateApi = crudApi(EP.idCardTemplate ?? "/id-card-template");

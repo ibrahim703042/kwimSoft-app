@@ -13,16 +13,20 @@ import {
   Clock, Wallet, UserPlus, GraduationCap, Receipt,
   LayoutGrid,
   LayoutDashboard,
+  CreditCard,
+  ListChecks,
 } from "lucide-react";
 import { ModuleShell, ShellNavItem } from "@/core/ui";
 
 import {
   EmployeePage,
+  EmployeeCardTemplatePage,
   DepartmentPage,
   PositionPage,
   ContractPage,
   LeavePage,
   AttendancePage,
+  AttendanceLogPage,
   PayrollPage,
   RecruitmentPage,
   TrainingPage,
@@ -37,6 +41,7 @@ const items: ShellNavItem[] = [
 
   // ▸ People & Organization
   { key: "employees", label: "Employés", icon: Users, component: EmployeePage },
+  { key: "employee-card-template", label: "Modèle carte employé", icon: CreditCard, component: EmployeeCardTemplatePage },
 
   // ▸ Organization
   { key: "departments", label: "Départements", icon: Building2, component: DepartmentPage },
@@ -46,6 +51,7 @@ const items: ShellNavItem[] = [
   { key: "contracts", label: "Contrats", icon: FileText, component: ContractPage },
   { key: "leave", label: "Congés", icon: CalendarOff, component: LeavePage },
   { key: "attendance", label: "Présences", icon: Clock, component: AttendancePage },
+  { key: "attendance-log", label: "Journal des présences", icon: ListChecks, component: AttendanceLogPage },
   { key: "payroll", label: "Paie", icon: Wallet, component: PayrollPage },
   { key: "recruitment", label: "Recrutement", icon: UserPlus, component: RecruitmentPage },
   { key: "training", label: "Formations", icon: GraduationCap, component: TrainingPage },

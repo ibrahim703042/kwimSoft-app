@@ -118,6 +118,7 @@ export const API_CONFIG = {
       expense: "/expense",
       onboarding: "/onboarding",
       degree: "/degree",
+      idCardTemplate: "/id-card-template",
     },
   },
 

@@ -39,6 +39,13 @@ export default function EmployeePage() {
   });
   const positions = posData?.data || [];
 
+  const { data: empLookupData } = useQuery({
+    queryKey: ["employees-lookup"],
+    queryFn: async () => (await employeeApi.getAll()).data,
+  });
+  const employeesLookup = empLookupData?.data ?? (Array.isArray(empLookupData) ? empLookupData : []);
+  const employees = Array.isArray(employeesLookup) ? employeesLookup : [];
+
   const form = useForm<EmployeeFormValues>({
     resolver: zodResolver(employeeSchema),
     defaultValues,
@@ -48,20 +55,39 @@ export default function EmployeePage() {
     if (editing) {
       form.reset({
         ...defaultValues,
+        employeeCode: editing.employeeCode || "",
         firstName: editing.firstName || "",
         lastName: editing.lastName || "",
         email: editing.email || "",
         phone: editing.phone || "",
-        department: editing.department?._id || "",
-        position: editing.position?._id || "",
-        hireDate: editing.hireDate ? editing.hireDate.slice(0, 10) : "",
-        status: editing.status || "active",
         gender: editing.gender || "",
         birthDate: editing.birthDate ? editing.birthDate.slice(0, 10) : "",
-        address: editing.address || "",
+        maritalStatus: editing.maritalStatus || "",
         nationalId: editing.nationalId || "",
+        address: editing.address || "",
+        description: editing.description || "",
+        avatar: editing.avatar || "",
+        department: editing.department?._id || "",
+        position: editing.position?._id || "",
+        branch: editing.branch || "",
+        supervisor: editing.supervisor?._id || editing.supervisor || "",
+        employmentType: editing.employmentType || "",
+        officeTime: editing.officeTime || "",
+        workspace: editing.workspace || "",
+        attendanceDuringHoliday: editing.attendanceDuringHoliday ?? false,
+        hireDate: editing.hireDate ? editing.hireDate.slice(0, 10) : "",
+        status: editing.status || "active",
+        leaveAllocated: editing.leaveAllocated ?? 0,
+        assignedLeaves: editing.assignedLeaves ?? [],
         emergencyContact: editing.emergencyContact || "",
         emergencyPhone: editing.emergencyPhone || "",
+        bankName: editing.bankName || "",
+        bankAccountNumber: editing.bankAccountNumber || "",
+        accountHolderName: editing.accountHolderName || "",
+        bankAccountType: editing.bankAccountType || "",
+        biometricId: editing.biometricId || "",
+        wifiMac: editing.wifiMac || "",
+        deviceId: editing.deviceId || "",
       });
     } else {
       form.reset(defaultValues);
@@ -92,7 +118,13 @@ export default function EmployeePage() {
     form.reset(defaultValues);
   };
 
-  const tabs = useEmployeeTabs({ form, departments, positions });
+  const tabs = useEmployeeTabs({
+    form,
+    departments,
+    positions,
+    employees,
+    currentEmployeeId: editing?._id ?? null,
+  });
 
   return (
     <>

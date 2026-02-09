@@ -249,6 +249,18 @@ export function EmployeeDetailView({
                 <span className="text-muted-foreground">Tél. urgence</span>
                 <p className="font-medium">{employee.emergencyPhone ?? "—"}</p>
               </div>
+              <div>
+                <span className="text-muted-foreground">ID biométrique</span>
+                <p className="font-medium font-mono text-xs">{employee.biometricId ?? "—"}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">MAC WiFi</span>
+                <p className="font-medium font-mono text-xs">{employee.wifiMac ?? "—"}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">ID appareil</span>
+                <p className="font-medium font-mono text-xs">{employee.deviceId ?? "—"}</p>
+              </div>
             </div>
           )}
 

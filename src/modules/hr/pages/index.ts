@@ -1,9 +1,11 @@
 export { default as EmployeePage } from "./employees/EmployeePage";
+export { default as EmployeeCardTemplatePage } from "./employees/EmployeeCardTemplatePage";
 export { default as DepartmentPage } from "./departements/DepartmentPage";
 export { default as PositionPage } from "./positions/PositionPage";
 export { default as ContractPage } from "./contracts/ContractPage";
 export { default as LeavePage } from "./leave/LeavePage";
 export { default as AttendancePage } from "./attendences/AttendancePage";
+export { default as AttendanceLogPage } from "./attendences/AttendanceLogPage";
 export { default as PayrollPage } from "./payroll/PayrollPage";
 export { default as RecruitmentPage } from "./recruitements/RecruitmentPage";
 export { default as TrainingPage } from "./training/TrainingPage";

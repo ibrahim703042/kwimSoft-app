@@ -7,6 +7,10 @@ export const attendanceSchema = z.object({
   checkOutTime: z.string().optional(),
   status: z.string().default("present"),
   notes: z.string().optional(),
+  /** manual | biometric | wifi - for tracking and log display */
+  attendanceType: z.string().optional(),
+  /** MAC address (wifi), device ID (biometric), or IP when applicable */
+  identifier: z.string().optional(),
 });
 
 export type AttendanceFormValues = z.infer<typeof attendanceSchema>;
@@ -18,4 +22,6 @@ export const defaultValues: AttendanceFormValues = {
   checkOutTime: "",
   status: "present",
   notes: "",
+  attendanceType: "manual",
+  identifier: "",
 };

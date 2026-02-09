@@ -21,6 +21,8 @@ interface AttendanceItem {
   totalHours?: number;
   status: string;
   notes?: string;
+  attendanceType?: string;
+  identifier?: string;
   createdAt: string;
 }
 
@@ -63,6 +65,8 @@ export default function AttendancePage() {
         checkOutTime: editing.checkOutTime || "",
         status: editing.status || "present",
         notes: editing.notes || "",
+        attendanceType: editing.attendanceType || "manual",
+        identifier: editing.identifier || "",
       });
     } else {
       form.reset(defaultValues);
@@ -134,6 +138,16 @@ export default function AttendancePage() {
       id: "date",
       label: "Date",
       render: (r: AttendanceItem) => (r.date ? new Date(r.date).toLocaleDateString() : "—"),
+    },
+    {
+      id: "attendanceType",
+      label: "Type",
+      render: (r: AttendanceItem) => r.attendanceType || "manual",
+    },
+    {
+      id: "identifier",
+      label: "Identifiant",
+      render: (r: AttendanceItem) => r.identifier || "—",
     },
     { id: "checkInTime", label: "Arrivée", render: (r: AttendanceItem) => r.checkInTime || "—" },
     { id: "checkOutTime", label: "Départ", render: (r: AttendanceItem) => r.checkOutTime || "—" },

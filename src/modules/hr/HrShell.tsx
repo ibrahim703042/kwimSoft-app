@@ -12,12 +12,10 @@ import {
   Building2, Briefcase, FileText, CalendarOff,
   Clock, Wallet, UserPlus, GraduationCap, Receipt,
   LayoutGrid,
+  LayoutDashboard,
 } from "lucide-react";
 import { ModuleShell, ShellNavItem } from "@/core/ui";
 
-// ── Custom pages (existing real implementations) ──────────────
-
-// ── HR entity pages (full CRUD with Dialog forms) ─────────────
 import {
   EmployeePage,
   DepartmentPage,
@@ -31,13 +29,13 @@ import {
   ExpensePage,
 } from "./pages";
 import { UserTabbedView } from "../user";
+import HrDashboard from "./HrDashboard";
 
-// ── All tabs organized by section ─────────────────────────────
+// ── Sidebar: Dashboard first, then HR entities, then User management ─────
 const items: ShellNavItem[] = [
+  { key: "dashboard", label: "Tableau de bord", icon: LayoutDashboard, component: HrDashboard },
 
-  // { key: "hr-tabs", label: "Gestion RH", icon: LayoutGrid, component: HrTabbedView },
-
-  // ▸ People
+  // ▸ People & Organization
   { key: "employees", label: "Employés", icon: Users, component: EmployeePage },
 
   // ▸ Organization
@@ -63,6 +61,7 @@ export default function HrShell() {
       title="RH & Personnel"
       breadcrumbPath="/hr"
       items={items}
+      defaultSelected="dashboard"
       enableSearch
     />
   );

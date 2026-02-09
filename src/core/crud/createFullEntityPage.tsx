@@ -11,7 +11,7 @@
  * Usage:
  *   const WarehousePage = createFullEntityPage({ ...config });
  */
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -52,6 +52,10 @@ export interface FullEntityPageConfig<T = any> {
   transformBeforeSubmit?: (data: any) => any;
   /** Custom transform when loading data for edit */
   transformForEdit?: (data: any) => any;
+  /** Use wide dialog */
+  wide?: boolean;
+  /** Custom form renderer — overrides DynamicFormFields for complex layouts (tabs, images) */
+  renderForm?: (form: any, editing: T | null) => React.ReactNode;
 }
 
 // ─── Factory ──────────────────────────────────────────────────
@@ -179,8 +183,12 @@ export function createFullEntityPage<T extends { _id?: string; id?: string }>(
           isLoading={mutation.isPending}
           submitText={editing ? "Modifier" : "Créer"}
           cancelText="Annuler"
+          wide={config.wide}
         >
-          <DynamicFormFields form={form} fields={config.formFields} />
+          {config.renderForm
+            ? config.renderForm(form, editing)
+            : <DynamicFormFields form={form} fields={config.formFields} />
+          }
         </CrudForm>
       </>
     );

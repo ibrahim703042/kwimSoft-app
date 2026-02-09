@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
 import { FieldConfig } from "@/core/crud/DynamicFormFields";
+import { RelationalField } from "@/core/crud/RelationalField";
 
 const columns = [
   { header: "Reference", accessorKey: "reference" },
@@ -14,8 +15,40 @@ const columns = [
 const formFields: FieldConfig[] = [
   { name: "reference", label: "Référence", type: "text", placeholder: "Réf. transfert" },
   { name: "date", label: "Date", type: "date", required: true },
-  { name: "sourceWarehouse", label: "Entrepôt source (ID)", type: "text", required: true },
-  { name: "destinationWarehouse", label: "Entrepôt destination (ID)", type: "text", required: true },
+  {
+    name: "sourceWarehouse",
+    label: "Entrepôt source",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="sourceWarehouse"
+        label="Entrepôt source"
+        service="stock"
+        endpoint="/warehouse"
+        displayField="name"
+        placeholder="Chercher..."
+        required
+      />
+    ),
+  },
+  {
+    name: "destinationWarehouse",
+    label: "Entrepôt destination",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="destinationWarehouse"
+        label="Entrepôt destination"
+        service="stock"
+        endpoint="/warehouse"
+        displayField="name"
+        placeholder="Chercher..."
+        required
+      />
+    ),
+  },
   { name: "status", label: "Statut", type: "select", options: [
     { value: "draft", label: "Brouillon" },
     { value: "in_transit", label: "En transit" },

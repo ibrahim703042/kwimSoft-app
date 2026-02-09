@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
 import { FieldConfig } from "@/core/crud/DynamicFormFields";
+import { RelationalField } from "@/core/crud/RelationalField";
 
 const columns = [
   { header: "Reference", accessorKey: "reference" },
@@ -12,7 +13,23 @@ const columns = [
 const formFields: FieldConfig[] = [
   { name: "reference", label: "Référence", type: "text", placeholder: "Réf. inventaire" },
   { name: "date", label: "Date", type: "date", required: true },
-  { name: "warehouse", label: "Entrepôt (ID)", type: "text", required: true },
+  {
+    name: "warehouse",
+    label: "Entrepôt",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="warehouse"
+        label="Entrepôt"
+        service="stock"
+        endpoint="/warehouse"
+        displayField="name"
+        placeholder="Chercher..."
+        required
+      />
+    ),
+  },
   { name: "status", label: "Statut", type: "select", options: [
     { value: "draft", label: "Brouillon" },
     { value: "in_progress", label: "En cours" },

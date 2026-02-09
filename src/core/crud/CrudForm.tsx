@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import Loading from "@/components/utilitie/Loading";
+import { Maximize2, Minimize2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface CrudFormProps {
   open: boolean;
@@ -23,10 +25,14 @@ interface CrudFormProps {
   children: ReactNode;
   submitText?: string;
   cancelText?: string;
+  /** Allow expanding the dialog to full-screen (Odoo-like) */
+  expandable?: boolean;
+  /** Use wide dialog by default */
+  wide?: boolean;
 }
 
 /**
- * Generic CRUD form dialog
+ * Generic CRUD form dialog — Odoo-like with expand/collapse toggle
  * Wraps react-hook-form with dialog and loading states
  */
 export function CrudForm({
@@ -40,13 +46,46 @@ export function CrudForm({
   children,
   submitText = "Save",
   cancelText = "Cancel",
+  expandable = true,
+  wide = false,
 }: CrudFormProps) {
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+      <DialogContent
+        className={cn(
+          "overflow-y-auto transition-all duration-200",
+          expanded
+            ? "!max-w-[95vw] !w-[95vw] !max-h-[95vh] !h-[95vh]"
+            : wide
+              ? "max-w-4xl max-h-[90vh]"
+              : "max-w-2xl max-h-[90vh]"
+        )}
+      >
+        <DialogHeader className="flex flex-row items-start justify-between">
+          <div className="flex-1">
+            <DialogTitle>{title}</DialogTitle>
+            {description && (
+              <DialogDescription>{description}</DialogDescription>
+            )}
+          </div>
+          {expandable && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 shrink-0"
+              onClick={() => setExpanded(!expanded)}
+              title={expanded ? "Réduire" : "Agrandir"}
+            >
+              {expanded ? (
+                <Minimize2 className="h-4 w-4" />
+              ) : (
+                <Maximize2 className="h-4 w-4" />
+              )}
+            </Button>
+          )}
         </DialogHeader>
 
         <Form {...form}>
@@ -66,7 +105,7 @@ export function CrudForm({
                 {isLoading ? (
                   <div className="flex items-center space-x-2">
                     <Loading loading={true} />
-                    <span>Saving...</span>
+                    <span>Enregistrement...</span>
                   </div>
                 ) : (
                   submitText

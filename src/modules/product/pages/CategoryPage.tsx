@@ -1,8 +1,19 @@
 import { z } from "zod";
 import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
 import { FieldConfig } from "@/core/crud/DynamicFormFields";
+import { ImageUploadField } from "@/core/crud/ImageUploadField";
 
 const columns = [
+  {
+    header: "Image",
+    accessorKey: "image",
+    cell: ({ row }: any) =>
+      row.original.image ? (
+        <img src={row.original.image} alt={row.original.name} className="w-10 h-10 rounded object-cover" />
+      ) : (
+        <div className="w-10 h-10 rounded bg-muted" />
+      ),
+  },
   { header: "Nom", accessorKey: "name" },
   { header: "Slug", accessorKey: "slug" },
   {
@@ -24,6 +35,13 @@ const formFields: FieldConfig[] = [
   { name: "name", label: "Nom", type: "text", placeholder: "Nom de la catégorie", required: true },
   { name: "slug", label: "Slug", type: "text", placeholder: "slug-de-la-categorie" },
   { name: "description", label: "Description", type: "textarea", placeholder: "Description de la catégorie", colSpan: 2 },
+  {
+    name: "image",
+    label: "Image",
+    type: "custom",
+    colSpan: 2,
+    render: (form) => <ImageUploadField form={form} name="image" label="Image de la catégorie" />,
+  },
   { name: "isActive", label: "Actif", type: "checkbox", description: "Cette catégorie est-elle active ?" },
 ];
 
@@ -31,6 +49,7 @@ const formSchema = z.object({
   name: z.string().min(1, "Le nom est requis"),
   slug: z.string().optional(),
   description: z.string().optional(),
+  image: z.string().optional(),
   isActive: z.boolean().default(true),
 });
 
@@ -44,7 +63,7 @@ const CategoryPage = createFullEntityPage({
   columns,
   formFields,
   formSchema,
-  defaultValues: { name: "", slug: "", description: "", isActive: true },
+  defaultValues: { name: "", slug: "", description: "", image: "", isActive: true },
 });
 
 export default CategoryPage;

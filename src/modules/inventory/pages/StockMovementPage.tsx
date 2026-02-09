@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
 import { FieldConfig } from "@/core/crud/DynamicFormFields";
+import { RelationalField } from "@/core/crud/RelationalField";
 
 const columns = [
   { header: "Reference", accessorKey: "reference" },
@@ -15,7 +16,23 @@ const columns = [
 
 const formFields: FieldConfig[] = [
   { name: "reference", label: "Référence", type: "text", placeholder: "Réf. auto-générée" },
-  { name: "product", label: "Produit (ID)", type: "text", required: true },
+  {
+    name: "product",
+    label: "Produit",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="product"
+        label="Produit"
+        service="product"
+        endpoint="/product"
+        displayField="name"
+        placeholder="Chercher..."
+        required
+      />
+    ),
+  },
   { name: "type", label: "Type", type: "select", required: true, options: [
     { value: "inbound", label: "Entrée" },
     { value: "outbound", label: "Sortie" },
@@ -24,8 +41,40 @@ const formFields: FieldConfig[] = [
     { value: "return", label: "Retour" },
   ]},
   { name: "quantity", label: "Quantité", type: "number", min: 1, required: true },
-  { name: "sourceLocation", label: "Emplacement source (ID)", type: "text" },
-  { name: "destinationLocation", label: "Emplacement destination (ID)", type: "text" },
+  {
+    name: "sourceLocation",
+    label: "Emplacement source",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="sourceLocation"
+        label="Emplacement source"
+        service="stock"
+        endpoint="/location"
+        displayField="name"
+        secondaryField="code"
+        placeholder="Chercher..."
+      />
+    ),
+  },
+  {
+    name: "destinationLocation",
+    label: "Emplacement destination",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="destinationLocation"
+        label="Emplacement destination"
+        service="stock"
+        endpoint="/location"
+        displayField="name"
+        secondaryField="code"
+        placeholder="Chercher..."
+      />
+    ),
+  },
   { name: "date", label: "Date", type: "date", required: true },
   { name: "status", label: "Statut", type: "select", options: [
     { value: "draft", label: "Brouillon" },

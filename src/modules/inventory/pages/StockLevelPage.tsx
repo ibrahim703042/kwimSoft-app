@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
 import { FieldConfig } from "@/core/crud/DynamicFormFields";
+import { RelationalField } from "@/core/crud/RelationalField";
 
 const columns = [
   { header: "Product", accessorKey: "product", cell: ({ row }: any) => row.original.product?.name || "—" },
@@ -11,8 +12,40 @@ const columns = [
 ];
 
 const formFields: FieldConfig[] = [
-  { name: "product", label: "Produit (ID)", type: "text", placeholder: "ID du produit", required: true },
-  { name: "warehouse", label: "Entrepôt (ID)", type: "text", placeholder: "ID de l'entrepôt", required: true },
+  {
+    name: "product",
+    label: "Produit",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="product"
+        label="Produit"
+        service="product"
+        endpoint="/product"
+        displayField="name"
+        placeholder="Chercher..."
+        required
+      />
+    ),
+  },
+  {
+    name: "warehouse",
+    label: "Entrepôt",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="warehouse"
+        label="Entrepôt"
+        service="stock"
+        endpoint="/warehouse"
+        displayField="name"
+        placeholder="Chercher..."
+        required
+      />
+    ),
+  },
   { name: "quantity", label: "Quantité", type: "number", min: 0, required: true },
   { name: "reservedQuantity", label: "Réservé", type: "number", min: 0 },
 ];

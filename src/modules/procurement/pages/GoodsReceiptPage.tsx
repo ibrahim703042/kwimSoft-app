@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
 import { FieldConfig } from "@/core/crud/DynamicFormFields";
+import { RelationalField } from "@/core/crud/RelationalField";
 
 const columns = [
   { header: "Référence", accessorKey: "reference" },
@@ -36,7 +37,22 @@ const columns = [
 
 const formFields: FieldConfig[] = [
   { name: "reference", label: "Référence", type: "text", placeholder: "GR-001" },
-  { name: "purchaseOrder", label: "Bon de commande (ID)", type: "text", placeholder: "ID du bon de commande" },
+  {
+    name: "purchaseOrder",
+    label: "Bon de commande",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="purchaseOrder"
+        label="Bon de commande"
+        service="stock"
+        endpoint="/purchase-order"
+        displayField="orderNumber"
+        placeholder="Chercher bon de commande..."
+      />
+    ),
+  },
   { name: "receiptDate", label: "Date de réception", type: "date", required: true },
   {
     name: "status",

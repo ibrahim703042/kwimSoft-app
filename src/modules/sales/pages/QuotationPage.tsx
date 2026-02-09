@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
 import { FieldConfig } from "@/core/crud/DynamicFormFields";
+import { RelationalField } from "@/core/crud/RelationalField";
 
 const columns = [
   { header: "N° Devis", accessorKey: "quotationNumber" },
@@ -53,7 +54,22 @@ const columns = [
 
 const formFields: FieldConfig[] = [
   { name: "quotationNumber", label: "N° Devis", type: "text", placeholder: "DEV-001" },
-  { name: "customer", label: "Client (ID)", type: "text", placeholder: "ID du client" },
+  {
+    name: "customer",
+    label: "Client",
+    type: "custom" as const,
+    render: (form: any) => (
+      <RelationalField
+        form={form}
+        name="customer"
+        label="Client"
+        service="stock"
+        endpoint="/customer"
+        displayField="name"
+        placeholder="Chercher client..."
+      />
+    ),
+  },
   { name: "date", label: "Date", type: "date" },
   { name: "validUntil", label: "Valide jusqu'au", type: "date" },
   { name: "totalAmount", label: "Montant total", type: "number", placeholder: "0", min: 0 },

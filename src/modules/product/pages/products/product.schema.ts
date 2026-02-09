@@ -50,6 +50,12 @@ export const productSchema = z.object({
     value: z.string(),
     image: z.string().optional(),
   })).optional(),
+  // Combo choices — when productType is "combo" (like Odoo Combo Choices)
+  comboItems: z.array(z.object({
+    product: z.string(),
+    productPrice: z.number().min(0).optional().or(z.literal("")),
+    quantity: z.number().min(1).optional().or(z.literal("")),
+  })).optional(),
   tags: z.array(z.string()).optional(),
 });
 
@@ -87,5 +93,6 @@ export const defaultValues: ProductFormValues = {
   trackingType: "none",
   image: "",
   attributes: [],
+  comboItems: [],
   tags: [],
 };

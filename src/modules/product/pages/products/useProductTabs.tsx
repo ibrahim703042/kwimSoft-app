@@ -30,13 +30,15 @@ export function useProductTabs(form: UseFormReturn<ProductFormValues>): FormTab[
     render: (f) => <GeneralTab form={f} />,
   });
 
-  // 2. Attributes & Variants (goods/combo only)
+  // 2. Attributes & Variants / Combo Choices (goods/combo only)
   if (isGoods) {
+    const attrCount = form.watch("attributes")?.length || 0;
+    const comboCount = form.watch("comboItems")?.length || 0;
     tabs.push({
       key: "attributes",
-      label: "Attributs & Variantes",
+      label: productType === "combo" ? "Choix Combo" : "Attributs & Variantes",
       icon: <SlidersHorizontal size={14} />,
-      badge: form.watch("attributes")?.length || 0,
+      badge: attrCount + comboCount,
       render: (f) => <AttributesTab form={f as UseFormReturn<ProductFormValues>} />,
     });
   }

@@ -38,6 +38,9 @@ import { financeModule } from "@/modules/finance";
 // ─── Procurement ──────────────────────────────────────────────
 import { procurementModule } from "@/modules/procurement";
 
+// ─── Manufacturing ────────────────────────────────────────────
+import { manufacturingModule } from "@/modules/manufacturing";
+
 // ─── Sales ────────────────────────────────────────────────────
 import { salesModule } from "@/modules/sales";
 
@@ -81,6 +84,9 @@ export const modules: FrontModule[] = [
 
   // Procurement
   procurementModule,
+
+  // Manufacturing
+  manufacturingModule,
 
   // Sales
   salesModule,

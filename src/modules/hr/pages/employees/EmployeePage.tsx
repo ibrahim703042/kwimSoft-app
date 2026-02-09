@@ -19,10 +19,12 @@ import { employeeApi, departmentApi, positionApi } from "../../api/hr.api";
 import { employeeSchema, defaultValues, type EmployeeFormValues } from "./employee.schema";
 import { employeeColumns } from "./employee.columns";
 import { useEmployeeTabs } from "./useEmployeeTabs";
+import { EmployeeDetailView } from "./EmployeeDetailView";
 
 export default function EmployeePage() {
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
+  const [viewing, setViewing] = useState<any>(null);
   const qc = useQueryClient();
 
   const { data: deptData } = useQuery({
@@ -130,6 +132,7 @@ export default function EmployeePage() {
           setEditing(row);
           setFormOpen(true);
         }}
+        onView={(row: any) => setViewing(row)}
       />
 
       <CrudForm
@@ -149,6 +152,12 @@ export default function EmployeePage() {
         <div className="border-b my-2" />
         <TabbedForm form={form} tabs={tabs} />
       </CrudForm>
+
+      <EmployeeDetailView
+        employee={viewing}
+        open={!!viewing}
+        onOpenChange={(open) => !open && setViewing(null)}
+      />
     </>
   );
 }

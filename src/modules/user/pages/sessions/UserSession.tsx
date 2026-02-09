@@ -1,12 +1,13 @@
-import OrderTable from "./OrderTable";
+import OrderTable from "../OrderTable";
 
-export default function Role() {
+export default function UserSession() {
 
     const orders = [
         { code: "PG234RUJM", priority: "Premium delivery", amount: 5, destination: "Siemoa, DIY", status: "Shipped" },
         { code: "F5234ERTM", priority: "Free Shipping", amount: 1, destination: "Kloten, Joburg", status: "Delivered" },
         { code: "PG299RUSX", priority: "Premium delivery", amount: 5, destination: "Bonrui, DIY", status: "Paid" },
     ];
+
 
     return (
         <div>

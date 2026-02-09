@@ -1,9 +1,9 @@
 import { Trash2, Monitor, Smartphone } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { userSessionApi } from "@/core/api";
-import EnhancedTable from "./EnhancedTable";
+import EnhancedTable from "../EnhancedTable";
 import { format } from "date-fns";
 
 interface SessionItem {

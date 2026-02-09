@@ -1,81 +1,69 @@
 import { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2 } from "lucide-react";
-import { Button } from "../../../components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../../components/ui/dialog";
-import { Label } from "../../../components/ui/label";
-import { Input } from "../../../components/ui/input";
+import { Button } from "../../../../components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../../../components/ui/dialog";
+import { Label } from "../../../../components/ui/label";
+import { Input } from "../../../../components/ui/input";
 import { useFormik } from "formik";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import * as Yup from "yup";
-import { roleApi, permissionApi } from "@/core/api";
-import EnhancedTable from "./EnhancedTable";
-import { Checkbox } from "@/components/ui/checkbox";
+import { groupApi } from "@/core/api";
+import EnhancedTable from "../EnhancedTable";
 
-interface RoleFormValues {
+interface GroupFormValues {
     name: string;
     description?: string;
-    permissions: string[];
 }
 
-interface RoleItem {
+interface GroupItem {
     _id: string;
     name: string;
     description?: string;
-    permissions: string[];
+    memberCount?: number;
     createdAt: string;
 }
 
-const roleSchema = Yup.object({
-    name: Yup.string().required("Le nom du rôle est requis"),
+const groupSchema = Yup.object({
+    name: Yup.string().required("Le nom du groupe est requis"),
     description: Yup.string(),
 });
 
-export default function RoleNew() {
+export default function GroupNew() {
     const [open, setOpen] = useState(false);
-    const [editingRole, setEditingRole] = useState<RoleItem | null>(null);
+    const [editingGroup, setEditingGroup] = useState<GroupItem | null>(null);
     const queryClient = useQueryClient();
 
-    // Fetch roles
-    const { data: rolesData, isLoading: loadingRoles } = useQuery({
-        queryKey: ["roles"],
+    // Fetch groups
+    const { data: groupsData, isLoading: loadingGroups } = useQuery({
+        queryKey: ["groups"],
         queryFn: async () => {
-            const response = await roleApi.getAll();
+            const response = await groupApi.getAll();
             return response.data;
         },
     });
 
-    // Fetch available permissions
-    const { data: permissionsData } = useQuery({
-        queryKey: ["permissions"],
-        queryFn: async () => {
-            const response = await permissionApi.getAll();
-            return response.data;
-        },
-    });
+    const groups = groupsData?.data || [];
 
-    const roles = rolesData?.data || [];
-    const availablePermissions = permissionsData?.data || [];
-
-    // Create/Update role mutation
+    // Create/Update group mutation
     const mutation = useMutation({
-        mutationFn: async (values: RoleFormValues) => {
-            if (editingRole) {
-                return await roleApi.update(editingRole._id, values);
+        mutationFn: async (values: GroupFormValues) => {
+            if (editingGroup) {
+                return await groupApi.update(editingGroup._id, values);
             } else {
-                return await roleApi.create(values);
+                return await groupApi.create(values);
             }
         },
         onSuccess: () => {
             Swal.fire({
                 title: "Succès!",
-                text: `Le rôle a été ${editingRole ? "modifié" : "créé"} avec succès.`,
+                text: `Le groupe a été ${editingGroup ? "modifié" : "créé"} avec succès.`,
                 icon: "success",
                 confirmButtonText: "OK",
             });
-            queryClient.invalidateQueries({ queryKey: ["roles"] });
+            queryClient.invalidateQueries({ queryKey: ["groups"] });
             setOpen(false);
-            setEditingRole(null);
+            setEditingGroup(null);
             formik.resetForm();
         },
         onError: (error: any) => {
@@ -88,56 +76,54 @@ export default function RoleNew() {
         },
     });
 
-    // Delete role mutation
+    // Delete group mutation
     const deleteMutation = useMutation({
         mutationFn: async (id: string) => {
-            return await roleApi.delete(id);
+            return await groupApi.delete(id);
         },
         onSuccess: () => {
             Swal.fire({
                 title: "Supprimé!",
-                text: "Le rôle a été supprimé avec succès.",
+                text: "Le groupe a été supprimé avec succès.",
                 icon: "success",
                 confirmButtonText: "OK",
             });
-            queryClient.invalidateQueries({ queryKey: ["roles"] });
+            queryClient.invalidateQueries({ queryKey: ["groups"] });
         },
         onError: () => {
             Swal.fire({
                 title: "Erreur!",
-                text: "Impossible de supprimer le rôle.",
+                text: "Impossible de supprimer le groupe.",
                 icon: "error",
                 confirmButtonText: "OK",
             });
         },
     });
 
-    const formik = useFormik<RoleFormValues>({
+    const formik = useFormik<GroupFormValues>({
         initialValues: {
             name: "",
             description: "",
-            permissions: [],
         },
-        validationSchema: roleSchema,
+        validationSchema: groupSchema,
         onSubmit: async (values) => {
             await mutation.mutateAsync(values);
         },
     });
 
     useEffect(() => {
-        if (editingRole) {
+        if (editingGroup) {
             formik.setValues({
-                name: editingRole.name,
-                description: editingRole.description || "",
-                permissions: editingRole.permissions || [],
+                name: editingGroup.name,
+                description: editingGroup.description || "",
             });
         } else {
             formik.resetForm();
         }
-    }, [editingRole]);
+    }, [editingGroup]);
 
-    const handleEdit = (role: RoleItem) => {
-        setEditingRole(role);
+    const handleEdit = (group: GroupItem) => {
+        setEditingGroup(group);
         setOpen(true);
     };
 
@@ -160,36 +146,22 @@ export default function RoleNew() {
 
     const handleCloseDialog = () => {
         setOpen(false);
-        setEditingRole(null);
+        setEditingGroup(null);
         formik.resetForm();
-    };
-
-    const togglePermission = (permission: string) => {
-        const currentPermissions = formik.values.permissions;
-        if (currentPermissions.includes(permission)) {
-            formik.setFieldValue(
-                "permissions",
-                currentPermissions.filter((p) => p !== permission)
-            );
-        } else {
-            formik.setFieldValue("permissions", [...currentPermissions, permission]);
-        }
     };
 
     const columns = [
         { id: "name", label: "Nom" },
         { id: "description", label: "Description" },
         {
-            id: "permissions",
-            label: "Permissions",
-            render: (row: RoleItem) => (
-                <span className="text-sm">{row.permissions.length} permission(s)</span>
-            ),
+            id: "memberCount",
+            label: "Membres",
+            render: (row: GroupItem) => <span>{row.memberCount || 0}</span>,
         },
         {
             id: "actions",
             label: "Actions",
-            render: (row: RoleItem) => (
+            render: (row: GroupItem) => (
                 <div className="flex gap-2">
                     <Button size="sm" variant="outline" onClick={() => handleEdit(row)}>
                         <Pencil className="h-4 w-4" />
@@ -207,7 +179,7 @@ export default function RoleNew() {
             <div className="bg-white py-2 px-3 h-full border rounded-md">
                 <div>
                     <div className="bg-slate-100 p-1 rounded px-2 py-1">
-                        <p className="bg-[#0F123F] inline-block text-white px-3 py-1 rounded text-[0.7rem]">Rôles</p>
+                        <p className="bg-[#0F123F] inline-block text-white px-3 py-1 rounded text-[0.7rem]">Groupes</p>
                     </div>
                 </div>
 
@@ -215,15 +187,15 @@ export default function RoleNew() {
                     <div className="flex justify-end mb-3">
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
-                                <Button className="bg-[#0F123F] py-2 px-2 text-[0.8rem]" size="sm" onClick={() => setEditingRole(null)}>
+                                <Button className="bg-[#0F123F] py-2 px-2 text-[0.8rem]" size="sm" onClick={() => setEditingGroup(null)}>
                                     <Plus color="white" />
-                                    Ajouter un rôle
+                                    Ajouter un groupe
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto">
+                            <DialogContent className="sm:max-w-md">
                                 <form onSubmit={formik.handleSubmit}>
                                     <DialogHeader>
-                                        <DialogTitle>{editingRole ? "Modifier le rôle" : "Nouveau rôle"}</DialogTitle>
+                                        <DialogTitle>{editingGroup ? "Modifier le groupe" : "Nouveau groupe"}</DialogTitle>
                                     </DialogHeader>
                                     <div className="grid gap-4 py-4">
                                         <div>
@@ -248,24 +220,6 @@ export default function RoleNew() {
                                                 onBlur={formik.handleBlur}
                                             />
                                         </div>
-
-                                        <div>
-                                            <Label className="mb-2 block">Permissions</Label>
-                                            <div className="space-y-2 max-h-60 overflow-y-auto border rounded p-2">
-                                                {availablePermissions.map((permission: any) => (
-                                                    <div key={permission.code} className="flex items-center space-x-2">
-                                                        <Checkbox
-                                                            id={permission.code}
-                                                            checked={formik.values.permissions.includes(permission.code)}
-                                                            onCheckedChange={() => togglePermission(permission.code)}
-                                                        />
-                                                        <label htmlFor={permission.code} className="text-sm cursor-pointer">
-                                                            {permission.name} ({permission.code})
-                                                        </label>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div className="flex justify-end gap-2">
@@ -281,10 +235,10 @@ export default function RoleNew() {
                         </Dialog>
                     </div>
 
-                    {loadingRoles ? (
+                    {loadingGroups ? (
                         <div className="text-center py-4">Chargement...</div>
                     ) : (
-                        <EnhancedTable columns={columns} data={roles} />
+                        <EnhancedTable columns={columns} data={groups} />
                     )}
                 </div>
             </div>

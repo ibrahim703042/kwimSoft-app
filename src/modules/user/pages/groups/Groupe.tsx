@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import OrderTable from "./OrderTable";
+import OrderTable from "../OrderTable";
 
 interface GroupFormValues {
     name: string;

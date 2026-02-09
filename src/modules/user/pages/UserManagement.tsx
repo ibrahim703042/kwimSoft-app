@@ -1,9 +1,9 @@
 import { Group, GitFork, SquareUser, BookUser } from "lucide-react";
 import { ModuleShell, ShellNavItem } from "@/core/ui";
-import GroupNew from "./GroupNew";
-import RoleNew from "./RoleNew";
-import UserNew from "./UserNew";
-import UserSessionNew from "./UserSessionNew";
+import GroupNew from "./groups/GroupNew";
+import RoleNew from "./roles/RoleNew";
+import UserNew from "./users/UserNew";
+import UserSessionNew from "./sessions/UserSessionNew";
 
 const items: ShellNavItem[] = [
   { key: "groupe",       label: "Groupe",       icon: Group,      component: GroupNew },

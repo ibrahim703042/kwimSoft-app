@@ -7,20 +7,24 @@
 export const isDevelopment = import.meta.env?.DEV ?? process.env.NODE_ENV === 'development';
 export const isProduction = import.meta.env?.PROD ?? process.env.NODE_ENV === 'production';
 
+// In development, allow overriding API host (e.g. when frontend runs on another server)
+// Set VITE_API_HOST to your API server, e.g. http://192.168.1.100 or http://api.mycompany.local (no trailing slash, no port)
+const DEV_API_HOST = (import.meta.env?.VITE_API_HOST as string)?.trim()?.replace(/\/+$/, "") || "http://127.0.0.1";
+
 // Base URLs for different environments
 const BASE_URLS = {
   development: {
-    userManagement: "http://127.0.0.1:9080/api/user-management",
-    transport: "http://127.0.0.1:9084/api/transport-management",
-    product: "http://127.0.0.1:9082/api/product-management",
-    hr: "http://127.0.0.1:9081/api/hr-management",
-    stock: "http://127.0.0.1:9083/api/stock-management",
-    gateway: "http://127.0.0.1:9089/api/app-gateway",
-    upload: "http://127.0.0.1:9080/api/user-management",
+    userManagement: `${DEV_API_HOST}:9080/api/user-management`,
+    transport: `${DEV_API_HOST}:9084/api/transport-management`,
+    product: `${DEV_API_HOST}:9082/api/product-management`,
+    hr: `${DEV_API_HOST}:9081/api/hr-management`,
+    stock: `${DEV_API_HOST}:9083/api/stock-management`,
+    gateway: `${DEV_API_HOST}:9089/api/app-gateway`,
+    upload: `${DEV_API_HOST}:9080/api/user-management`,
     // Aliases for backward compat
-    busManagement: "http://127.0.0.1:9084/api/transport-management",
-    finance: "http://127.0.0.1:9083/api/stock-management",
-    flightManagement: "http://127.0.0.1:9084/api/transport-management",
+    busManagement: `${DEV_API_HOST}:9084/api/transport-management`,
+    finance: `${DEV_API_HOST}:9083/api/stock-management`,
+    flightManagement: `${DEV_API_HOST}:9084/api/transport-management`,
   },
   production: {
     userManagement: "https://api.kwimsoft.com/api/user-management",

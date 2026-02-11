@@ -2,10 +2,10 @@
 
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string
+  readonly VITE_API_HOST?: string
   readonly DEV: boolean
   readonly PROD: boolean
   readonly MODE: string
-  // Add more env variables as needed
 }
 
 interface ImportMeta {

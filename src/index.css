@@ -25,12 +25,18 @@
   font-style: normal;
 }
 
-/* Body styles */
+/* Body styles - allow scrolling by default (for landing pages) */
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #eff3f6;
-  overflow: hidden;
+  overflow-x: hidden; /* Only hide horizontal overflow */
+  overflow-y: auto;   /* Allow vertical scrolling */
   font-weight: 400;
+}
+
+/* For dashboard layout - apply overflow hidden to the app shell */
+body.dashboard-layout {
+  overflow: hidden;
 }
 
 /* Tailwind custom CSS variables */

@@ -8,6 +8,9 @@ import NotFound from "@/components/others/app/NotFound";
 import ProfilePage from "@/modules/account/ProfilePage";
 import SettingsPage from "@/modules/account/SettingsPage";
 import PageTitle from "@/components/utilitie/PageTitle";
+import LandingPage from "@/pages/landing/LandingPage";
+import CreateEnterprise from "@/pages/landing/CreateEnterprise";
+import { isLandingPage } from "@/utils/subdomain";
 
 /**
  * Dynamic router that builds routes from registered modules
@@ -15,7 +18,21 @@ import PageTitle from "@/components/utilitie/PageTitle";
 export function AppRouter() {
   const routes = getAllRoutes();
   const { isAuthenticated } = useAuthStore();
+  const showLanding = isLandingPage();
 
+  // If on main domain (no subdomain), show landing page routes
+  if (showLanding) {
+    return (
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/create-enterprise" element={<CreateEnterprise />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    );
+  }
+
+  // Subdomain routes (normal app routes)
   return (
     <Routes>
       {/* Public auth routes */}

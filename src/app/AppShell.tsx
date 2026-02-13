@@ -1,9 +1,11 @@
 import { useLocation } from "react-router-dom";
 import { useAuthStore } from "@/core/auth";
+import { useEffect } from "react";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 import { AppRouter } from "./Router";
 import { getAllMenus } from "./registerModules";
+import { isLandingPage } from "@/utils/subdomain";
 
 /**
  * Main application shell
@@ -13,17 +15,33 @@ export function AppShell() {
   const location = useLocation();
   const { isAuthenticated } = useAuthStore();
   const menus = getAllMenus();
+  const showLanding = isLandingPage();
 
   // Check if current page needs special layout (no padding)
   const isSpecialPage =
     location.pathname.startsWith("/trajet") ||
     location.pathname.startsWith("/administration/map-detail");
 
-  // Check if current route is an auth route
-  const isAuthRoute = ["/login", "/forgot-password", "/update-password"].includes(location.pathname);
+  // Check if current route is a public route
+  const isPublicRoute = ["/", "/login", "/register", "/forgot-password", "/update-password"].includes(location.pathname);
 
-  // For auth routes, show only the router without shell
-  if (isAuthRoute || !isAuthenticated) {
+  // Add/remove dashboard-layout class on body for overflow control
+  useEffect(() => {
+    if (!isPublicRoute && isAuthenticated && !showLanding) {
+      document.body.classList.add("dashboard-layout");
+    } else {
+      document.body.classList.remove("dashboard-layout");
+    }
+    return () => document.body.classList.remove("dashboard-layout");
+  }, [isPublicRoute, isAuthenticated, showLanding]);
+
+  // If on landing page (main domain), show only router without shell
+  if (showLanding) {
+    return <AppRouter />;
+  }
+
+  // For public routes or unauthenticated users, show only the router without shell
+  if (isPublicRoute || !isAuthenticated) {
     return <AppRouter />;
   }
 

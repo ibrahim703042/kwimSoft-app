@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { API_CONFIG } from "@/config";
+import { AuthHeader, AuthFooter } from "@/components/layout";
 
 /* ─────────────── Validation Schemas ─────────────── */
 const orgSchema = z.object({
@@ -303,7 +304,12 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex flex-col">
+      {/* Header */}
+      <AuthHeader showBackButton backTo="/trial" />
+      
+      {/* Main Content */}
+      <div className="flex-1 flex">
       {/* Left Panel - Branding */}
       <div className="hidden lg:flex lg:w-[45%] bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 relative overflow-hidden">
         {/* Background pattern */}
@@ -741,6 +747,10 @@ export default function Register() {
           </div>
         </div>
       </div>
+      </div>
+      
+      {/* Footer */}
+      <AuthFooter />
     </div>
   );
 }

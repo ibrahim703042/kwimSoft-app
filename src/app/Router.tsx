@@ -9,6 +9,7 @@ import NotFound from "@/components/others/app/NotFound";
 import ProfilePage from "@/modules/account/ProfilePage";
 import SettingsPage from "@/modules/account/SettingsPage";
 import PageTitle from "@/components/utilitie/PageTitle";
+import DiagnosticPage from "@/pages/DiagnosticPage";
 
 // Lazy-load public pages
 const LandingPage = lazy(() => import("@/pages/landing/LandingPage"));
@@ -38,11 +39,11 @@ export function AppRouter() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-        {/* Public landing page — shown when not authenticated */}
-        <Route
-          path="/"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LandingPage />}
-        />
+        {/* Public landing page — always shown as home */}
+        <Route path="/" element={<LandingPage />} />
+
+        {/* Diagnostic page to check auth status */}
+        <Route path="/diagnostic" element={<DiagnosticPage />} />
 
         {/* Public trial page with module selection */}
         <Route

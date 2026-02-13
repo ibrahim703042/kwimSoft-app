@@ -5,7 +5,7 @@ export const menu: MenuItem[] = [
   {
     id: "dashboard",
     label: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: Speedometer,
   },
 ];

@@ -88,7 +88,7 @@ export default function CreateEnterprise() {
 
       // Store enterprise info
       localStorage.setItem('enterprise', JSON.stringify(response.enterprise));
-      
+
       // Redirect to the new subdomain
       const newUrl = `${window.location.protocol}//${data.subdomain}.${window.location.host.replace(/^[^.]+\./, '')}`;
       window.location.href = `${newUrl}/login?new=true`;

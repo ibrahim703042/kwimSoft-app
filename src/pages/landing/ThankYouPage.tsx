@@ -2,9 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   CheckCircle2, ArrowRight, Sparkles, Mail, Key, Layers,
-  Building2, Users, BookOpen, Headphones, Star, ChevronRight
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+  Building2, Users, BookOpen, Headphones, Star} from "lucide-react";
 
 export default function ThankYouPage() {
   const navigate = useNavigate();

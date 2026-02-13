@@ -4,13 +4,13 @@ import PageTitle from "@/components/utilitie/PageTitle";
 
 export const routes: AppRoute[] = [
   {
-    path: "/",
+    path: "/dashboard",
     element: (
       <>
         <PageTitle title="Dashboard" />
         <DashboardPage />
       </>
     ),
-    index: true,
+    index: false,
   },
 ];

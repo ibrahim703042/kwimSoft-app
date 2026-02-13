@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/core/auth";
 import {
   Truck, Users, Package, BarChart3, Shield, Globe, Zap, ChevronRight,
   CheckCircle2, ArrowRight, Star, Menu, X, Play, Sparkles,
   Building2, Wrench, ShoppingCart, Factory, DollarSign, ClipboardList,
-  Car, Boxes, UserCog, TrendingUp, Layers, MousePointerClick
+  Car, Boxes, UserCog, TrendingUp, Layers, MousePointerClick, LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -203,6 +204,7 @@ function ModuleCard({ mod, index }: { mod: typeof modules[0]; index: number }) {
 /* ─────────────── Main Landing Page ─────────────── */
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuthStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const heroRef = useRef(null);
@@ -221,6 +223,12 @@ export default function LandingPage() {
   const scrollTo = (id: string) => {
     setMobileMenuOpen(false);
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    window.location.reload(); // Force reload to clear state
   };
 
   return (
@@ -266,18 +274,38 @@ export default function LandingPage() {
 
               {/* Desktop CTAs */}
               <div className="hidden md:flex items-center gap-3">
-                <button
-                  onClick={() => navigate("/login")}
-                  className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors px-4 py-2"
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => navigate("/trial")}
-                  className="text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition-all"
-                >
-                  Start Free Trial
-                </button>
+                {isAuthenticated ? (
+                  <>
+                    <button
+                      onClick={() => navigate("/dashboard")}
+                      className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors px-4 py-2"
+                    >
+                      Dashboard
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="text-sm font-medium text-gray-700 hover:text-red-600 transition-colors px-4 py-2 flex items-center gap-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => navigate("/login")}
+                      className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors px-4 py-2"
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      onClick={() => navigate("/trial")}
+                      className="text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition-all"
+                    >
+                      Start Free Trial
+                    </button>
+                  </>
+                )}
               </div>
 
               {/* Mobile Menu Button */}
@@ -311,18 +339,38 @@ export default function LandingPage() {
                   </button>
                 ))}
                 <hr className="my-2" />
-                <button
-                  onClick={() => navigate("/login")}
-                  className="block w-full text-left text-sm font-medium text-gray-700 py-2"
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => navigate("/trial")}
-                  className="block w-full text-center text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-2.5 rounded-full"
-                >
-                  Start Free Trial
-                </button>
+                {isAuthenticated ? (
+                  <>
+                    <button
+                      onClick={() => navigate("/dashboard")}
+                      className="block w-full text-left text-sm font-medium text-gray-700 py-2"
+                    >
+                      Dashboard
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left text-sm font-medium text-red-600 py-2 flex items-center gap-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => navigate("/login")}
+                      className="block w-full text-left text-sm font-medium text-gray-700 py-2"
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      onClick={() => navigate("/trial")}
+                      className="block w-full text-center text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-2.5 rounded-full"
+                    >
+                      Start Free Trial
+                    </button>
+                  </>
+                )}
               </div>
             </motion.div>
           )}

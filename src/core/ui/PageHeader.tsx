@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import Breadcrumbs from "@/components/app/Breadcrumbs";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 interface PageHeaderProps {
   title: string;

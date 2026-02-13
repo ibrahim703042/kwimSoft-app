@@ -22,26 +22,29 @@ export function AppShell() {
     location.pathname.startsWith("/trajet") ||
     location.pathname.startsWith("/administration/map-detail");
 
-  // Check if current route is a public route
-  const isPublicRoute = ["/", "/login", "/register", "/forgot-password", "/update-password"].includes(location.pathname);
+  // Check if current route is a public route (no shell needed)
+  const isPublicRoute = ["/", "/trial", "/register", "/thanks/trial", "/odoo-enterprise/invite-users", "/create-enterprise", "/login", "/forgot-password", "/update-password"].includes(location.pathname);
+  
+  // Check if on welcome page (authenticated but no shell)
+  const isWelcomePage = location.pathname === "/welcome";
 
   // Add/remove dashboard-layout class on body for overflow control
   useEffect(() => {
-    if (!isPublicRoute && isAuthenticated && !showLanding) {
+    if (!isPublicRoute && !isWelcomePage && isAuthenticated && !showLanding) {
       document.body.classList.add("dashboard-layout");
     } else {
       document.body.classList.remove("dashboard-layout");
     }
     return () => document.body.classList.remove("dashboard-layout");
-  }, [isPublicRoute, isAuthenticated, showLanding]);
+  }, [isPublicRoute, isWelcomePage, isAuthenticated, showLanding]);
 
   // If on landing page (main domain), show only router without shell
   if (showLanding) {
     return <AppRouter />;
   }
 
-  // For public routes or unauthenticated users, show only the router without shell
-  if (isPublicRoute || !isAuthenticated) {
+  // For public routes, welcome page, or unauthenticated users, show only the router without shell
+  if (isPublicRoute || isWelcomePage || !isAuthenticated) {
     return <AppRouter />;
   }
 

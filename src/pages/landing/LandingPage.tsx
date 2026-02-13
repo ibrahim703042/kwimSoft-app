@@ -273,7 +273,7 @@ export default function LandingPage() {
                   Sign In
                 </button>
                 <button
-                  onClick={() => navigate("/register")}
+                  onClick={() => navigate("/trial")}
                   className="text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition-all"
                 >
                   Start Free Trial
@@ -318,7 +318,7 @@ export default function LandingPage() {
                   Sign In
                 </button>
                 <button
-                  onClick={() => navigate("/register")}
+                  onClick={() => navigate("/trial")}
                   className="block w-full text-center text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-2.5 rounded-full"
                 >
                   Start Free Trial
@@ -385,7 +385,7 @@ export default function LandingPage() {
                 className="flex flex-wrap gap-4"
               >
                 <button
-                  onClick={() => navigate("/register")}
+                  onClick={() => navigate("/trial")}
                   className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-full shadow-xl shadow-indigo-200 hover:shadow-indigo-300 transition-all text-base"
                 >
                   Start Free Trial
@@ -785,7 +785,7 @@ export default function LandingPage() {
                 ))}
               </ul>
               <button
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/trial")}
                 className={cn(
                   "w-full py-3 rounded-full font-semibold text-sm transition-all",
                   plan.popular
@@ -877,7 +877,7 @@ export default function LandingPage() {
             className="flex flex-wrap justify-center gap-4"
           >
             <button
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/trial")}
               className="group inline-flex items-center gap-2 px-8 py-4 bg-white text-indigo-700 font-semibold rounded-full shadow-xl hover:bg-indigo-50 transition-all text-base"
             >
               Start Free Trial

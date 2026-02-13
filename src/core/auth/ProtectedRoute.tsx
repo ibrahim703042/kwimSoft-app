@@ -13,7 +13,8 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/welcome" replace />;
+    // return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;

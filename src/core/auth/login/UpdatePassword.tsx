@@ -165,7 +165,7 @@ export default function UpdatePassword() {
                   id="newPswd"
                   type={showNewPassword ? "text" : "password"}
                   placeholder="Minimum 6 caractères"
-                  className={`w-full pl-12 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                  className={`w-full pl-12 pr-12 py-3 border rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
                     formik.touched.newPswd && formik.errors.newPswd
                       ? "border-red-300 focus:ring-red-500"
                       : "border-gray-200 focus:ring-indigo-500"
@@ -223,7 +223,7 @@ export default function UpdatePassword() {
                   id="confirmPswd"
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Ressaisissez le mot de passe"
-                  className={`w-full pl-12 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                  className={`w-full pl-12 pr-12 py-3 border rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
                     formik.touched.confirmPswd && formik.errors.confirmPswd
                       ? "border-red-300 focus:ring-red-500"
                       : "border-gray-200 focus:ring-indigo-500"

@@ -245,7 +245,7 @@ export default function Login() {
                     id="username"
                     type="text"
                     placeholder="Entrez votre nom d'utilisateur"
-                    className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                    className={`w-full pl-12 pr-4 py-3 border rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
                       formik.touched.username && formik.errors.username
                         ? "border-red-300 focus:ring-red-500"
                         : "border-gray-200 focus:ring-indigo-500 focus:border-indigo-500"
@@ -271,7 +271,7 @@ export default function Login() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Entrez votre mot de passe"
-                    className={`w-full pl-12 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                    className={`w-full pl-12 pr-12 py-3 border rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
                       formik.touched.password && formik.errors.password
                         ? "border-red-300 focus:ring-red-500"
                         : "border-gray-200 focus:ring-indigo-500 focus:border-indigo-500"

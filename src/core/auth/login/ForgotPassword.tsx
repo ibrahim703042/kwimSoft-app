@@ -311,7 +311,7 @@ export default function ForgotPassword() {
                       id="email"
                       type="email"
                       placeholder="votre@email.com"
-                      className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                      className={`w-full pl-12 pr-4 py-3 border rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
                         emailFormik.touched.email && emailFormik.errors.email
                           ? "border-red-300 focus:ring-red-500"
                           : "border-gray-200 focus:ring-indigo-500"
@@ -376,7 +376,7 @@ export default function ForgotPassword() {
                       type="text"
                       maxLength={6}
                       placeholder="000000"
-                      className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all text-center text-2xl font-mono tracking-widest ${
+                      className={`w-full pl-12 pr-4 py-3 border rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all text-center text-2xl font-mono tracking-widest ${
                         otpFormik.touched.otp && otpFormik.errors.otp
                           ? "border-red-300 focus:ring-red-500"
                           : "border-gray-200 focus:ring-indigo-500"
@@ -450,7 +450,7 @@ export default function ForgotPassword() {
                       id="newPassword"
                       type="password"
                       placeholder="Min. 6 caractères"
-                      className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                      className={`w-full pl-12 pr-4 py-3 border rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
                         resetFormik.touched.newPassword && resetFormik.errors.newPassword
                           ? "border-red-300 focus:ring-red-500"
                           : "border-gray-200 focus:ring-indigo-500"
@@ -475,7 +475,7 @@ export default function ForgotPassword() {
                       id="confirmPassword"
                       type="password"
                       placeholder="Ressaisissez le mot de passe"
-                      className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                      className={`w-full pl-12 pr-4 py-3 border rounded-xl bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
                         resetFormik.touched.confirmPassword && resetFormik.errors.confirmPassword
                           ? "border-red-300 focus:ring-red-500"
                           : "border-gray-200 focus:ring-indigo-500"

@@ -3,8 +3,9 @@
  * Used to display app/server info and enabled/disabled features (Keycloak-style).
  */
 
-import { APP_CONFIG, FEATURES, isDevelopment, isProduction } from "@/config";
+import { APP_CONFIG, isProduction } from "@/config";
 import { getModules } from "@/app/registerModules";
+import { getEffectiveFeatureFlags } from "./lib/featureFlags";
 
 export type FeatureStatus = "Supported" | "Experimental" | "Preview" | "Deprecated";
 
@@ -117,9 +118,9 @@ const FEATURE_META: Record<string, { name: string; description: string; status: 
   },
 };
 
-/** All platform features with enabled flag from FEATURES */
+/** All platform features with enabled flag (effective = config + localStorage overrides) */
 export function getPlatformFeatures(): PlatformFeature[] {
-  const flags = FEATURES as Record<string, boolean>;
+  const flags = getEffectiveFeatureFlags();
   return Object.entries(FEATURE_META).map(([key, meta]) => ({
     id: key,
     name: meta.name,

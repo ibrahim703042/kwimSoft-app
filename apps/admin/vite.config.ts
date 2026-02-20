@@ -5,7 +5,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 
 // https://vitejs.dev/config/
+// Load .env from monorepo root so VITE_API_HOST and VITE_API_PROD_HOST are used
+const rootDir = path.resolve(__dirname, "../..");
+
 export default defineConfig({
+  envDir: rootDir,
   plugins: [
     react(),
     svgr(),

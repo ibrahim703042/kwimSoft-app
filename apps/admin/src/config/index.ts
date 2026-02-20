@@ -8,7 +8,6 @@ export const isDevelopment = import.meta.env?.DEV ?? process.env.NODE_ENV === 'd
 export const isProduction = import.meta.env?.PROD ?? process.env.NODE_ENV === 'production';
 
 // In development, allow overriding API host (e.g. when frontend runs on another server)
-// Set VITE_API_HOST to your API server, e.g. http://192.168.1.100 or http://api.mycompany.local (no trailing slash, no port)
 const DEV_API_HOST = (import.meta.env?.VITE_API_HOST as string)?.trim()?.replace(/\/+$/, "") || "http://127.0.0.1";
 
 // Base URLs for different environments

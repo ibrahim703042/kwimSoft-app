@@ -7,11 +7,10 @@
 export const isDevelopment = import.meta.env.DEV;
 export const isProduction = import.meta.env.PROD;
 
-// In development, allow overriding API host (e.g. when frontend runs on another server)
-// Set VITE_API_HOST to your API server, e.g. http://192.168.1.100 or http://api.mycompany.local (no trailing slash, no port)
-const DEV_API_HOST = (import.meta.env.VITE_API_HOST ?? "")
-  .trim()
-  .replace(/\/+$/, "") || "http://127.0.0.1";
+// In development, allow overriding API host via .env (VITE_API_HOST)
+const DEV_API_HOST = (import.meta.env.VITE_API_HOST as string).trim();
+
+const PROD_API_HOST = (import.meta.env.VITE_API_PROD_HOST as string).trim();
 
 // Base URLs for different environments
 const BASE_URLS = {
@@ -29,16 +28,16 @@ const BASE_URLS = {
     flightManagement: `${DEV_API_HOST}:9084/api/transport-management`,
   },
   production: {
-    userManagement: "https://api.kwimsoft.com/api/user-management",
-    transport: "https://api.kwimsoft.com/api/transport-management",
-    product: "https://api.kwimsoft.com/api/product-management",
-    hr: "https://api.kwimsoft.com/api/hr-management",
-    stock: "https://api.kwimsoft.com/api/stock-management",
-    gateway: "https://api.kwimsoft.com/api/app-gateway",
-    upload: "https://api.kwimsoft.com/api/user-management",
-    busManagement: "https://api.kwimsoft.com/api/transport-management",
-    finance: "https://api.kwimsoft.com/api/stock-management",
-    flightManagement: "https://api.kwimsoft.com/api/transport-management",
+    userManagement: `${PROD_API_HOST}/api/user-management`,
+    transport: `${PROD_API_HOST}/api/transport-management`,
+    product: `${PROD_API_HOST}/api/product-management`,
+    hr: `${PROD_API_HOST}/api/hr-management`,
+    stock: `${PROD_API_HOST}/api/stock-management`,
+    gateway: `${PROD_API_HOST}/api/app-gateway`,
+    upload: `${PROD_API_HOST}/api/user-management`,
+    busManagement: `${PROD_API_HOST}/api/transport-management`,
+    finance: `${PROD_API_HOST}/api/stock-management`,
+    flightManagement: `${PROD_API_HOST}/api/transport-management`,
   },
 };
 

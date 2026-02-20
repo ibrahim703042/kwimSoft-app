@@ -16,4 +16,11 @@ export const adminAreaModule: FrontModule = {
 
 export { default as AdminAreaShell } from "./AdminAreaShell";
 export { default as AdminAreaTabbedView } from "./AdminAreaTabbedView";
-export { WelcomePage, ServerInfoPage, ProviderInfoPage } from "./pages";
+export {
+  WelcomePage,
+  ServerInfoPage,
+  ProviderInfoPage,
+  AuditLogPage,
+  SystemStatusPage,
+  GlobalSettingsPage,
+} from "./pages";

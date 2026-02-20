@@ -6,7 +6,7 @@ import { FrontModule } from "./ModuleRegistry";
  */
 
 // ─── Core ─────────────────────────────────────────────────────
-import { dashboardModule } from "@/modules/admin-area";
+import { adminAreaModule } from "@/modules/admin-area";
 
 // ─── Transport (Drivers, Vehicles, Stations, Schedules, Trips, Seats, Tickets, Reservations) ──
 import { transportModule } from "@/modules/transport";
@@ -52,8 +52,8 @@ import { userModule } from "@/modules/user";
  * Order determines sidebar menu order
  */
 export const modules: FrontModule[] = [
-  // Core
-  dashboardModule,
+  // Core (admin area: Welcome, Server info, Provider info)
+  adminAreaModule,
 
   // Transport & Logistics
   transportModule,

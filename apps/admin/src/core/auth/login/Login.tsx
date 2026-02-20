@@ -91,7 +91,7 @@ export default function Login() {
         if (!welcomeCompleted && userData.status !== "active_returning") {
           navigate("/welcome");
         } else {
-          navigate("/dashboard");
+          navigate("/console");
         }
       } catch (err: any) {
         const isNetworkError = err.message === "Network Error" || err.code === "ERR_NETWORK";

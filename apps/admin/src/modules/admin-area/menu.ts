@@ -1,11 +1,11 @@
 import { MenuItem } from "@/app/ModuleRegistry";
-import { Speedometer } from "react-bootstrap-icons";
+import { LayoutGrid } from "lucide-react";
 
 export const menu: MenuItem[] = [
   {
-    id: "dashboard",
-    label: "Dashboard",
-    path: "/dashboard",
-    icon: Speedometer,
+    id: "admin-area",
+    label: "Console",
+    path: "/console",
+    icon: LayoutGrid,
   },
 ];

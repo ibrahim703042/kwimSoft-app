@@ -290,7 +290,7 @@ export default function UpdatePassword() {
             {/* Cancel Button */}
             <button
               type="button"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/console")}
               className="w-full py-3 text-gray-600 hover:text-gray-900 font-medium transition-colors"
             >
               Annuler

@@ -48,13 +48,13 @@ export function AppRouter() {
         {/* Public trial page with module selection */}
         <Route
           path="/trial"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <TrialPage />}
+          element={isAuthenticated ? <Navigate to="/console" replace /> : <TrialPage />}
         />
 
         {/* Public registration page */}
         <Route
           path="/register"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Register />}
+          element={isAuthenticated ? <Navigate to="/console" replace /> : <Register />}
         />
 
         {/* Thank you page after registration */}
@@ -76,13 +76,13 @@ export function AppRouter() {
         {/* Legacy enterprise creation route */}
         <Route
           path="/create-enterprise"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <CreateEnterprise />}
+          element={isAuthenticated ? <Navigate to="/console" replace /> : <CreateEnterprise />}
         />
 
         {/* Public auth routes */}
         <Route 
           path="/login" 
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} 
+          element={isAuthenticated ? <Navigate to="/console" replace /> : <Login />} 
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/update-password" element={<UpdatePassword />} />

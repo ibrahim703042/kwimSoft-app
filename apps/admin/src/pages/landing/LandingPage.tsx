@@ -277,7 +277,7 @@ export default function LandingPage() {
                 {isAuthenticated ? (
                   <>
                     <button
-                      onClick={() => navigate("/dashboard")}
+                      onClick={() => navigate("/console")}
                       className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors px-4 py-2"
                     >
                       Dashboard
@@ -342,7 +342,7 @@ export default function LandingPage() {
                 {isAuthenticated ? (
                   <>
                     <button
-                      onClick={() => navigate("/dashboard")}
+                      onClick={() => navigate("/console")}
                       className="block w-full text-left text-sm font-medium text-gray-700 py-2"
                     >
                       Dashboard

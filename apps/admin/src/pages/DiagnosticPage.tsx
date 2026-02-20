@@ -115,7 +115,7 @@ export default function DiagnosticPage() {
               </button>
 
               <button
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/console")}
                 className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-xl transition-all"
               >
                 Go to Dashboard

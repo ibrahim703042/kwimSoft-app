@@ -152,7 +152,7 @@ export default function WelcomePage() {
       icon: Globe,
       title: "Explore Dashboard",
       description: "Get familiar with your new workspace and tools",
-      onClick: () => navigate("/dashboard"),
+      onClick: () => navigate("/console"),
       gradient: "from-cyan-500 to-teal-600",
     },
   ];
@@ -168,7 +168,7 @@ export default function WelcomePage() {
   const handleSkip = () => {
     // Mark welcome as complete and go to dashboard
     localStorage.setItem("welcome_completed", "true");
-    navigate("/dashboard");
+    navigate("/console");
   };
 
   return (
@@ -483,7 +483,7 @@ export default function WelcomePage() {
           className="text-center mt-12"
         >
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/console")}
             className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-full shadow-xl shadow-indigo-200 hover:shadow-indigo-300 transition-all"
           >
             Go to Dashboard

@@ -1,14 +1,14 @@
 import { AppRoute } from "@/app/ModuleRegistry";
-import DashboardPage from "./pages/DashboardPage";
 import PageTitle from "@/components/utilitie/PageTitle";
+import AdminAreaShell from "./AdminAreaShell";
 
 export const routes: AppRoute[] = [
   {
-    path: "/dashboard",
+    path: "/console",
     element: (
       <>
-        <PageTitle title="Dashboard" />
-        <DashboardPage />
+        <PageTitle title="Admin" />
+        <AdminAreaShell />
       </>
     ),
     index: false,

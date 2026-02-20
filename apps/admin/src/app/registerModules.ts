@@ -6,7 +6,7 @@ import { FrontModule } from "./ModuleRegistry";
  */
 
 // ─── Core ─────────────────────────────────────────────────────
-import { dashboardModule } from "@/modules/dashboard";
+import { dashboardModule } from "@/modules/admin-area";
 
 // ─── Transport (Drivers, Vehicles, Stations, Schedules, Trips, Seats, Tickets, Reservations) ──
 import { transportModule } from "@/modules/transport";

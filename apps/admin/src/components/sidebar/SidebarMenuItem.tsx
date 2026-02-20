@@ -2,6 +2,12 @@ import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { MenuItem } from "@/app/ModuleRegistry";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SidebarMenuItemProps {
   item: MenuItem;
@@ -31,36 +37,42 @@ export default function SidebarMenuItem({
 
     return (
       <div>
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className={`w-full group relative flex items-center text-sm gap-3.5 p-2 rounded-md ${
-            item.gap ? "mt-0" : ""
-          } ${
-            isGroupActive
-              ? "text-white bg-gradient-to-r from-[rgba(32,61,148,1)] to-[rgba(16,22,71,1)]"
-              : "hover:text-white hover:bg-gradient-to-r hover:from-[rgba(32,61,148,1)] hover:to-[rgba(16,22,71,1)]"
-          }`}
-        >
-          <div>{Icon && <Icon size={18} />}</div>
-          <span
-            style={{ transitionDelay: `${index * 50}ms` }}
-            className={`whitespace-pre text-[#f5f5f5de] duration-300 flex-1 text-left ${
-              !isOpen && "opacity-0 translate-x-28 overflow-hidden"
-            }`}
-          >
-            {item.label}
-          </span>
-          {isOpen && (
-            <span className="text-gray-400">
-              {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-            </span>
-          )}
-          {!isOpen && (
-            <span className="absolute left-48 z-50 bg-white font-medium text-gray-900 rounded-md drop-shadow-lg px-2 py-2 w-fit hidden group-hover:block group-hover:left-14 group-hover:duration-500">
-              {item.label}
-            </span>
-          )}
-        </button>
+        <TooltipProvider delayDuration={300}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className={`w-full group relative flex items-center text-sm gap-3.5 p-2 rounded-md ${
+                  item.gap ? "mt-0" : ""
+                } ${
+                  isGroupActive
+                    ? "text-white bg-gradient-to-r from-[rgba(32,61,148,1)] to-[rgba(16,22,71,1)]"
+                    : "hover:text-white hover:bg-gradient-to-r hover:from-[rgba(32,61,148,1)] hover:to-[rgba(16,22,71,1)]"
+                }`}
+              >
+                <div>{Icon && <Icon size={18} />}</div>
+                <span
+                  style={{ transitionDelay: `${index * 50}ms` }}
+                  className={`whitespace-pre text-[#f5f5f5de] duration-300 flex-1 text-left ${
+                    !isOpen && "opacity-0 translate-x-28 overflow-hidden"
+                  }`}
+                >
+                  {item.label}
+                </span>
+                {isOpen && (
+                  <span className="text-gray-400">
+                    {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                  </span>
+                )}
+              </button>
+            </TooltipTrigger>
+            {!isOpen && (
+              <TooltipContent side="right" className="font-medium">
+                {item.label}
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </TooltipProvider>
 
         {/* Children */}
         {expanded && isOpen && (
@@ -92,33 +104,39 @@ export default function SidebarMenuItem({
   // Simple menu item (no children)
   return (
     <>
-      <NavLink
-        to={item.path || "#"}
-        className={({ isActive }) =>
-          `group relative flex items-center text-sm gap-3.5 p-2 rounded-md ${
-            item.gap ? "mt-0" : ""
-          } ${
-            isActive
-              ? "text-white bg-gradient-to-r from-[rgba(32,61,148,1)] to-[rgba(16,22,71,1)]"
-              : "hover:text-white hover:bg-gradient-to-r hover:from-[rgba(32,61,148,1)] hover:to-[rgba(16,22,71,1)]"
-          }`
-        }
-      >
-        <div>{Icon && <Icon size={18} />}</div>
-        <h2
-          style={{ transitionDelay: `${index * 50}ms` }}
-          className={`whitespace-pre text-[#f5f5f5de] duration-300 ${
-            !isOpen && "opacity-0 translate-x-28 overflow-hidden"
-          }`}
-        >
-          {item.label}
-        </h2>
-        {!isOpen && (
-          <h2 className="absolute left-48 z-50 bg-white font-medium text-gray-900 rounded-md drop-shadow-lg px-2 py-2 w-fit hidden group-hover:block group-hover:left-14 group-hover:duration-500">
-            {item.label}
-          </h2>
-        )}
-      </NavLink>
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <NavLink
+              to={item.path || "#"}
+              className={({ isActive }) =>
+                `group relative flex items-center text-sm gap-3.5 p-2 rounded-md ${
+                  item.gap ? "mt-0" : ""
+                } ${
+                  isActive
+                    ? "text-white bg-gradient-to-r from-[rgba(32,61,148,1)] to-[rgba(16,22,71,1)]"
+                    : "hover:text-white hover:bg-gradient-to-r hover:from-[rgba(32,61,148,1)] hover:to-[rgba(16,22,71,1)]"
+                }`
+              }
+            >
+              <div>{Icon && <Icon size={18} />}</div>
+              <h2
+                style={{ transitionDelay: `${index * 50}ms` }}
+                className={`whitespace-pre text-[#f5f5f5de] duration-300 ${
+                  !isOpen && "opacity-0 translate-x-28 overflow-hidden"
+                }`}
+              >
+                {item.label}
+              </h2>
+            </NavLink>
+          </TooltipTrigger>
+          {!isOpen && (
+            <TooltipContent side="right" className="font-medium">
+              {item.label}
+            </TooltipContent>
+          )}
+        </Tooltip>
+      </TooltipProvider>
       {item.gap && <hr className="border-t border-gray-600 my-3" />}
     </>
   );

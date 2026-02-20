@@ -1,7 +1,6 @@
-import { ComponentType, ReactNode, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { ComponentType, ReactNode, useState, useEffect, useCallback } from "react";
+import { NavLink, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { setBreadCrumbItemsAction } from "@/store/actions/appActions";
 import {
   IndentDecrease,
@@ -66,11 +65,40 @@ export function ModuleShell({
   defaultSelected,
 }: ModuleShellProps) {
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedKey, setSelectedKey] = useState(
-    defaultSelected || items[0]?.key || ""
-  );
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Get selected key from URL or use default
+  const urlTab = searchParams.get("tab");
+  const allItems = [...items, ...bottomItems];
+  const validKeys = allItems.map((i) => i.key);
+  const initialKey =
+    urlTab && validKeys.includes(urlTab)
+      ? urlTab
+      : defaultSelected || items[0]?.key || "";
+
+  const [selectedKey, setSelectedKeyState] = useState(initialKey);
+
+  // Update URL when tab changes
+  const setSelectedKey = useCallback(
+    (key: string) => {
+      setSelectedKeyState(key);
+      setSearchParams((prev) => {
+        const newParams = new URLSearchParams(prev);
+        newParams.set("tab", key);
+        return newParams;
+      }, { replace: true });
+    },
+    [setSearchParams]
+  );
+
+  // Sync state with URL on mount and URL changes
+  useEffect(() => {
+    if (urlTab && validKeys.includes(urlTab) && urlTab !== selectedKey) {
+      setSelectedKeyState(urlTab);
+    }
+  }, [urlTab, validKeys, selectedKey]);
 
   // Breadcrumb
   useEffect(() => {

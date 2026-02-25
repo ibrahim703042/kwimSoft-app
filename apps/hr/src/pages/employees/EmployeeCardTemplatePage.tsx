@@ -3,33 +3,29 @@
  *
  * Orientation, template name, colors, front/back content, QR or Barcode, logos.
  */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, CreditCard } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
+  Button,
+  Input,
+  Textarea,
+  Label,
+  RadioGroup,
+  RadioGroupItem,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { idCardTemplateApi } from "../../api/hr.api";
-import Swal from "sweetalert2";
+} from "@kwim/shared-ui";
 
 const ORIENTATION_OPTIONS = [
   { value: "landscape", label: "Paysage (85.6 x 54 mm)" },
@@ -42,7 +38,6 @@ const QR_BARCODE_OPTIONS = [
   { value: "none", label: "Aucun" },
 ];
 
-/** Fields that can be placed on the card (extra to Photo, Full Name, Designation) */
 const EXTRA_FIELD_OPTIONS = [
   { value: "", label: "—" },
   { value: "employeeCode", label: "Code employé" },
@@ -84,64 +79,15 @@ const defaultValues: FormValues = {
   backContent: "",
 };
 
-function extractList(res: any): any[] {
-  const data = res?.data;
-  if (Array.isArray(data)) return data;
-  if (data?.data && Array.isArray(data.data)) return data.data;
-  return [];
-}
-
 export default function EmployeeCardTemplatePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editing, setEditing] = useState<any>(null);
-  const qc = useQueryClient();
+  const [editing, setEditing] = useState<FormValues | null>(null);
+  const [templates, setTemplates] = useState<(FormValues & { id: string })[]>([]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues,
   });
-
-  const { data: listData, isLoading } = useQuery({
-    queryKey: ["id-card-templates"],
-    queryFn: () => idCardTemplateApi.getAll(),
-    retry: false,
-  });
-
-  const templates = extractList(listData);
-
-  const mutation = useMutation({
-    mutationFn: async (values: FormValues & { frontLogo?: string; backLogo?: string; signature?: string }) => {
-      if (editing) return idCardTemplateApi.update(editing._id, values);
-      return idCardTemplateApi.create(values);
-    },
-    onSuccess: () => {
-      Swal.fire("Succès!", "Modèle enregistré.", "success");
-      qc.invalidateQueries({ queryKey: ["id-card-templates"] });
-      closeDialog();
-    },
-    onError: (err: any) => {
-      Swal.fire("Erreur!", err.response?.data?.message || "Impossible d'enregistrer.", "error");
-    },
-  });
-
-  useEffect(() => {
-    if (editing) {
-      form.reset({
-        templateName: editing.templateName || "",
-        orientation: editing.orientation || "landscape",
-        backgroundColor: editing.backgroundColor || "#ffffff",
-        frontExtra1: editing.frontExtra1 || "",
-        frontExtra2: editing.frontExtra2 || "",
-        frontExtra3: editing.frontExtra3 || "",
-        frontExtra4: editing.frontExtra4 || "",
-        qrOrBarcode: (editing.qrOrBarcode as any) || "none",
-        backTitle: editing.backTitle || "",
-        backContent: editing.backContent || "",
-      });
-    } else {
-      form.reset(defaultValues);
-    }
-  }, [editing]);
 
   const closeDialog = () => {
     setDialogOpen(false);
@@ -149,20 +95,19 @@ export default function EmployeeCardTemplatePage() {
     form.reset(defaultValues);
   };
 
+  const handleSubmit = (data: FormValues) => {
+    if (editing) {
+      setTemplates((prev) =>
+        prev.map((t) => (t.templateName === editing.templateName ? { ...data, id: t.id } : t))
+      );
+    } else {
+      setTemplates((prev) => [...prev, { ...data, id: Date.now().toString() }]);
+    }
+    closeDialog();
+  };
+
   const handleDelete = (id: string) => {
-    Swal.fire({
-      title: "Supprimer ce modèle?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-    }).then((r) => {
-      if (r.isConfirmed) {
-        idCardTemplateApi.delete(id).then(() => {
-          Swal.fire("Supprimé!", "", "success");
-          qc.invalidateQueries({ queryKey: ["id-card-templates"] });
-        });
-      }
-    });
+    setTemplates((prev) => prev.filter((t) => t.id !== id));
   };
 
   return (
@@ -187,16 +132,14 @@ export default function EmployeeCardTemplatePage() {
       </div>
 
       <div className="grid gap-4">
-        {isLoading ? (
-          <p className="text-muted-foreground text-sm py-4">Chargement...</p>
-        ) : templates.length === 0 ? (
+        {templates.length === 0 ? (
           <div className="border rounded-lg p-8 text-center text-muted-foreground">
             Aucun modèle. Cliquez sur &quot;Add&quot; pour créer un modèle de carte.
           </div>
         ) : (
-          templates.map((t: any) => (
+          templates.map((t) => (
             <div
-              key={t._id}
+              key={t.id}
               className="flex items-center justify-between border rounded-lg p-4 bg-card"
             >
               <div className="flex items-center gap-3">
@@ -215,12 +158,13 @@ export default function EmployeeCardTemplatePage() {
                   size="sm"
                   onClick={() => {
                     setEditing(t);
+                    form.reset(t);
                     setDialogOpen(true);
                   }}
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
-                <Button variant="destructive" size="sm" onClick={() => handleDelete(t._id)}>
+                <Button variant="destructive" size="sm" onClick={() => handleDelete(t.id)}>
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
@@ -237,12 +181,12 @@ export default function EmployeeCardTemplatePage() {
             </DialogTitle>
           </DialogHeader>
           <form
-            onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
+            onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
             <RadioGroup
               value={form.watch("orientation")}
-              onValueChange={(v) => form.setValue("orientation", v as "landscape" | "portrait")}
+              onValueChange={(v: string) => form.setValue("orientation", v as "landscape" | "portrait")}
               className="flex gap-4"
             >
               {ORIENTATION_OPTIONS.map((o) => (
@@ -273,12 +217,12 @@ export default function EmployeeCardTemplatePage() {
                 <input
                   type="color"
                   value={form.watch("backgroundColor") || "#ffffff"}
-                  onChange={(e) => form.setValue("backgroundColor", e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setValue("backgroundColor", e.target.value)}
                   className="h-10 w-14 rounded border cursor-pointer"
                 />
                 <Input
                   value={form.watch("backgroundColor") || "#ffffff"}
-                  onChange={(e) => form.setValue("backgroundColor", e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setValue("backgroundColor", e.target.value)}
                   className="flex-1 font-mono"
                 />
               </div>
@@ -291,24 +235,27 @@ export default function EmployeeCardTemplatePage() {
               </p>
               <Label className="text-xs">Champs supplémentaires (ordre souhaité)</Label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
-                {([1, 2, 3, 4] as const).map((i) => (
-                  <Select
-                    key={i}
-                    value={form.watch(`frontExtra${i}`) || ""}
-                    onValueChange={(v) => form.setValue(`frontExtra${i}` as any, v)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={`Position ${i}`} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {EXTRA_FIELD_OPTIONS.map((opt) => (
-                        <SelectItem key={opt.value || "empty"} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                ))}
+                {([1, 2, 3, 4] as const).map((i) => {
+                  const fieldName = `frontExtra${i}` as keyof FormValues;
+                  return (
+                    <Select
+                      key={i}
+                      value={(form.watch(fieldName) as string) || ""}
+                      onValueChange={(v: string) => form.setValue(fieldName, v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={`Position ${i}`} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {EXTRA_FIELD_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value || "empty"} value={opt.value || " "}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  );
+                })}
               </div>
             </div>
 
@@ -316,7 +263,7 @@ export default function EmployeeCardTemplatePage() {
               <Label>QR Code / Code-barres</Label>
               <RadioGroup
                 value={form.watch("qrOrBarcode")}
-                onValueChange={(v) => form.setValue("qrOrBarcode", v as any)}
+                onValueChange={(v: string) => form.setValue("qrOrBarcode", v as "qr" | "barcode" | "none")}
                 className="flex gap-4 mt-1"
               >
                 {QR_BARCODE_OPTIONS.map((o) => (
@@ -327,7 +274,7 @@ export default function EmployeeCardTemplatePage() {
                 ))}
               </RadioGroup>
               <p className="text-xs text-muted-foreground mt-1">
-                Encode l’identifiant employé (biométrique, WiFi MAC ou ID appareil si renseignés)
+                Encode l'identifiant employé (biométrique, WiFi MAC ou ID appareil si renseignés)
               </p>
             </div>
 
@@ -356,7 +303,7 @@ export default function EmployeeCardTemplatePage() {
                     className="mt-1"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    Idéal pour rappeler comment pointer (QR, WiFi, biométrique) et consulter l’attendance log.
+                    Idéal pour rappeler comment pointer (QR, WiFi, biométrique) et consulter l'attendance log.
                   </p>
                 </div>
                 <div>
@@ -374,7 +321,7 @@ export default function EmployeeCardTemplatePage() {
               <Button type="button" variant="outline" onClick={closeDialog}>
                 Annuler
               </Button>
-              <Button type="submit" className="bg-[#0F123F]" disabled={mutation.isPending}>
+              <Button type="submit" className="bg-[#0F123F]">
                 {editing ? "Enregistrer" : "Add"}
               </Button>
             </DialogFooter>

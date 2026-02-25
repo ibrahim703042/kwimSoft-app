@@ -1,6 +1,6 @@
 import { AppShell } from "@kwim/shared-ui";
 import { inventoryModuleConfig } from "@/config/module.config";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 
@@ -13,7 +13,6 @@ function App() {
       quickActions={inventoryModuleConfig.quickActions}
       currentPath={location.pathname}
       isAuthenticated={true}
-      LinkComponent={NavLink}
       breadcrumbs={
         <div className="flex items-center gap-2 text-sm">
           <span className="text-gray-500">Inventory</span>

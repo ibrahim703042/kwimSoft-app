@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
-import { Sidebar } from "../sidebar";
-import { Navbar } from "../navbar";
+// import { Sidebar } from "../components/sidebar";
 import { MenuItem, QuickAction } from "../types/module";
+import Navbar from "./admin-header";
+import Sidebar from "./admin-sidebar";
 
 interface AppShellProps {
   children: ReactNode;
@@ -11,7 +12,6 @@ interface AppShellProps {
   isAuthenticated?: boolean;
   showShell?: boolean;
   sidebarLogo?: ReactNode;
-  sidebarFooter?: ReactNode;
   breadcrumbs?: ReactNode;
   search?: ReactNode;
   languageSwitcher?: ReactNode;
@@ -32,7 +32,6 @@ export function AppShell({
   isAuthenticated = true,
   showShell = true,
   sidebarLogo,
-  sidebarFooter,
   breadcrumbs,
   search,
   languageSwitcher,
@@ -40,7 +39,6 @@ export function AppShell({
   notifications,
   userDropdown,
 }: AppShellProps) {
-  // If not authenticated or shell disabled, show only content
   if (!isAuthenticated || !showShell) {
     return <>{children}</>;
   }
@@ -53,7 +51,6 @@ export function AppShell({
           menus={menus}
           currentPath={currentPath}
           logo={sidebarLogo}
-          footer={sidebarFooter}
         />
       </div>
 

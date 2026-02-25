@@ -1,195 +1,247 @@
 /**
- * EmployeePage — Product-style with CrudPage + TabbedForm
- *
- * List from CrudPage; create/edit in CrudForm with tabs:
- * Informations générales | Contact | Emploi | Urgence
+ * EmployeePage — Employee list with basic CRUD
  */
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { CrudPage } from "@/core/crud/CrudPage";
-import { CrudForm } from "@/core/crud/CrudForm";
-import { TabbedForm } from "@/core/crud/TabbedForm";
-import Swal from "sweetalert2";
+import { useState } from "react";
+import { Plus, Search, Users } from "lucide-react";
+import {
+  Button,
+  Input,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@kwim/shared-ui";
 
-import { employeeApi, departmentApi, positionApi } from "../../api/hr.api";
-import { employeeSchema, defaultValues, type EmployeeFormValues } from "./employee.schema";
-import { employeeColumns } from "./employee.columns";
-import { useEmployeeTabs } from "./useEmployeeTabs";
-import { EmployeeDetailView } from "./EmployeeDetailView";
+interface Employee {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  department: string;
+  position: string;
+  status: "active" | "inactive";
+}
+
+const mockEmployees: Employee[] = [
+  { id: "1", firstName: "Jean", lastName: "Dupont", email: "jean.dupont@company.com", department: "IT", position: "Developer", status: "active" },
+  { id: "2", firstName: "Marie", lastName: "Martin", email: "marie.martin@company.com", department: "HR", position: "Manager", status: "active" },
+  { id: "3", firstName: "Pierre", lastName: "Bernard", email: "pierre.bernard@company.com", department: "Finance", position: "Analyst", status: "inactive" },
+];
 
 export default function EmployeePage() {
-  const [formOpen, setFormOpen] = useState(false);
-  const [editing, setEditing] = useState<any>(null);
-  const [viewing, setViewing] = useState<any>(null);
-  const qc = useQueryClient();
-
-  const { data: deptData } = useQuery({
-    queryKey: ["departments-lookup"],
-    queryFn: async () => (await departmentApi.getAll()).data,
-  });
-  const departments = deptData?.data || [];
-
-  const { data: posData } = useQuery({
-    queryKey: ["positions-lookup"],
-    queryFn: async () => (await positionApi.getAll()).data,
-  });
-  const positions = posData?.data || [];
-
-  const { data: empLookupData } = useQuery({
-    queryKey: ["employees-lookup"],
-    queryFn: async () => (await employeeApi.getAll()).data,
-  });
-  const employeesLookup = empLookupData?.data ?? (Array.isArray(empLookupData) ? empLookupData : []);
-  const employees = Array.isArray(employeesLookup) ? employeesLookup : [];
-
-  const form = useForm<EmployeeFormValues>({
-    resolver: zodResolver(employeeSchema),
-    defaultValues,
+  const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
+  const [search, setSearch] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editing, setEditing] = useState<Employee | null>(null);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    department: "",
+    position: "",
+    status: "active" as const,
   });
 
-  useEffect(() => {
-    if (editing) {
-      form.reset({
-        ...defaultValues,
-        employeeCode: editing.employeeCode || "",
-        firstName: editing.firstName || "",
-        lastName: editing.lastName || "",
-        email: editing.email || "",
-        phone: editing.phone || "",
-        gender: editing.gender || "",
-        birthDate: editing.birthDate ? editing.birthDate.slice(0, 10) : "",
-        maritalStatus: editing.maritalStatus || "",
-        nationalId: editing.nationalId || "",
-        address: editing.address || "",
-        description: editing.description || "",
-        avatar: editing.avatar || "",
-        department: editing.department?._id || "",
-        position: editing.position?._id || "",
-        branch: editing.branch || "",
-        supervisor: editing.supervisor?._id || editing.supervisor || "",
-        employmentType: editing.employmentType || "",
-        officeTime: editing.officeTime || "",
-        workspace: editing.workspace || "",
-        attendanceDuringHoliday: editing.attendanceDuringHoliday ?? false,
-        hireDate: editing.hireDate ? editing.hireDate.slice(0, 10) : "",
-        status: editing.status || "active",
-        leaveAllocated: editing.leaveAllocated ?? 0,
-        assignedLeaves: editing.assignedLeaves ?? [],
-        emergencyContact: editing.emergencyContact || "",
-        emergencyPhone: editing.emergencyPhone || "",
-        bankName: editing.bankName || "",
-        bankAccountNumber: editing.bankAccountNumber || "",
-        accountHolderName: editing.accountHolderName || "",
-        bankAccountType: editing.bankAccountType || "",
-        biometricId: editing.biometricId || "",
-        wifiMac: editing.wifiMac || "",
-        deviceId: editing.deviceId || "",
-      });
-    } else {
-      form.reset(defaultValues);
-    }
-  }, [editing]);
+  const filteredEmployees = employees.filter(
+    (e) =>
+      e.firstName.toLowerCase().includes(search.toLowerCase()) ||
+      e.lastName.toLowerCase().includes(search.toLowerCase()) ||
+      e.email.toLowerCase().includes(search.toLowerCase())
+  );
 
-  const mutation = useMutation({
-    mutationFn: async (values: EmployeeFormValues) => {
-      if (editing) {
-        const id = editing._id || editing.id;
-        return employeeApi.update(id, values);
-      }
-      return employeeApi.create(values);
-    },
-    onSuccess: () => {
-      Swal.fire("Succès!", `Employé ${editing ? "modifié" : "créé"} avec succès.`, "success");
-      qc.invalidateQueries({ queryKey: ["employees"] });
-      closeForm();
-    },
-    onError: (err: any) => {
-      Swal.fire("Erreur!", err.response?.data?.message || "Une erreur est survenue.", "error");
-    },
-  });
-
-  const closeForm = () => {
-    setFormOpen(false);
+  const openCreate = () => {
     setEditing(null);
-    form.reset(defaultValues);
+    setFormData({ firstName: "", lastName: "", email: "", department: "", position: "", status: "active" });
+    setDialogOpen(true);
   };
 
-  const tabs = useEmployeeTabs({
-    form,
-    departments,
-    positions,
-    employees,
-    currentEmployeeId: editing?._id ?? null,
-  });
+  const openEdit = (emp: Employee) => {
+    setEditing(emp);
+    setFormData({
+      firstName: emp.firstName,
+      lastName: emp.lastName,
+      email: emp.email,
+      department: emp.department,
+      position: emp.position,
+      status: emp.status as "active",
+    });
+    setDialogOpen(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editing) {
+      setEmployees((prev) =>
+        prev.map((emp) => (emp.id === editing.id ? { ...emp, ...formData } : emp))
+      );
+    } else {
+      setEmployees((prev) => [...prev, { ...formData, id: Date.now().toString() }]);
+    }
+    setDialogOpen(false);
+  };
+
+  const handleDelete = (id: string) => {
+    setEmployees((prev) => prev.filter((e) => e.id !== id));
+  };
 
   return (
-    <>
-      <CrudPage
-        config={{
-          title: "Employés",
-          queryKey: ["employees"],
-          queryFn: async ({ search }: { search?: string }) => {
-            const res = await employeeApi.getAll({ search });
-            const list = (res as any).data?.data ?? (res as any).data ?? [];
-            return { data: Array.isArray(list) ? list : [] };
-          },
-          columns: employeeColumns,
-          deleteFn: async (id: string) => {
-            await employeeApi.delete(id);
-          },
-          permissions: {
-            read: "employee.read",
-            create: "employee.create",
-            update: "employee.update",
-            delete: "employee.delete",
-          },
-        }}
-        addButton={
-          <Button
-            className="bg-[#0F123F]"
-            size="sm"
-            onClick={() => {
-              setEditing(null);
-              setFormOpen(true);
-            }}
-          >
-            <Plus className="h-4 w-4 mr-1" /> Nouveau
-          </Button>
-        }
-        onEdit={(row: any) => {
-          setEditing(row);
-          setFormOpen(true);
-        }}
-        onView={(row: any) => setViewing(row)}
-      />
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-lg font-semibold flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Employés
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Gérez les employés de votre organisation
+          </p>
+        </div>
+        <Button className="bg-[#0F123F]" onClick={openCreate}>
+          <Plus className="h-4 w-4 mr-2" /> Nouveau
+        </Button>
+      </div>
 
-      <CrudForm
-        open={formOpen}
-        onOpenChange={(open) => {
-          if (!open) closeForm();
-          else setFormOpen(true);
-        }}
-        title={editing ? "Modifier l'employé" : "Nouvel employé"}
-        form={form}
-        onSubmit={(data) => mutation.mutateAsync(data)}
-        isLoading={mutation.isPending}
-        submitText={editing ? "Enregistrer" : "Créer"}
-        cancelText="Annuler"
-        wide
-      >
-        <div className="border-b my-2" />
-        <TabbedForm form={form} tabs={tabs} />
-      </CrudForm>
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Rechercher..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+      </div>
 
-      <EmployeeDetailView
-        employee={viewing}
-        open={!!viewing}
-        onOpenChange={(open) => !open && setViewing(null)}
-      />
-    </>
+      <div className="border rounded-lg overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-muted/50">
+            <tr>
+              <th className="text-left p-3 text-sm font-medium">Nom</th>
+              <th className="text-left p-3 text-sm font-medium">Email</th>
+              <th className="text-left p-3 text-sm font-medium">Département</th>
+              <th className="text-left p-3 text-sm font-medium">Poste</th>
+              <th className="text-left p-3 text-sm font-medium">Statut</th>
+              <th className="text-left p-3 text-sm font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredEmployees.map((emp) => (
+              <tr key={emp.id} className="border-t">
+                <td className="p-3 text-sm">{emp.firstName} {emp.lastName}</td>
+                <td className="p-3 text-sm">{emp.email}</td>
+                <td className="p-3 text-sm">{emp.department}</td>
+                <td className="p-3 text-sm">{emp.position}</td>
+                <td className="p-3 text-sm">
+                  <span className={`px-2 py-1 rounded-full text-xs ${emp.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
+                    {emp.status === "active" ? "Actif" : "Inactif"}
+                  </span>
+                </td>
+                <td className="p-3 text-sm">
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" onClick={() => openEdit(emp)}>
+                      Modifier
+                    </Button>
+                    <Button size="sm" variant="destructive" onClick={() => handleDelete(emp.id)}>
+                      Supprimer
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+            {filteredEmployees.length === 0 && (
+              <tr>
+                <td colSpan={6} className="p-8 text-center text-muted-foreground">
+                  Aucun employé trouvé
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{editing ? "Modifier l'employé" : "Nouvel employé"}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Prénom</Label>
+                <Input
+                  value={formData.firstName}
+                  onChange={(e) => setFormData((p) => ({ ...p, firstName: e.target.value }))}
+                  required
+                />
+              </div>
+              <div>
+                <Label>Nom</Label>
+                <Input
+                  value={formData.lastName}
+                  onChange={(e) => setFormData((p) => ({ ...p, lastName: e.target.value }))}
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <Label>Email</Label>
+              <Input
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Département</Label>
+                <Input
+                  value={formData.department}
+                  onChange={(e) => setFormData((p) => ({ ...p, department: e.target.value }))}
+                />
+              </div>
+              <div>
+                <Label>Poste</Label>
+                <Input
+                  value={formData.position}
+                  onChange={(e) => setFormData((p) => ({ ...p, position: e.target.value }))}
+                />
+              </div>
+            </div>
+            <div>
+              <Label>Statut</Label>
+              <Select
+                value={formData.status}
+                onValueChange={(v: "active" | "inactive") => setFormData((p) => ({ ...p, status: v as "active" }))}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Actif</SelectItem>
+                  <SelectItem value="inactive">Inactif</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+                Annuler
+              </Button>
+              <Button type="submit" className="bg-[#0F123F]">
+                {editing ? "Enregistrer" : "Créer"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

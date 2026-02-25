@@ -1,51 +1,41 @@
-import { Sidebar as SharedSidebar } from "@kwim/shared-ui";
-import { useSidebarStore } from "../../store/selectors/useSidebarStore";
-import { useAuthStore } from "@/core/auth";
-import { useNavigate, useLocation, NavLink } from "react-router-dom";
+import { useSidebarStore } from "@kwim/shared-ui";
 import { MenuItem } from "@/app/ModuleRegistry";
-import bus from "../../assets/img/utils/bus.png";
-import profileImg from "../../assets/img/users/avatar.png";
+import SidebarHeader from "./SidebarHeader";
+import SidebarSearch from "./SidebarSearch";
+import SidebarMenu from "./SidebarMenu";
+import SidebarFooter from "./SidebarFooter";
 
 interface SidebarProps {
   menus?: MenuItem[];
 }
 
 /**
- * Admin app sidebar wrapper that uses the shared Sidebar component
- * Provides app-specific configuration and state management
+ * Admin app sidebar using local components with React Router integration
  */
 export default function Sidebar({ menus = [] }: SidebarProps) {
-  const { isOpen, toggleSidebar } = useSidebarStore();
-  const { user, logout } = useAuthStore();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
-  };
-
-  const logo = (
-    <div className="bg-[#b5bbc516] h-10 w-14 rounded-lg border-[#90959e96] border">
-      <img src={bus} alt="KwimSoft" className="p-1" />
-    </div>
-  );
+  const { isOpen } = useSidebarStore();
 
   return (
-    <SharedSidebar
-      menus={menus}
-      isOpen={isOpen}
-      onToggle={toggleSidebar}
-      currentPath={location.pathname}
-      logo={logo}
-      title="KwimSoft"
-      showSearch={true}
-      user={user}
-      onLogout={handleLogout}
-      onProfile={() => navigate("/profile")}
-      onSettings={() => navigate("/settings")}
-      avatarPlaceholder={profileImg}
-      LinkComponent={NavLink}
-    />
+    <div
+      className={`bg-[#0F123F] h-screen duration-500 flex flex-col ${
+        isOpen ? "md:w-[17rem] w-16" : "w-16"
+      } text-gray-100 px-4 overflow-hidden`}
+    >
+      {/* Top: header + search */}
+      <div className="shrink-0">
+        <SidebarHeader />
+        <SidebarSearch isOpen={isOpen} />
+      </div>
+
+      {/* Middle: scrollable menu */}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden mt-2 scrollbar-hide">
+        <SidebarMenu menus={menus} isOpen={isOpen} />
+      </div>
+
+      {/* Bottom: profile block */}
+      <div className="shrink-0 border-t border-[#90959e40] pt-3 pb-3 mt-auto">
+        <SidebarFooter isOpen={isOpen} />
+      </div>
+    </div>
   );
 }

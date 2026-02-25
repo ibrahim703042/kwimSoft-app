@@ -1,5 +1,10 @@
 export * from "./types/module";
 export * from "./layout";
-export * from "./navbar";
-export * from "./sidebar";
+export * from "./components/navbar";
+export * from "./components/sidebar";
 export * from "./configs";
+export * from "./components/ui";
+export * from "./components/utility";
+export * from "./hooks";
+export * from "./stores";
+export { cn } from "./lib/utils";

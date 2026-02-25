@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useAuthStore } from "./core/auth";
 import { AppShell } from "./app/AppShell";
-import { useThemeStore } from "./store/selectors/themeStore";
+import { useThemeStore } from "@kwim/shared-ui";
 
 const App: React.FC = () => {
   const { setUser } = useAuthStore();

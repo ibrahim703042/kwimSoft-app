@@ -1,11 +1,11 @@
-import { ComponentType, ReactNode, useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
-  IndentDecrease,
+  PanelLeftClose,
   Menu,
   ChevronRight,
   Search,
 } from "lucide-react";
-import { ShellNavItem, ModuleShellProps } from "../types/module";
+import { ModuleShellProps } from "../types/module";
 
 function cn(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(" ");
@@ -33,7 +33,6 @@ export function ModuleShell({
   const [collapsed, setCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedKey, setSelectedKeyState] = useState(() => {
-    const allItems = [...items, ...bottomItems];
     return defaultSelected || items[0]?.key || "";
   });
 
@@ -110,7 +109,7 @@ export function ModuleShell({
             className="border mx-3 bg-background p-1 rotate-180 rounded-b-lg rounded-l-lg cursor-pointer hover:bg-muted transition-colors"
             onClick={toggle}
           >
-            <IndentDecrease size={18} />
+            <PanelLeftClose size={18} />
           </div>
         </div>
 
@@ -134,7 +133,7 @@ export function ModuleShell({
                 className="border border-border/60 p-1 rounded-lg cursor-pointer hover:bg-muted transition-colors"
                 onClick={toggle}
               >
-                <IndentDecrease size={18} />
+                <PanelLeftClose size={18} />
               </button>
             </div>
 

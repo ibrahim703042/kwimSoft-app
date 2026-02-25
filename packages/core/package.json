@@ -4,21 +4,32 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./ui": "./src/ui/index.ts",
+    "./crud": "./src/crud/index.ts",
+    "./hooks": "./src/hooks/index.ts"
   },
   "dependencies": {
-    "@kwim/ui": "workspace:*",
-    "@kwim/utils": "workspace:*",
+    "@kwim/shared-ui": "workspace:*",
+    "@tanstack/react-query": "^5.62.11",
     "@tanstack/react-table": "^8.20.5",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.263.1",
     "react-hook-form": "^7.53.2",
-    "zod": "^3.23.8",
-    "zustand": "^5.0.3"
+    "react-router-dom": "^6.28.1",
+    "react-spinners": "^0.14.1",
+    "recharts": "^2.15.0",
+    "sweetalert2": "^11.15.10",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.23.8"
   },
   "peerDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "typescript": "^5.7.3"
   }
 }

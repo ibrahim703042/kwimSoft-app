@@ -1,15 +1,20 @@
 /**
  * @kwim/core - Core Systems Package
  * 
- * This package will contain all core systems:
+ * This package contains reusable core systems:
  * - CRUD system (CrudPage, CrudTable, CrudForm)
- * - Tenant/Multi-tenant system
- * - Shared hooks (useDebounce, usePagination, useFilters, useQueryState)
- * - Core UI components (Page, PageHeader, PageToolbar, PageContent)
- * 
- * Components will be migrated from src/core/ during app setup.
+ * - Core UI components (Page, PageHeader, PageToolbar, PageContent, ModuleShell)
+ * - Hooks (useDebounce)
  */
 
-export const CORE_PACKAGE_VERSION = '1.0.0';
+// UI Components
+export * from "./ui";
 
-// Placeholder exports - full migration during apps setup
+// CRUD System
+export * from "./crud";
+
+// Hooks
+export * from "./hooks";
+
+// Utils
+export { cn } from "./lib/utils";

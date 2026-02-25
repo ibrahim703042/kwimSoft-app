@@ -1,31 +1,7 @@
-import React from "react";
-import {
-  Plus,
-  FileText,
-  Users,
-  FolderPlus,
-  Mail,
-  Calendar,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuShortcut,
-} from "@/components/ui/dropdown-menu";
+import { FileText, Users, FolderPlus, Mail, Calendar } from "lucide-react";
+import { QuickActions as SharedQuickActions, type NavbarQuickAction } from "@kwim/shared-ui";
 
-interface QuickAction {
-  icon: React.ElementType;
-  label: string;
-  description?: string;
-  shortcut?: string;
-  onClick: () => void;
-}
-
-const quickActions: QuickAction[] = [
+const quickActions: NavbarQuickAction[] = [
   {
     icon: FileText,
     label: "New Document",
@@ -61,43 +37,8 @@ const quickActions: QuickAction[] = [
   },
 ];
 
-const QuickActions: React.FC = () => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm">
-          <Plus size={16} />
-          <span className="hidden sm:inline">Create</span>
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Quick Actions</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {quickActions.map((action) => (
-          <DropdownMenuItem
-            key={action.label}
-            onClick={action.onClick}
-            className="flex items-center gap-2 cursor-pointer py-2"
-          >
-            <div className="flex items-center justify-center w-7 h-7 rounded-md bg-muted">
-              <action.icon size={14} className="text-muted-foreground" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium">{action.label}</p>
-              {action.description && (
-                <p className="text-xs text-muted-foreground">
-                  {action.description}
-                </p>
-              )}
-            </div>
-            {action.shortcut && (
-              <DropdownMenuShortcut>{action.shortcut}</DropdownMenuShortcut>
-            )}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
+const QuickActions = () => {
+  return <SharedQuickActions actions={quickActions} />;
 };
 
 export default QuickActions;

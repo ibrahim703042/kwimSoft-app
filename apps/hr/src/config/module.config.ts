@@ -1,68 +1,115 @@
-import { MenuItem, ModuleConfig } from "@kwim/shared-ui";
-import { Users } from "lucide-react";
+import { ModuleConfig } from "@kwim/shared-ui";
+import {
+  Users,
+  Building2,
+  Clock,
+  Wallet,
+  UserPlus,
+  GraduationCap,
+  LayoutDashboard,
+  UserCog,
+} from "lucide-react";
 
 export const hrModuleConfig: ModuleConfig = {
   name: "hr",
-  displayName: "Hr Management",
+  displayName: "HR Management",
   icon: Users,
   baseUrl: "/hr",
-  
+
   quickActions: [
     {
       icon: Users,
-      label: "New Hr",
-      description: "Create a new hr record",
-      onClick: () => console.log("New hr"),
+      label: "New Employee",
+      description: "Add a new employee",
+      onClick: () => console.log("New employee"),
+    },
+    {
+      icon: Wallet,
+      label: "Run Payroll",
+      description: "Process payroll",
+      onClick: () => console.log("Run payroll"),
     },
   ],
-  
-  const items: MenuItem[] = [
-    { key: "dashboard", label: "Tableau de bord", icon: LayoutDashboard, component: HrDashboard },
-  
-    // ▸ People & Organization
-    { key: "employees", label: "Employés", icon: Users, component: EmployeePage },
-    { key: "employee-card-template", label: "Modèle carte employé", icon: CreditCard, component: EmployeeCardTemplatePage },
-  
-    // ▸ Organization
-    { key: "departments", label: "Départements", icon: Building2, component: DepartmentPage },
-    { key: "positions", label: "Postes", icon: Briefcase, component: PositionPage },
-  
-    // ▸ HR Operations
-    { key: "contracts", label: "Contrats", icon: FileText, component: ContractPage },
-    { key: "leave", label: "Congés", icon: CalendarOff, component: LeavePage },
-    { key: "attendance", label: "Présences", icon: Clock, component: AttendancePage },
-    { key: "attendance-log", label: "Journal des présences", icon: ListChecks, component: AttendanceLogPage },
-    { key: "payroll", label: "Paie", icon: Wallet, component: PayrollPage },
-    { key: "recruitment", label: "Recrutement", icon: UserPlus, component: RecruitmentPage },
-    { key: "training", label: "Formations", icon: GraduationCap, component: TrainingPage },
-    { key: "expenses", label: "Notes de frais", icon: Receipt, component: ExpensePage },
-  
-    // ▸ Access & Security
-    { key: "user-tabs", label: "Gestion Utilisateurs", icon: LayoutGrid, component: UserTabbedView },
-  ];
 
   menu: [
     {
       id: "dashboard",
       label: "Dashboard",
-      icon: Users,
+      icon: LayoutDashboard,
       path: "/",
     },
-  ] as MenuItem[],
+    {
+      id: "employees",
+      label: "Employés",
+      icon: Users,
+      path: "/employees",
+      children: [
+        { id: "employee-list", label: "Liste des employés", path: "/employees" },
+        { id: "employee-card", label: "Modèle carte", path: "/employees/card-template" },
+        { id: "contracts", label: "Contrats", path: "/employees/contracts" },
+      ],
+    },
+    {
+      id: "organization",
+      label: "Organisation",
+      icon: Building2,
+      path: "/organization",
+      children: [
+        { id: "departments", label: "Départements", path: "/organization/departments" },
+        { id: "positions", label: "Postes", path: "/organization/positions" },
+      ],
+    },
+    {
+      id: "attendance",
+      label: "Présences",
+      icon: Clock,
+      path: "/attendance",
+      children: [
+        { id: "attendance-daily", label: "Présences", path: "/attendance" },
+        { id: "attendance-log", label: "Journal", path: "/attendance/log" },
+        { id: "leave", label: "Congés", path: "/attendance/leave" },
+      ],
+    },
+    {
+      id: "payroll",
+      label: "Paie",
+      icon: Wallet,
+      path: "/payroll",
+      children: [
+        { id: "payroll-list", label: "Fiches de paie", path: "/payroll" },
+        { id: "expenses", label: "Notes de frais", path: "/payroll/expenses" },
+      ],
+    },
+    {
+      id: "recruitment",
+      label: "Recrutement",
+      icon: UserPlus,
+      path: "/recruitment",
+    },
+    {
+      id: "training",
+      label: "Formations",
+      icon: GraduationCap,
+      path: "/training",
+    },
+    {
+      id: "users",
+      label: "Utilisateurs",
+      icon: UserCog,
+      path: "/users",
+    },
+  ],
 
   routes: [],
+
   permissions: [
-    // People
     "employee.read", "employee.create", "employee.update", "employee.delete",
     "driver.read", "driver.create", "driver.update", "driver.delete",
-    // Access
     "user.read", "user.create", "user.update", "user.delete",
     "role.read", "role.create", "role.update", "role.delete",
     "group.read", "group.create", "group.update", "group.delete",
-    // Organization
     "department.read", "department.create", "department.update", "department.delete",
     "position.read", "position.create", "position.update", "position.delete",
-    // HR Operations
     "contract.read", "contract.create", "contract.update", "contract.delete",
     "leave.read", "leave.create", "leave.update", "leave.delete",
     "attendance.read", "attendance.create", "attendance.update", "attendance.delete",

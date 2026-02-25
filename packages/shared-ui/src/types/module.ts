@@ -55,7 +55,7 @@ export type ModuleConfig = {
 export type ShellNavItem = {
   key: string;
   label: string;
-  icon: ComponentType<{ size?: number }>;
+  icon: ComponentType<any>;
   component?: ComponentType;
   path?: string;
 };
@@ -66,7 +66,7 @@ export type ShellNavItem = {
 export type BaseMenuItem = {
   key: string;
   label: string;
-  icon: ComponentType<{ size?: number }>;
+  icon: ComponentType<any>;
   path?: string;
 };
 

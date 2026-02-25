@@ -3,26 +3,21 @@ import { Droplets } from "lucide-react";
 
 export const carwashModuleConfig: ModuleConfig = {
   name: "carwash",
-  displayName: "Carwash Management",
+  displayName: "Lavage Auto",
   icon: Droplets,
   baseUrl: "/carwash",
   
   quickActions: [
     {
       icon: Droplets,
-      label: "New Carwash",
-      description: "Create a new carwash record",
-      onClick: () => console.log("New carwash"),
+      label: "Nouvelle commande",
+      description: "Créer une nouvelle commande de lavage",
+      onClick: () => console.log("New wash order"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: Droplets,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: Droplets, path: "/" },
   ],
 
   routes: [],

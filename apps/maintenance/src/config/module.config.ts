@@ -3,26 +3,21 @@ import { Wrench } from "lucide-react";
 
 export const maintenanceModuleConfig: ModuleConfig = {
   name: "maintenance",
-  displayName: "Maintenance Management",
+  displayName: "Maintenance",
   icon: Wrench,
   baseUrl: "/maintenance",
   
   quickActions: [
     {
       icon: Wrench,
-      label: "New Maintenance",
-      description: "Create a new maintenance record",
-      onClick: () => console.log("New maintenance"),
+      label: "Nouvel ordre",
+      description: "Créer un ordre de travail",
+      onClick: () => console.log("New work order"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: Wrench,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: Wrench, path: "/" },
   ],
 
   routes: [],

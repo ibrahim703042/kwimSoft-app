@@ -10,7 +10,8 @@
     "./navbar": "./src/navbar/index.ts",
     "./sidebar": "./src/sidebar/index.ts",
     "./layout": "./src/layout/index.ts",
-    "./types": "./src/types/module.ts"
+    "./types": "./src/types/module.ts",
+    "./configs": "./src/configs/index.ts"
   },
   "scripts": {
     "type-check": "tsc --noEmit"

@@ -3,26 +3,21 @@ import { Truck } from "lucide-react";
 
 export const transportModuleConfig: ModuleConfig = {
   name: "transport",
-  displayName: "Transport Management",
+  displayName: "Transport",
   icon: Truck,
   baseUrl: "/transport",
   
   quickActions: [
     {
       icon: Truck,
-      label: "New Transport",
-      description: "Create a new transport record",
-      onClick: () => console.log("New transport"),
+      label: "Nouveau voyage",
+      description: "Créer un nouveau voyage",
+      onClick: () => console.log("New trip"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: Truck,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: Truck, path: "/" },
   ],
 
   routes: [],

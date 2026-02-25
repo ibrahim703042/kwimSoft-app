@@ -13,7 +13,7 @@ function App() {
       quickActions={hrModuleConfig.quickActions}
       currentPath={location.pathname}
       isAuthenticated={true}
-      LinkComponent={NavLink}
+      // LinkComponent={NavLink}
       breadcrumbs={
         <div className="flex items-center gap-2 text-sm">
           <span className="text-gray-500">Hr</span>

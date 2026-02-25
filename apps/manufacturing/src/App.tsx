@@ -1,31 +1,35 @@
-import { AppShell } from "@kwim/shared-ui";
-import { manufacturingModuleConfig } from "@/config/module.config";
-import { useLocation, NavLink } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { ModuleShell, manufacturingMenuItems, manufacturingModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { Dashboard, createPlaceholderPage } from "./pages";
+
+const ManufacturingOrdersPage = createPlaceholderPage("Ordres de fabrication", "Gérer les ordres de fabrication");
+const BOMPage = createPlaceholderPage("Nomenclatures (BOM)", "Gérer les nomenclatures");
+const WorkCentersPage = createPlaceholderPage("Postes de travail", "Gérer les postes de travail");
+const OperationsPage = createPlaceholderPage("Opérations", "Gérer les opérations");
+const QualityChecksPage = createPlaceholderPage("Contrôles qualité", "Gérer les contrôles qualité");
+
+const pageComponents: Record<string, React.ComponentType> = {
+  "dashboard": Dashboard,
+  "manufacturing-orders": ManufacturingOrdersPage,
+  "bom": BOMPage,
+  "work-centers": WorkCentersPage,
+  "operations": OperationsPage,
+  "quality-checks": QualityChecksPage,
+};
+
+const items: ShellNavItem[] = manufacturingMenuItems.map((item) => ({
+  ...item,
+  component: pageComponents[item.key] || Dashboard,
+}));
 
 function App() {
-  const location = useLocation();
-
   return (
-    <AppShell
-      menus={manufacturingModuleConfig.menu}
-      quickActions={manufacturingModuleConfig.quickActions}
-      currentPath={location.pathname}
-      isAuthenticated={true}
-      LinkComponent={NavLink}
-      breadcrumbs={
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">Manufacturing</span>
-          <span className="text-gray-400">/</span>
-          <span className="font-medium">Dashboard</span>
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </AppShell>
+    <ModuleShell
+      title={manufacturingModuleInfo.title}
+      breadcrumbPath={manufacturingModuleInfo.breadcrumbPath}
+      items={items}
+      defaultSelected="dashboard"
+      enableSearch
+    />
   );
 }
 

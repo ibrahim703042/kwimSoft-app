@@ -1,31 +1,41 @@
-import { AppShell } from "@kwim/shared-ui";
-import { transportModuleConfig } from "@/config/module.config";
-import { useLocation, NavLink } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { ModuleShell, transportMenuItems, transportModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { Dashboard, createPlaceholderPage } from "./pages";
+
+const DriversPage = createPlaceholderPage("Conducteurs", "Gérer les conducteurs");
+const VehiclesPage = createPlaceholderPage("Véhicules", "Gérer les véhicules");
+const StationsPage = createPlaceholderPage("Gares", "Gérer les gares");
+const SchedulesPage = createPlaceholderPage("Horaires", "Gérer les horaires");
+const TripsPage = createPlaceholderPage("Voyages", "Gérer les voyages");
+const SeatsPage = createPlaceholderPage("Sièges", "Gérer les sièges");
+const TicketsPage = createPlaceholderPage("Billets", "Gérer les billets");
+const ReservationsPage = createPlaceholderPage("Réservations", "Gérer les réservations");
+
+const pageComponents: Record<string, React.ComponentType> = {
+  "dashboard": Dashboard,
+  "drivers": DriversPage,
+  "vehicles": VehiclesPage,
+  "stations": StationsPage,
+  "schedules": SchedulesPage,
+  "trips": TripsPage,
+  "seats": SeatsPage,
+  "tickets": TicketsPage,
+  "reservations": ReservationsPage,
+};
+
+const items: ShellNavItem[] = transportMenuItems.map((item) => ({
+  ...item,
+  component: pageComponents[item.key] || Dashboard,
+}));
 
 function App() {
-  const location = useLocation();
-
   return (
-    <AppShell
-      menus={transportModuleConfig.menu}
-      quickActions={transportModuleConfig.quickActions}
-      currentPath={location.pathname}
-      isAuthenticated={true}
-      LinkComponent={NavLink}
-      breadcrumbs={
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">Transport</span>
-          <span className="text-gray-400">/</span>
-          <span className="font-medium">Dashboard</span>
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </AppShell>
+    <ModuleShell
+      title={transportModuleInfo.title}
+      breadcrumbPath={transportModuleInfo.breadcrumbPath}
+      items={items}
+      defaultSelected="dashboard"
+      enableSearch
+    />
   );
 }
 

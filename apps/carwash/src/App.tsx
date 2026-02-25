@@ -1,31 +1,31 @@
-import { AppShell } from "@kwim/shared-ui";
-import { carwashModuleConfig } from "@/config/module.config";
-import { useLocation, NavLink } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { ModuleShell, carwashMenuItems, carwashModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { Dashboard, createPlaceholderPage } from "./pages";
+
+const WashServicesPage = createPlaceholderPage("Services de lavage", "Gérer les services de lavage");
+const BaysPage = createPlaceholderPage("Baies", "Gérer les baies de lavage");
+const WashOrdersPage = createPlaceholderPage("Commandes", "Gérer les commandes de lavage");
+
+const pageComponents: Record<string, React.ComponentType> = {
+  "dashboard": Dashboard,
+  "wash-services": WashServicesPage,
+  "bays": BaysPage,
+  "wash-orders": WashOrdersPage,
+};
+
+const items: ShellNavItem[] = carwashMenuItems.map((item) => ({
+  ...item,
+  component: pageComponents[item.key] || Dashboard,
+}));
 
 function App() {
-  const location = useLocation();
-
   return (
-    <AppShell
-      menus={carwashModuleConfig.menu}
-      quickActions={carwashModuleConfig.quickActions}
-      currentPath={location.pathname}
-      isAuthenticated={true}
-      LinkComponent={NavLink}
-      breadcrumbs={
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">Carwash</span>
-          <span className="text-gray-400">/</span>
-          <span className="font-medium">Dashboard</span>
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </AppShell>
+    <ModuleShell
+      title={carwashModuleInfo.title}
+      breadcrumbPath={carwashModuleInfo.breadcrumbPath}
+      items={items}
+      defaultSelected="dashboard"
+      enableSearch
+    />
   );
 }
 

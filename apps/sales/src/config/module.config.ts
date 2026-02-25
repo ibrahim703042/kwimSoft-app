@@ -1,28 +1,23 @@
 import { ModuleConfig } from "@kwim/shared-ui";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 
 export const salesModuleConfig: ModuleConfig = {
   name: "sales",
-  displayName: "Sales Management",
-  icon: ShoppingCart,
+  displayName: "Ventes",
+  icon: ShoppingBag,
   baseUrl: "/sales",
   
   quickActions: [
     {
-      icon: ShoppingCart,
-      label: "New Sales",
-      description: "Create a new sales record",
-      onClick: () => console.log("New sales"),
+      icon: ShoppingBag,
+      label: "Nouvelle commande",
+      description: "Créer une nouvelle commande",
+      onClick: () => console.log("New sales order"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: ShoppingCart,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: ShoppingBag, path: "/" },
   ],
 
   routes: [],

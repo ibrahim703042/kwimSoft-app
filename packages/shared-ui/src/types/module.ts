@@ -48,3 +48,40 @@ export type ModuleConfig = {
   quickActions?: QuickAction[];
   permissions?: string[];
 };
+
+/**
+ * Shell navigation item for ModuleShell sidebar
+ */
+export type ShellNavItem = {
+  key: string;
+  label: string;
+  icon: ComponentType<{ size?: number }>;
+  component?: ComponentType;
+  path?: string;
+};
+
+/**
+ * Base menu item without component (for shared configs)
+ */
+export type BaseMenuItem = {
+  key: string;
+  label: string;
+  icon: ComponentType<{ size?: number }>;
+  path?: string;
+};
+
+/**
+ * ModuleShell props
+ */
+export type ModuleShellProps = {
+  title: string;
+  breadcrumbPath?: string;
+  items: ShellNavItem[];
+  bottomItems?: ShellNavItem[];
+  enableSearch?: boolean;
+  headerAction?: ReactNode;
+  children?: ReactNode;
+  defaultSelected?: string;
+  onBreadcrumbChange?: (path: string, title: string) => void;
+  LinkComponent?: ComponentType<any>;
+};

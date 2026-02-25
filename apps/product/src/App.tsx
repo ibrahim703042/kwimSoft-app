@@ -1,31 +1,43 @@
-import { AppShell } from "@kwim/shared-ui";
-import { productModuleConfig } from "@/config/module.config";
-import { useLocation, NavLink } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { ModuleShell, productMenuItems, productModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { Dashboard, createPlaceholderPage } from "./pages";
+
+const CategoriesPage = createPlaceholderPage("Catégories", "Gérer les catégories");
+const SubCategoriesPage = createPlaceholderPage("Sous-catégories", "Gérer les sous-catégories");
+const BrandsPage = createPlaceholderPage("Marques", "Gérer les marques");
+const ProductsPage = createPlaceholderPage("Produits", "Gérer les produits");
+const AttributesPage = createPlaceholderPage("Attributs", "Gérer les attributs");
+const TagsPage = createPlaceholderPage("Étiquettes", "Gérer les étiquettes");
+const BundlesPage = createPlaceholderPage("Lots", "Gérer les lots");
+const PricingPage = createPlaceholderPage("Tarification", "Gérer la tarification");
+const ReviewsPage = createPlaceholderPage("Avis", "Gérer les avis clients");
+
+const pageComponents: Record<string, React.ComponentType> = {
+  "dashboard": Dashboard,
+  "categories": CategoriesPage,
+  "sub-categories": SubCategoriesPage,
+  "brands": BrandsPage,
+  "products": ProductsPage,
+  "attributes": AttributesPage,
+  "tags": TagsPage,
+  "bundles": BundlesPage,
+  "pricing": PricingPage,
+  "reviews": ReviewsPage,
+};
+
+const items: ShellNavItem[] = productMenuItems.map((item) => ({
+  ...item,
+  component: pageComponents[item.key] || Dashboard,
+}));
 
 function App() {
-  const location = useLocation();
-
   return (
-    <AppShell
-      menus={productModuleConfig.menu}
-      quickActions={productModuleConfig.quickActions}
-      currentPath={location.pathname}
-      isAuthenticated={true}
-      LinkComponent={NavLink}
-      breadcrumbs={
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">Product</span>
-          <span className="text-gray-400">/</span>
-          <span className="font-medium">Dashboard</span>
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </AppShell>
+    <ModuleShell
+      title={productModuleInfo.title}
+      breadcrumbPath={productModuleInfo.breadcrumbPath}
+      items={items}
+      defaultSelected="dashboard"
+      enableSearch
+    />
   );
 }
 

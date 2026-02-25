@@ -3,26 +3,21 @@ import { Factory } from "lucide-react";
 
 export const manufacturingModuleConfig: ModuleConfig = {
   name: "manufacturing",
-  displayName: "Manufacturing Management",
+  displayName: "Fabrication",
   icon: Factory,
   baseUrl: "/manufacturing",
   
   quickActions: [
     {
       icon: Factory,
-      label: "New Manufacturing",
-      description: "Create a new manufacturing record",
-      onClick: () => console.log("New manufacturing"),
+      label: "Nouvel ordre",
+      description: "Créer un ordre de fabrication",
+      onClick: () => console.log("New manufacturing order"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: Factory,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: Factory, path: "/" },
   ],
 
   routes: [],

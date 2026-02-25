@@ -1,28 +1,23 @@
 import { ModuleConfig } from "@kwim/shared-ui";
-import { UserCircle } from "lucide-react";
+import { Users } from "lucide-react";
 
 export const crmModuleConfig: ModuleConfig = {
   name: "crm",
-  displayName: "Crm Management",
-  icon: UserCircle,
+  displayName: "CRM",
+  icon: Users,
   baseUrl: "/crm",
   
   quickActions: [
     {
-      icon: UserCircle,
-      label: "New Crm",
-      description: "Create a new crm record",
-      onClick: () => console.log("New crm"),
+      icon: Users,
+      label: "Nouveau contact",
+      description: "Ajouter un nouveau contact",
+      onClick: () => console.log("New contact"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: UserCircle,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: Users, path: "/" },
   ],
 
   routes: [],

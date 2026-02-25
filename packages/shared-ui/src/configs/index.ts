@@ -1,0 +1,11 @@
+export { hrMenuItems, hrModuleInfo } from "./hr.menu";
+export { financeMenuItems, financeModuleInfo } from "./finance.menu";
+export { carwashMenuItems, carwashModuleInfo } from "./carwash.menu";
+export { crmMenuItems, crmModuleInfo } from "./crm.menu";
+export { inventoryMenuItems, inventoryModuleInfo } from "./inventory.menu";
+export { maintenanceMenuItems, maintenanceModuleInfo } from "./maintenance.menu";
+export { manufacturingMenuItems, manufacturingModuleInfo } from "./manufacturing.menu";
+export { procurementMenuItems, procurementModuleInfo } from "./procurement.menu";
+export { productMenuItems, productModuleInfo } from "./product.menu";
+export { salesMenuItems, salesModuleInfo } from "./sales.menu";
+export { transportMenuItems, transportModuleInfo } from "./transport.menu";

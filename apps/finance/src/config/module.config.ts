@@ -3,26 +3,21 @@ import { DollarSign } from "lucide-react";
 
 export const financeModuleConfig: ModuleConfig = {
   name: "finance",
-  displayName: "Finance Management",
+  displayName: "Finance & Comptabilité",
   icon: DollarSign,
   baseUrl: "/finance",
   
   quickActions: [
     {
       icon: DollarSign,
-      label: "New Finance",
-      description: "Create a new finance record",
-      onClick: () => console.log("New finance"),
+      label: "Nouvelle facture",
+      description: "Créer une nouvelle facture",
+      onClick: () => console.log("New invoice"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: DollarSign,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: DollarSign, path: "/" },
   ],
 
   routes: [],

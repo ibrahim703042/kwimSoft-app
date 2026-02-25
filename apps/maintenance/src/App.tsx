@@ -1,31 +1,29 @@
-import { AppShell } from "@kwim/shared-ui";
-import { maintenanceModuleConfig } from "@/config/module.config";
-import { useLocation, NavLink } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { ModuleShell, maintenanceMenuItems, maintenanceModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { Dashboard, createPlaceholderPage } from "./pages";
+
+const WorkOrdersPage = createPlaceholderPage("Ordres de travail", "Gérer les ordres de travail");
+const InspectionsPage = createPlaceholderPage("Inspections", "Gérer les inspections");
+
+const pageComponents: Record<string, React.ComponentType> = {
+  "dashboard": Dashboard,
+  "work-orders": WorkOrdersPage,
+  "inspections": InspectionsPage,
+};
+
+const items: ShellNavItem[] = maintenanceMenuItems.map((item) => ({
+  ...item,
+  component: pageComponents[item.key] || Dashboard,
+}));
 
 function App() {
-  const location = useLocation();
-
   return (
-    <AppShell
-      menus={maintenanceModuleConfig.menu}
-      quickActions={maintenanceModuleConfig.quickActions}
-      currentPath={location.pathname}
-      isAuthenticated={true}
-      LinkComponent={NavLink}
-      breadcrumbs={
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">Maintenance</span>
-          <span className="text-gray-400">/</span>
-          <span className="font-medium">Dashboard</span>
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </AppShell>
+    <ModuleShell
+      title={maintenanceModuleInfo.title}
+      breadcrumbPath={maintenanceModuleInfo.breadcrumbPath}
+      items={items}
+      defaultSelected="dashboard"
+      enableSearch
+    />
   );
 }
 

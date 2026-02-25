@@ -1,31 +1,35 @@
-import { AppShell } from "@kwim/shared-ui";
-import { procurementModuleConfig } from "@/config/module.config";
-import { useLocation, NavLink } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { ModuleShell, procurementMenuItems, procurementModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { Dashboard, createPlaceholderPage } from "./pages";
+
+const SuppliersPage = createPlaceholderPage("Fournisseurs", "Gérer les fournisseurs");
+const PurchaseRequisitionsPage = createPlaceholderPage("Demandes d'achat", "Gérer les demandes d'achat");
+const PurchaseOrdersPage = createPlaceholderPage("Bons de commande", "Gérer les bons de commande");
+const RfqPage = createPlaceholderPage("Demandes de prix", "Gérer les demandes de prix");
+const GoodsReceiptsPage = createPlaceholderPage("Réceptions", "Gérer les réceptions de marchandises");
+
+const pageComponents: Record<string, React.ComponentType> = {
+  "dashboard": Dashboard,
+  "suppliers": SuppliersPage,
+  "purchase-requisitions": PurchaseRequisitionsPage,
+  "purchase-orders": PurchaseOrdersPage,
+  "rfq": RfqPage,
+  "goods-receipts": GoodsReceiptsPage,
+};
+
+const items: ShellNavItem[] = procurementMenuItems.map((item) => ({
+  ...item,
+  component: pageComponents[item.key] || Dashboard,
+}));
 
 function App() {
-  const location = useLocation();
-
   return (
-    <AppShell
-      menus={procurementModuleConfig.menu}
-      quickActions={procurementModuleConfig.quickActions}
-      currentPath={location.pathname}
-      isAuthenticated={true}
-      LinkComponent={NavLink}
-      breadcrumbs={
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">Procurement</span>
-          <span className="text-gray-400">/</span>
-          <span className="font-medium">Dashboard</span>
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </AppShell>
+    <ModuleShell
+      title={procurementModuleInfo.title}
+      breadcrumbPath={procurementModuleInfo.breadcrumbPath}
+      items={items}
+      defaultSelected="dashboard"
+      enableSearch
+    />
   );
 }
 

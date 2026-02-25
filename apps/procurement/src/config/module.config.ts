@@ -1,28 +1,23 @@
 import { ModuleConfig } from "@kwim/shared-ui";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 export const procurementModuleConfig: ModuleConfig = {
   name: "procurement",
-  displayName: "Procurement Management",
-  icon: ShoppingBag,
+  displayName: "Approvisionnement",
+  icon: ShoppingCart,
   baseUrl: "/procurement",
   
   quickActions: [
     {
-      icon: ShoppingBag,
-      label: "New Procurement",
-      description: "Create a new procurement record",
-      onClick: () => console.log("New procurement"),
+      icon: ShoppingCart,
+      label: "Nouvelle commande",
+      description: "Créer un bon de commande",
+      onClick: () => console.log("New purchase order"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: ShoppingBag,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: ShoppingCart, path: "/" },
   ],
 
   routes: [],

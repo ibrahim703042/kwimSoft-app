@@ -1,31 +1,37 @@
-import { AppShell } from "@kwim/shared-ui";
-import { financeModuleConfig } from "@/config/module.config";
-import { useLocation, NavLink } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { ModuleShell, financeMenuItems, financeModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { Dashboard, createPlaceholderPage } from "./pages";
+
+const AccountsPage = createPlaceholderPage("Comptes", "Gérer les comptes financiers");
+const InvoicesPage = createPlaceholderPage("Factures", "Gérer les factures");
+const PaymentsPage = createPlaceholderPage("Paiements", "Suivre les paiements");
+const BudgetsPage = createPlaceholderPage("Budgets", "Gérer les budgets");
+const JournalEntriesPage = createPlaceholderPage("Écritures comptables", "Gérer les écritures");
+const TaxConfigPage = createPlaceholderPage("Configuration fiscale", "Paramètres fiscaux");
+
+const pageComponents: Record<string, React.ComponentType> = {
+  "dashboard": Dashboard,
+  "accounts": AccountsPage,
+  "invoices": InvoicesPage,
+  "payments": PaymentsPage,
+  "budgets": BudgetsPage,
+  "journal-entries": JournalEntriesPage,
+  "tax-config": TaxConfigPage,
+};
+
+const items: ShellNavItem[] = financeMenuItems.map((item) => ({
+  ...item,
+  component: pageComponents[item.key] || Dashboard,
+}));
 
 function App() {
-  const location = useLocation();
-
   return (
-    <AppShell
-      menus={financeModuleConfig.menu}
-      quickActions={financeModuleConfig.quickActions}
-      currentPath={location.pathname}
-      isAuthenticated={true}
-      LinkComponent={NavLink}
-      breadcrumbs={
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">Finance</span>
-          <span className="text-gray-400">/</span>
-          <span className="font-medium">Dashboard</span>
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </AppShell>
+    <ModuleShell
+      title={financeModuleInfo.title}
+      breadcrumbPath={financeModuleInfo.breadcrumbPath}
+      items={items}
+      defaultSelected="dashboard"
+      enableSearch
+    />
   );
 }
 

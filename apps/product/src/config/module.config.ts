@@ -1,28 +1,23 @@
 import { ModuleConfig } from "@kwim/shared-ui";
-import { Package } from "lucide-react";
+import { Box } from "lucide-react";
 
 export const productModuleConfig: ModuleConfig = {
   name: "product",
-  displayName: "Product Management",
-  icon: Package,
-  baseUrl: "/product",
+  displayName: "Produits",
+  icon: Box,
+  baseUrl: "/products",
   
   quickActions: [
     {
-      icon: Package,
-      label: "New Product",
-      description: "Create a new product record",
+      icon: Box,
+      label: "Nouveau produit",
+      description: "Créer un nouveau produit",
       onClick: () => console.log("New product"),
     },
   ],
 
   menu: [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: Package,
-      path: "/",
-    },
+    { id: "dashboard", label: "Tableau de bord", icon: Box, path: "/" },
   ],
 
   routes: [],

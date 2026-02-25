@@ -1,0 +1,29 @@
+{
+  "name": "@kwim/shared-ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./app-shell": "./src/layout/index.ts",
+    "./navbar": "./src/navbar/index.ts",
+    "./sidebar": "./src/sidebar/index.ts",
+    "./layout": "./src/layout/index.ts",
+    "./types": "./src/types/module.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.263.1",
+    "zustand": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.7.3"
+  }
+}

@@ -13,8 +13,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@/config": path.resolve(__dirname, "./src/config"),
+      "@": path.resolve(__dirname, "./apps/admin/src"),
+      "@/config": path.resolve(__dirname, "./apps/admin/src/config"),
+      "@kwim/shared-ui": path.resolve(__dirname, "./packages/shared-ui/src"),
     },
     extensions: [".js", ".ts", ".jsx", ".tsx", ".json"],
   },

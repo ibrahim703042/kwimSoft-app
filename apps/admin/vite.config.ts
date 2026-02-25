@@ -19,6 +19,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@/config": "@kwim/config",
+      "@kwim/shared-ui": path.resolve(__dirname, "../../packages/shared-ui/src"),
       "@kwim/ui": path.resolve(__dirname, "../../packages/ui/src"),
       "@kwim/core": path.resolve(__dirname, "../../packages/core/src"),
       "@kwim/auth": path.resolve(__dirname, "../../packages/auth/src"),

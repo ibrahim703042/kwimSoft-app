@@ -28,7 +28,9 @@
         "@/assets/*": ["assets/*"],
         "@/store/*": ["store/*"],
         "@/styles/*": ["styles/*"],
-        "@/config": ["config/index.ts"]
+        "@/config": ["config/index.ts"],
+        "@kwim/shared-ui": ["../../packages/shared-ui/src/index.ts"],
+        "@kwim/shared-ui/*": ["../../packages/shared-ui/src/*"]
       },
   
       /* Linting */

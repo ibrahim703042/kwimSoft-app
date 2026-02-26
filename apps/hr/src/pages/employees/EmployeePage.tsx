@@ -2,7 +2,7 @@
  * EmployeePage — Employee list with CrudTable
  */
 import { useState } from "react";
-import { Plus, Search, Users, Filter, Download, Upload } from "lucide-react";
+import { Plus, Users, Download, Upload } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   Button,
@@ -20,6 +20,8 @@ import {
   SelectValue,
 } from "@kwim/shared-ui";
 import { CrudTable } from "@kwim/core";
+import { PageHeader } from "@/components/PageHeader";
+import { PageFilters } from "@/components/PageFilters";
 
 interface Employee {
   id: string;
@@ -167,9 +169,26 @@ const columns: ColumnDef<Employee>[] = [
   },
 ];
 
+const DEPARTMENT_OPTIONS = [
+  { value: "all", label: "All Departments" },
+  { value: "it", label: "IT" },
+  { value: "hr", label: "HR" },
+  { value: "finance", label: "Finance" },
+  { value: "sales", label: "Sales" },
+  { value: "marketing", label: "Marketing" },
+];
+
+const STATUS_OPTIONS = [
+  { value: "all", label: "All Status" },
+  { value: "active", label: "Active" },
+  { value: "inactive", label: "Inactive" },
+];
+
 export default function EmployeePage() {
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
   const [search, setSearch] = useState("");
+  const [departmentFilter, setDepartmentFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Employee | null>(null);
   const [formData, setFormData] = useState<{
@@ -194,13 +213,16 @@ export default function EmployeePage() {
     status: "active",
   });
 
-  const filteredEmployees = employees.filter(
-    (e) =>
+  const filteredEmployees = employees.filter((e) => {
+    const matchesSearch =
       e.firstName.toLowerCase().includes(search.toLowerCase()) ||
       e.lastName.toLowerCase().includes(search.toLowerCase()) ||
       e.email.toLowerCase().includes(search.toLowerCase()) ||
-      e.department.toLowerCase().includes(search.toLowerCase())
-  );
+      e.department.toLowerCase().includes(search.toLowerCase());
+    const matchesDept = departmentFilter === "all" || e.department.toLowerCase() === departmentFilter;
+    const matchesStatus = statusFilter === "all" || e.status === statusFilter;
+    return matchesSearch && matchesDept && matchesStatus;
+  });
 
   const openCreate = () => {
     setEditing(null);
@@ -252,80 +274,51 @@ export default function EmployeePage() {
     }
   };
 
+  const handleBulkDelete = (rows: Employee[]) => {
+    if (confirm(`Are you sure you want to delete ${rows.length} employee(s)?`)) {
+      const ids = new Set(rows.map((r) => r.id));
+      setEmployees((prev) => prev.filter((e) => !ids.has(e.id)));
+    }
+  };
+
   const handleView = (emp: Employee) => {
     console.log("View employee:", emp);
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-xl font-semibold flex items-center gap-2">
-            <Users className="h-5 w-5 text-primary" />
-            Employees
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Manage your organization's employees
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Upload className="h-4 w-4 mr-2" />
-            Import
-          </Button>
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-          <Button className="bg-[#0F123F]" onClick={openCreate}>
-            <Plus className="h-4 w-4 mr-2" />
-            {/* Add Employee */}
-          </Button>
-        </div>
-      </div>
+    <div className="space-y-6 min-w-0">
+      <PageHeader
+        title="Employees"
+        description="Manage your organization's employees"
+        icon={Users}
+        actions={[
+          { icon: Upload, label: "Import", variant: "outline" },
+          { icon: Download, label: "Export", variant: "outline" },
+          { icon: Plus, label: "Add Employee", variant: "default", onClick: openCreate },
+        ]}
+      />
 
-      {/* Filters */}
-      <div className="flex items-center gap-3 bg-white dark:bg-gray-800 p-4 rounded-lg border">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search employees..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Department" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Departments</SelectItem>
-            <SelectItem value="it">IT</SelectItem>
-            <SelectItem value="hr">HR</SelectItem>
-            <SelectItem value="finance">Finance</SelectItem>
-            <SelectItem value="sales">Sales</SelectItem>
-            <SelectItem value="marketing">Marketing</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select>
-          <SelectTrigger className="w-[150px]">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="inactive">Inactive</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button variant="outline" size="icon">
-          <Filter className="h-4 w-4" />
-        </Button>
-      </div>
+      <PageFilters
+        searchPlaceholder="Search employees..."
+        searchValue={search}
+        onSearchChange={setSearch}
+        selects={[
+          {
+            placeholder: "Department",
+            value: departmentFilter,
+            onValueChange: setDepartmentFilter,
+            options: DEPARTMENT_OPTIONS,
+          },
+          {
+            placeholder: "Status",
+            value: statusFilter,
+            onValueChange: setStatusFilter,
+            options: STATUS_OPTIONS,
+          },
+        ]}
+      />
 
-      {/* Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg border">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border min-w-0 overflow-hidden">
         <CrudTable
           data={filteredEmployees}
           columns={columns}
@@ -334,6 +327,9 @@ export default function EmployeePage() {
           onEdit={openEdit}
           onDelete={handleDelete}
           onView={handleView}
+          enableRowSelection
+          getRowId={(row) => row.id}
+          onBulkDelete={handleBulkDelete}
           permissions={{
             read: "employee.read",
             create: "employee.create",

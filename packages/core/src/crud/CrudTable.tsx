@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -27,6 +27,7 @@ import {
   TableHead,
   TableBody,
   TableCell,
+  Checkbox,
 } from "@kwim/shared-ui";
 
 interface CrudTableProps<T> {
@@ -41,6 +42,12 @@ interface CrudTableProps<T> {
   onDelete?: (row: T) => void;
   onView?: (row: T) => void;
   customActions?: (row: T) => React.ReactNode;
+  /** Enable row selection with checkboxes and optional bulk delete */
+  enableRowSelection?: boolean;
+  /** Return unique id for each row (required for selection when data has an id field) */
+  getRowId?: (row: T) => string;
+  /** Called when user triggers bulk delete; receives selected rows */
+  onBulkDelete?: (rows: T[]) => void;
 }
 
 export function CrudTable<T>({
@@ -55,15 +62,46 @@ export function CrudTable<T>({
   onDelete,
   onView,
   customActions,
+  enableRowSelection = false,
+  getRowId,
+  onBulkDelete,
 }: CrudTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
+  const columnsWithSelection = useMemo(() => {
+    if (!enableRowSelection) return columns;
+    const selectColumn: ColumnDef<T> = {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    };
+    return [selectColumn, ...columns];
+  }, [enableRowSelection, columns]);
+
   const table = useReactTable({
     data,
-    columns,
+    columns: columnsWithSelection,
+    ...(getRowId && { getRowId: (originalRow: T) => getRowId(originalRow) }),
     initialState: enablePagination
       ? {
           pagination: {
@@ -80,6 +118,7 @@ export function CrudTable<T>({
     getPaginationRowModel: enablePagination ? getPaginationRowModel() : undefined,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    enableRowSelection,
   });
 
   const renderActions = (row: T) => {
@@ -142,11 +181,45 @@ export function CrudTable<T>({
 
   const pageCount = table.getPageCount();
   const currentPage = table.getState().pagination.pageIndex;
+  const selectedRows = table.getFilteredSelectedRowModel().rows.map((r) => r.original);
+  const hasSelection = enableRowSelection && selectedRows.length > 0 && onBulkDelete;
+
+  const handleBulkDelete = () => {
+    if (selectedRows.length && onBulkDelete) {
+      onBulkDelete(selectedRows);
+      setRowSelection({});
+    }
+  };
 
   return (
-    <div className="w-full">
-      <div className="rounded-md border">
-        <Table>
+    <div className="w-full min-w-0">
+      {hasSelection && (
+        <div className="flex flex-wrap items-center justify-between gap-2 py-2 px-2 rounded-t-md border border-b-0 bg-muted/50">
+          <span className="text-sm text-muted-foreground">
+            {selectedRows.length} selected
+          </span>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setRowSelection({})}
+            >
+              Clear selection
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleBulkDelete}
+            >
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete selected
+            </Button>
+          </div>
+        </div>
+      )}
+      <div className="rounded-md border overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table className="min-w-[640px]">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -167,7 +240,7 @@ export function CrudTable<T>({
             {isLoading ? (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length + 1}
+                  colSpan={columnsWithSelection.length + ((onEdit || onDelete || onView || customActions) ? 1 : 0)}
                   className="h-24 text-center whitespace-nowrap"
                 >
                   <div className="w-full flex justify-center">
@@ -191,7 +264,7 @@ export function CrudTable<T>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length + 1}
+                  colSpan={columnsWithSelection.length + ((onEdit || onDelete || onView || customActions) ? 1 : 0)}
                   className="h-24 text-center whitespace-nowrap"
                 >
                   <p className="text-[0.8rem] text-red-500">No data found</p>
@@ -200,6 +273,7 @@ export function CrudTable<T>({
             )}
           </TableBody>
         </Table>
+        </div>
       </div>
 
       {enablePagination && pageCount > 0 && (

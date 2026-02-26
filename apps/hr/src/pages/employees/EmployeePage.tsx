@@ -299,6 +299,8 @@ export default function EmployeePage() {
       />
 
       <PageFilters
+        cardTitle="Data"
+        cardCount={filteredEmployees.length}
         searchPlaceholder="Search employees..."
         searchValue={search}
         onSearchChange={setSearch}

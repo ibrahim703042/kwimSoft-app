@@ -1,5 +1,5 @@
-import apiClient from "./apiClient";
 import { API_CONFIG } from "@kwim/config";
+import apiClient from "../apiClient";
 
 const BASE_URL = API_CONFIG.userManagement.baseUrl;
 

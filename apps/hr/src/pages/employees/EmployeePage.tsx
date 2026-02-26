@@ -113,7 +113,7 @@ const mockEmployees: Employee[] = [
 const columns: ColumnDef<Employee>[] = [
   {
     accessorKey: "avatar",
-    header: "",
+    header: "IMG",
     cell: ({ row }) => (
       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium text-sm">
         {row.original.firstName.charAt(0)}{row.original.lastName.charAt(0)}
@@ -156,11 +156,10 @@ const columns: ColumnDef<Employee>[] = [
     header: "STATUS",
     cell: ({ row }) => (
       <span
-        className={`px-2 py-1 rounded-full text-xs font-medium ${
-          row.original.status === "active"
+        className={`px-2 py-1 rounded-full text-xs font-medium ${row.original.status === "active"
             ? "bg-green-100 text-green-800"
             : "bg-gray-100 text-gray-800"
-        }`}
+          }`}
       >
         {row.original.status === "active" ? "Active" : "Inactive"}
       </span>
@@ -281,7 +280,7 @@ export default function EmployeePage() {
           </Button>
           <Button className="bg-[#0F123F]" onClick={openCreate}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Employee
+            {/* Add Employee */}
           </Button>
         </div>
       </div>

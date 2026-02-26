@@ -1,4 +1,4 @@
-import { QuickAction } from "../types/module";
+import { QuickAction } from "../../types/module";
 
 interface NavbarProps {
   breadcrumbs?: React.ReactNode;

@@ -130,10 +130,10 @@ export default function ContractPage() {
 
   const statusBadge = (s: string) => {
     const c: Record<string, string> = {
-      draft: "bg-gray-100 text-gray-700",
-      active: "bg-green-100 text-green-700",
-      expired: "bg-red-100 text-red-700",
-      terminated: "bg-orange-100 text-orange-700",
+      draft: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
+      active: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+      expired: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+      terminated: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
     };
     return (
       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${c[s] || ""}`}>

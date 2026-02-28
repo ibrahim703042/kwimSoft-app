@@ -42,9 +42,9 @@ export function Sidebar({
 
   return (
     <div
-      className={`bg-[#0F123F] h-screen duration-500 flex flex-col ${
+      className={`bg-[#0F123F] dark:bg-gray-900 h-screen duration-500 flex flex-col ${
         isOpen ? "md:w-[17rem] w-16" : "w-16"
-      } text-gray-100 px-4 overflow-hidden`}
+      } text-gray-100 dark:text-gray-200 px-4 overflow-hidden`}
     >
       {/* Top: header + search — fixed */}
       <div className="shrink-0">

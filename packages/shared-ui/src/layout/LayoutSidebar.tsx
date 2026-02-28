@@ -46,8 +46,8 @@ export function LayoutSidebar({
 
   return (
     <div
-      className={`bg-[#0F123F] h-screen duration-500 flex flex-col ${isOpen ? "md:w-[17rem] w-16" : "w-16"
-        } text-gray-100 px-4 overflow-hidden`}
+      className={`bg-[#0F123F] dark:bg-gray-900 h-screen duration-500 flex flex-col ${isOpen ? "md:w-[17rem] w-16" : "w-16"
+        } text-gray-100 dark:text-gray-200 px-4 overflow-hidden`}
     >
       {/* Header */}
       <div className="shrink-0">
@@ -109,7 +109,7 @@ function SidebarHeader({
         <div className="text-white font-medium text-sm px-2">
           <div className="flex items-center space-x-3">
             {logo || (
-              <div className="bg-[#b5bbc516] h-10 w-14 rounded-lg border-[#90959e96] border flex items-center justify-center">
+              <div className="bg-[#b5bbc516] dark:bg-gray-800 h-10 w-14 rounded-lg border-[#90959e96] dark:border-gray-700 border flex items-center justify-center">
                 <span className="text-2xl font-bold">K</span>
               </div>
             )}
@@ -135,7 +135,7 @@ function SidebarHeader({
 
 function SidebarSearch({ isOpen }: { isOpen: boolean }) {
   return isOpen ? (
-    <div className="flex items-center space-x-2 mx-2 bg-[#b5bbc516] px-3 py-[5px] rounded-md border-[#90959e96] border">
+    <div className="flex items-center space-x-2 mx-2 bg-[#b5bbc516] dark:bg-gray-800 px-3 py-[5px] rounded-md border-[#90959e96] dark:border-gray-700 border">
       <svg className="size-5" fill="#b5bbc5" viewBox="0 0 24 24">
         <path
           fill="#b5bbc5"
@@ -149,7 +149,7 @@ function SidebarSearch({ isOpen }: { isOpen: boolean }) {
       />
     </div>
   ) : (
-    <div className="bg-[#b5bbc516] border-[#90959e96] border flex justify-center items-center px-2 py-1 rounded-md">
+    <div className="bg-[#b5bbc516] dark:bg-gray-800 border-[#90959e96] dark:border-gray-700 border flex justify-center items-center px-2 py-1 rounded-md">
       <svg className="size-6" fill="#b5bbc5" viewBox="0 0 24 24">
         <path
           fill="#b5bbc5"
@@ -196,7 +196,7 @@ function SidebarMenuItem({
             {item.label}
           </span>
           {isOpen && (
-            <span className="text-gray-400">
+            <span className="text-gray-400 dark:text-gray-500">
               {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
             </span>
           )}
@@ -211,7 +211,7 @@ function SidebarMenuItem({
                   {child.label}
                 </>
               );
-              const childClasses = "flex items-center text-xs gap-2 py-1.5 px-2 rounded-md transition-colors text-gray-400 hover:text-white hover:bg-[rgba(32,61,148,0.3)]";
+              const childClasses = "flex items-center text-xs gap-2 py-1.5 px-2 rounded-md transition-colors text-gray-400 dark:text-gray-500 hover:text-white dark:hover:text-gray-200 hover:bg-[rgba(32,61,148,0.3)] dark:hover:bg-gray-800";
 
               if (LinkComponent) {
                 return (
@@ -286,20 +286,20 @@ function SidebarFooter({
       className="rounded-full w-9 h-9 object-cover border-2 border-[#90959e60]"
     />
   ) : (
-    <div className="rounded-full w-9 h-9 bg-[#90959e60] flex items-center justify-center border-2 border-[#90959e60]">
-      <User size={18} className="text-white" />
+    <div className="rounded-full w-9 h-9 bg-[#90959e60] dark:bg-gray-700 flex items-center justify-center border-2 border-[#90959e60] dark:border-gray-600">
+      <User size={18} className="text-white dark:text-gray-300" />
     </div>
   );
 
   const menuContent = (
     <>
-      <DropdownMenuLabel className="text-gray-300 font-normal">
-        <p className="font-medium text-white truncate">{displayName}</p>
-        <p className="text-xs text-gray-400 truncate">{email}</p>
+      <DropdownMenuLabel className="text-gray-300 dark:text-gray-400 font-normal">
+        <p className="font-medium text-white dark:text-gray-200 truncate">{displayName}</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500 truncate">{email}</p>
       </DropdownMenuLabel>
-      <DropdownMenuSeparator className="bg-[#90959e40]" />
+      <DropdownMenuSeparator className="bg-[#90959e40] dark:bg-gray-700" />
       <DropdownMenuItem
-        className="focus:bg-[#90959e30] focus:text-white cursor-pointer"
+        className="focus:bg-[#90959e30] dark:focus:bg-gray-800 focus:text-white dark:focus:text-gray-200 cursor-pointer"
         onClick={onProfile}
       >
         <User className="mr-2 h-4 w-4" />
@@ -314,7 +314,7 @@ function SidebarFooter({
       </DropdownMenuItem>
       <DropdownMenuSeparator className="bg-[#90959e40]" />
       <DropdownMenuItem
-        className="focus:bg-red-900/40 focus:text-red-200 text-red-200 cursor-pointer"
+        className="focus:bg-red-900/40 dark:focus:bg-red-900/30 focus:text-red-200 dark:focus:text-red-300 text-red-200 dark:text-red-300 cursor-pointer"
         onClick={onLogout}
       >
         <LogOut className="mr-2 h-4 w-4" />
@@ -332,7 +332,7 @@ function SidebarFooter({
               {avatar}
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" side="right" className="w-56 bg-[#0F123F] border-[#90959e60] text-gray-100">
+          <DropdownMenuContent align="start" side="right" className="w-56 bg-[#0F123F] dark:bg-gray-900 border-[#90959e60] dark:border-gray-700 text-gray-100 dark:text-gray-200">
             {menuContent}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -343,7 +343,7 @@ function SidebarFooter({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="w-full flex items-center justify-between gap-2 bg-[#0F123F] hover:bg-[#151a4a] rounded-lg border border-[#90959e60] px-3 py-2.5 text-left focus:outline-none focus:ring-2 focus:ring-[#90959e60] transition-colors">
+        <button className="w-full flex items-center justify-between gap-2 bg-[#0F123F] dark:bg-gray-900 hover:bg-[#151a4a] dark:hover:bg-gray-800 rounded-lg border border-[#90959e60] dark:border-gray-700 px-3 py-2.5 text-left focus:outline-none focus:ring-2 focus:ring-[#90959e60] dark:focus:ring-gray-600 transition-colors">
           <div className="flex items-center gap-3 min-w-0 flex-1">
             {avatar}
             <div className="min-w-0 flex-1">
@@ -354,7 +354,7 @@ function SidebarFooter({
           <ChevronDown className="h-4 w-4 text-[#b5bbc5] shrink-0" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" side="top" className="w-56 bg-[#0F123F] border-[#90959e60] text-gray-100">
+      <DropdownMenuContent align="start" side="top" className="w-56 bg-[#0F123F] dark:bg-gray-900 border-[#90959e60] dark:border-gray-700 text-gray-100 dark:text-gray-200">
         {menuContent}
       </DropdownMenuContent>
     </DropdownMenu>

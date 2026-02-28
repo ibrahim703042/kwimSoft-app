@@ -62,9 +62,9 @@ export function AppLayout({ children, config }: AppLayoutProps) {
   const { isOpen } = useSidebarStore();
 
   return (
-    <div className="flex h-screen bg-white text-gray-800 dark:bg-[#0F123F] dark:text-gray-100">
+    <div className="flex h-screen bg-white text-gray-800 dark:bg-gray-950 dark:text-gray-100 overflow-hidden">
       {/* Sidebar */}
-      <div className="border-r border-gray-200 dark:border-gray-700">
+      <div className="border-r border-gray-200 dark:border-gray-800 flex-shrink-0">
         <LayoutSidebar
           appName={config.appName}
           logo={config.logo}
@@ -81,9 +81,9 @@ export function AppLayout({ children, config }: AppLayoutProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-gray-50 dark:bg-[#101530] transition-colors duration-300">
-        {/* Header/Navbar */}
-        <div className="border-b border-gray-200 dark:border-gray-700">
+      <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
+        {/* Header/Navbar - Fixed */}
+        <div className="border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
           <LayoutNavbar
             user={config.user}
             quickActions={config.quickActions}
@@ -103,8 +103,8 @@ export function AppLayout({ children, config }: AppLayoutProps) {
           />
         </div>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto scrollbar-hide p-4">
+        {/* Content Area - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-4">
           {children}
         </div>
       </div>

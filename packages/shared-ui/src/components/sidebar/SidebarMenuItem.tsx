@@ -54,7 +54,7 @@ export default function SidebarMenuItem({
             {item.label}
           </span>
           {isOpen && (
-            <span className="text-gray-400">
+            <span className="text-gray-400 dark:text-gray-500">
               {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
             </span>
           )}
@@ -79,8 +79,8 @@ export default function SidebarMenuItem({
                     href={child.path || "#"}
                     className={`flex items-center text-xs gap-2 py-1.5 px-2 rounded-md transition-colors ${
                       isActive
-                        ? "text-white bg-[rgba(32,61,148,0.5)]"
-                        : "text-gray-400 hover:text-white hover:bg-[rgba(32,61,148,0.3)]"
+                        ? "text-white dark:text-gray-200 bg-[rgba(32,61,148,0.5)] dark:bg-gray-800"
+                        : "text-gray-400 dark:text-gray-500 hover:text-white dark:hover:text-gray-200 hover:bg-[rgba(32,61,148,0.3)] dark:hover:bg-gray-800"
                     }`}
                   >
                     {childContent}
@@ -94,8 +94,8 @@ export default function SidebarMenuItem({
                   href={child.path || "#"}
                   className={`flex items-center text-xs gap-2 py-1.5 px-2 rounded-md transition-colors ${
                     isActive
-                      ? "text-white bg-[rgba(32,61,148,0.5)]"
-                      : "text-gray-400 hover:text-white hover:bg-[rgba(32,61,148,0.3)]"
+                      ? "text-white dark:text-gray-200 bg-[rgba(32,61,148,0.5)] dark:bg-gray-800"
+                      : "text-gray-400 dark:text-gray-500 hover:text-white dark:hover:text-gray-200 hover:bg-[rgba(32,61,148,0.3)] dark:hover:bg-gray-800"
                   }`}
                 >
                   {childContent}

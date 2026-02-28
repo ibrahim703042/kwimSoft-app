@@ -107,7 +107,13 @@ export default function RecruitmentPage() {
   };
 
   const statusBadge = (s: string) => {
-    const c: Record<string, string> = { draft: "bg-gray-100 text-gray-700", open: "bg-green-100 text-green-700", in_progress: "bg-blue-100 text-blue-700", closed: "bg-red-100 text-red-700", filled: "bg-purple-100 text-purple-700" };
+    const c: Record<string, string> = { 
+      draft: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300", 
+      open: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400", 
+      in_progress: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400", 
+      closed: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400", 
+      filled: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400" 
+    };
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${c[s] || ""}`}>{STATUS_OPTIONS.find((o) => o.value === s)?.label || s}</span>;
   };
 

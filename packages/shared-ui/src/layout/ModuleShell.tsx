@@ -90,7 +90,7 @@ export function ModuleShell({
   const Link = LinkComponent || DefaultLink;
 
   return (
-    <div>
+    <div className="h-full">
       {/* Mobile header */}
       <div className="p-4 bg-background mb-2 rounded-lg shadow-sm md:hidden flex justify-between items-center">
         <p className="text-sm font-medium text-foreground">{title}</p>
@@ -102,9 +102,9 @@ export function ModuleShell({
         </button>
       </div>
 
-      <div className="flex gap-3 overflow-hidden">
+      <div className="flex gap-3 h-full overflow-hidden">
         {/* Expand toggle (visible when collapsed) */}
-        <div className={cn("absolute mt-0", collapsed ? "block" : "hidden")}>
+        <div className={cn("absolute mt-0 z-10", collapsed ? "block" : "hidden")}>
           <div
             className="border mx-3 bg-background p-1 rotate-180 rounded-b-lg rounded-l-lg cursor-pointer hover:bg-muted transition-colors"
             onClick={toggle}
@@ -113,16 +113,16 @@ export function ModuleShell({
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className="sm:block hidden">
+        {/* Sidebar - Fixed, No Scroll */}
+        <div className="sm:block hidden flex-shrink-0">
           <div
             className={cn(
-              "bg-background transition-all duration-200 rounded-2xl flex flex-col shadow-sm border border-border/40 fixed h-[calc(100vh-50px)]",
+              "bg-background transition-all duration-200 rounded-2xl flex flex-col shadow-sm border border-border/40 h-full",
               collapsed ? "w-0 overflow-hidden" : "w-[270px]"
             )}
           >
             {/* Header */}
-            <div className="px-5 pt-4 pb-2 flex justify-between items-center">
+            <div className="px-5 pt-4 pb-2 flex justify-between items-center flex-shrink-0">
               <div className="flex items-center gap-2">
                 <p className="text-[0.95rem] font-semibold text-foreground truncate">
                   {title}
@@ -137,11 +137,11 @@ export function ModuleShell({
               </button>
             </div>
 
-            <div className="mx-4 my-1 h-px bg-border/50" />
+            <div className="mx-4 my-1 h-px bg-border/50 flex-shrink-0" />
 
             {/* Search */}
             {enableSearch && (
-              <div className="mx-4 mt-2">
+              <div className="mx-4 mt-2 flex-shrink-0">
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/50 border border-border/30 focus-within:border-primary/40 transition-colors">
                   <Search className="text-muted-foreground" size={14} />
                   <input
@@ -155,8 +155,8 @@ export function ModuleShell({
               </div>
             )}
 
-            {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto mt-1 px-3 py-2">
+            {/* Navigation - Scrollable */}
+            <nav className="flex-1 overflow-y-auto scrollbar-hide mt-1 px-3 py-2">
               <ul className="flex flex-col gap-0.5">
                 {filtered.map((item) => {
                   const Icon = item.icon;
@@ -236,11 +236,11 @@ export function ModuleShell({
           </div>
         </div>
 
-        {/* Content */}
+        {/* Content - Scrollable Only */}
         <div
           className={cn(
-            "w-full transition-all duration-200",
-            collapsed ? "ml-0" : "ml-[270px]"
+            "flex-1 overflow-y-auto transition-all duration-200",
+            collapsed ? "ml-0" : "ml-0"
           )}
         >
           {isTabMode && SelectedComponent ? (

@@ -23,7 +23,7 @@ export default function SidebarHeader({
         <div className="text-white font-medium text-sm px-2">
           <div className="flex items-center space-x-3">
             {logo || (
-              <div className="bg-[#b5bbc516] h-10 w-14 rounded-lg border-[#90959e96] border flex items-center justify-center">
+              <div className="bg-[#b5bbc516] dark:bg-gray-800 h-10 w-14 rounded-lg border-[#90959e96] dark:border-gray-700 border flex items-center justify-center">
                 <span className="text-2xl">K</span>
               </div>
             )}

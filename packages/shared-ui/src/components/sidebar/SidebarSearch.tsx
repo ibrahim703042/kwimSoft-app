@@ -12,7 +12,7 @@ export default function SidebarSearch({
   const { isOpen } = useSidebarStore();
 
   return isOpen ? (
-    <div className="flex items-center space-x-2 mx-2 bg-[#b5bbc516] px-3 py-[5px] rounded-md border-[#90959e96] border">
+    <div className="flex items-center space-x-2 mx-2 bg-[#b5bbc516] dark:bg-gray-800 px-3 py-[5px] rounded-md border-[#90959e96] dark:border-gray-700 border">
       <svg className="size-5" fill="#b5bbc5" viewBox="0 0 24 24">
         <path
           fill="#b5bbc5"
@@ -27,7 +27,7 @@ export default function SidebarSearch({
       />
     </div>
   ) : (
-    <div className="bg-[#b5bbc516] border-[#90959e96] border flex justify-center items-center px-2 py-1 rounded-md">
+    <div className="bg-[#b5bbc516] dark:bg-gray-800 border-[#90959e96] dark:border-gray-700 border flex justify-center items-center px-2 py-1 rounded-md">
       <svg className="size-6" fill="#b5bbc5" viewBox="0 0 24 24">
         <path
           fill="#b5bbc5"

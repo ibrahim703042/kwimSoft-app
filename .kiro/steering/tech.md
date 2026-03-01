@@ -19,6 +19,7 @@
 - **shadcn/ui** component patterns
 - **Material-UI (MUI)** for some legacy components
 - **Lucide React** for icons
+- **SweetAlert2** for alerts, notifications, and confirmation dialogs
 
 ## Forms & Validation
 
@@ -35,9 +36,16 @@
 
 ## Maps & Visualization
 
-- **Mapbox GL** and **react-map-gl** for mapping
+- **react-map-gl** for declarative Mapbox integration (preferred)
+- **Mapbox GL** for imperative map API (legacy)
 - **Highcharts** and **Recharts** for charts
 - **TanStack Table** for data tables
+
+**Map Implementation:**
+- Use `react-map-gl` components (`Map`, `Marker`, `Source`, `Layer`) for new map features
+- Declarative React approach for better component integration
+- GeoJSON support for routes and polygons
+- Access token: Stored as constant in map components
 
 ## Internationalization
 

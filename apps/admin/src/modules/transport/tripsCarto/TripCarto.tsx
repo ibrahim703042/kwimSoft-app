@@ -1,7 +1,7 @@
-import MapTrip from "@/components/others/cartoTrip/MapTrip";
+import MapTrip from "@/components/utilitie/map/MapTrip";
 import { Search } from "react-bootstrap-icons";
 import { Checkbox } from "@/components/ui/checkbox";
-import PieChart from "@/components/others/highcharts/PieChart";
+import PieChart from "@/components/utilitie/charts/PieChart";
 import { Marker } from "react-map-gl";
 import MapComponent from "@/components/utilitie/MapComponent";
 

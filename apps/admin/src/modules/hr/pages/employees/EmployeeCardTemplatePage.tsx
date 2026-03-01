@@ -278,7 +278,7 @@ export default function EmployeeCardTemplatePage() {
                 />
                 <Input
                   value={form.watch("backgroundColor") || "#ffffff"}
-                  onChange={(e) => form.setValue("backgroundColor", e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => form.setValue("backgroundColor", e.target.value)}
                   className="flex-1 font-mono"
                 />
               </div>

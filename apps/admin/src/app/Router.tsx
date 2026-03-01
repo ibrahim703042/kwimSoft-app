@@ -5,7 +5,7 @@ import { getAllRoutes } from "./registerModules";
 import Login from "@/core/auth/login/Login";
 import ForgotPassword from "@/core/auth/login/ForgotPassword";
 import UpdatePassword from "@/core/auth/login/UpdatePassword";
-import NotFound from "@/components/others/app/NotFound";
+import NotFound from "@/components/NotFound";
 import ProfilePage from "@/modules/account/ProfilePage";
 import SettingsPage from "@/modules/account/SettingsPage";
 import PageTitle from "@/components/utilitie/PageTitle";

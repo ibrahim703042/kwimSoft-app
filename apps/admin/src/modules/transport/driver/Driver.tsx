@@ -1,5 +1,5 @@
 import axios from "axios";
-import CardDataTable from "@/components/others/carddataTable/CardDataTable";
+import CardDataTable from "@/components/utilitie/CardDataTable";
 import { ReusableDataTable } from "@/components/utilitie/ReusableDataTable";
 import SearchBar from "@/components/utilitie/SearchBar";
 import AddDriver from "./AddDriver";

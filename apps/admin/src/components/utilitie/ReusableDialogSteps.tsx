@@ -1,50 +1,44 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { ReactNode } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 interface ReusableDialogStepsProps {
   dialogTitle: string;
-  children: React.ReactNode;
   openDialog: boolean;
   setOpenDialog: (open: boolean) => void;
-  handleModalOpen?: () => void;
-  step?: number; 
-  setStep?: (step: number) => void; 
+  children: ReactNode;
+  triggerButtonText?: string;
+  triggerButtonIcon?: ReactNode;
 }
 
 export default function ReusableDialogSteps({
   dialogTitle,
-  children,
   openDialog,
   setOpenDialog,
-  handleModalOpen,
+  children,
+  triggerButtonText = "Ajouter",
+  triggerButtonIcon = <Plus size={16} />,
 }: ReusableDialogStepsProps) {
   return (
-    <div>
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogTrigger asChild>
-          <div>
-            <div
-              className="bg-[#191C21] py-[10px] px-[10px] rounded-md cursor-pointer"
-              onClick={handleModalOpen}
-            >
-              <Plus className="text-white" size="17" />
-            </div>
-          </div>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[700px]">
-          <DialogHeader>
-            <DialogTitle className="font-medium">{dialogTitle}</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-0">{children}</div>
+    <>
+      <Button
+        onClick={() => setOpenDialog(true)}
+        className="flex items-center gap-2"
+        size="sm"
+      >
+        {triggerButtonIcon}
+        {triggerButtonText}
+      </Button>
 
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{dialogTitle}</DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">{children}</div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }

@@ -5,7 +5,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useUserStore from "../../../store/useUserStore.tsx";
+import useUserStore from "../../../store/useUserStore";
 import bgImg from "@/assets/img/auth/expressway.png";
 import { API_ROUTE_PASSWORD } from "@/config/index";
 import { jwtDecode } from "jwt-decode";

@@ -1,5 +1,5 @@
+import { Button } from "@kwim/shared-ui";
 import { AlertCircle, RefreshCw, XCircle, WifiOff, ServerCrash } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export interface ErrorBannerProps {
   /** Error message to display */

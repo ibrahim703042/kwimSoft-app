@@ -1,47 +1,5 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { breadCrumbItemsSelector } from "@/store/selectors/appSelectors";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-
-interface BreadcrumbItem {
-  name: string;
-  path?: string;
-}
-
-export default function Breadcrumbs() {
-  const breadCrumbItems = useSelector(breadCrumbItemsSelector) as BreadcrumbItem[];
-
-  return (
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-[0.8rem]">
-          {breadCrumbItems?.[breadCrumbItems?.length - 1]?.name}
-        </p>
-      </div>
-      <div>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Page</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>
-                {breadCrumbItems?.[breadCrumbItems?.length - 1]?.name}
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-    </div>
-  );
-}
+// Re-export Breadcrumbs from shared-ui navbar components
+import { Breadcrumbs as BreadcrumbsComponent } from "@kwim/shared-ui";
+export default BreadcrumbsComponent;
+export { BreadcrumbsComponent as Breadcrumbs };
+export type { NavbarBreadcrumbItem as BreadcrumbItem } from "@kwim/shared-ui";

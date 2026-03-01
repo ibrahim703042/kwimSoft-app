@@ -1,107 +1,98 @@
 import { useState } from "react";
-import { GoogleMap, LoadScript, Autocomplete, Marker } from "@react-google-maps/api";
-import pointerImg from "../../../assets/img/img/station.png";
+import Map, { Marker, Popup } from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 
-interface StationLocation {
-  coordinates?: [number, number];
-}
+const TOKEN = "pk.eyJ1IjoibWFydGlubWJ4IiwiYSI6ImNrMDc0dnBzNzA3c3gzZmx2bnpqb2NwNXgifQ.D6Fm6UO9bWViernvxZFW_A";
 
-interface StationItem {
+interface Station {
+  _id: string;
   name?: string;
-  locations?: StationLocation;
+  state?: string;
+  country?: string;
+  city?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 interface MapDetailStationProps {
-  Station?: StationItem[];
+  Station: Station[];
 }
 
-const containerStyle: React.CSSProperties = {
-  width: "100%",
-  height: "590px",
-};
-
-const center = {
-  lat: -3.3731,
-  lng: 29.9189,
-};
-
-function MapDetailStation({ Station }: MapDetailStationProps) {
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [searchBox, setSearchBox] = useState<google.maps.places.Autocomplete | null>(null);
-
-  const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
-    setSearchBox(autocomplete);
-  };
-
-  const onPlaceChanged = () => {
-    if (searchBox && map) {
-      const place = searchBox.getPlace();
-      if (place?.geometry?.location) {
-        const location = place.geometry.location;
-        map.panTo(location);
-        setTimeout(() => map.setZoom(14), 500);
-      }
-    }
-  };
+export default function MapDetailStation({ Station }: MapDetailStationProps) {
+  const [selectedStation, setSelectedStation] = useState<Station | null>(null);
+  const [viewState, setViewState] = useState({
+    longitude: Station[0]?.longitude || 0,
+    latitude: Station[0]?.latitude || 0,
+    zoom: 6,
+  });
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyAsdwuTDFzqEddFBkP6q5Wj0aGY2cyUakI" libraries={["places"]}>
-      <div style={{ position: "relative" }}>
-        {/* Barre de recherche */}
-        <div style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", zIndex: 1000 }}>
-          <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-            <input
-              type="text"
-              placeholder="Rechercher un lieu..."
-              style={{
-                width: "300px",
-                height: "40px",
-                padding: "10px",
-                fontSize: "16px",
-                color: "#000000",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-                outline: "none"
-              }}
-            />
-          </Autocomplete>
-        </div>
-
-        {/* Carte Google Maps */}
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={10}
-          onLoad={(mapInstance) => setMap(mapInstance)}
-        >
-          {/* Affichage des marqueurs pour chaque station */}
-          {Station?.map((station: StationItem, index: number) =>
-            station.locations?.coordinates?.length === 2 &&
-            !isNaN(station.locations.coordinates[0]) &&
-            !isNaN(station.locations.coordinates[1]) ? (
+    <div className="w-full h-full">
+      <Map
+        {...viewState}
+        onMove={(evt) => setViewState(evt.viewState)}
+        mapStyle="mapbox://styles/mapbox/streets-v12"
+        mapboxAccessToken={TOKEN}
+      >
+        {/* Station Markers */}
+        {Station.map((station) => {
+          if (station.latitude && station.longitude) {
+            return (
               <Marker
-                key={index}
-                position={{
-                  lat: station.locations.coordinates[1],
-                  lng: station.locations.coordinates[0],
+                key={station._id}
+                longitude={station.longitude}
+                latitude={station.latitude}
+                anchor="bottom"
+                onClick={(e) => {
+                  e.originalEvent.stopPropagation();
+                  setSelectedStation(station);
                 }}
-                icon={
-                  window.google && window.google.maps
-                    ? {
-                      url: pointerImg,
-                      scaledSize: new window.google.maps.Size(40, 30),
-                    }
-                    : undefined
-                }
-                title={station.name}
-              />
-            ) : null
-          )}
+              >
+                <div className="cursor-pointer">
+                  <svg
+                    height="30"
+                    viewBox="0 0 24 24"
+                    style={{
+                      fill: "#3b82f6",
+                      stroke: "white",
+                      strokeWidth: 2,
+                    }}
+                  >
+                    <path d="M12 0C7.58 0 4 3.58 4 8c0 5.25 8 13 8 13s8-7.75 8-13c0-4.42-3.58-8-8-8zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" />
+                  </svg>
+                </div>
+              </Marker>
+            );
+          }
+          return null;
+        })}
 
-        </GoogleMap>
-      </div>
-    </LoadScript>
+        {/* Popup for selected station */}
+        {selectedStation && selectedStation.latitude && selectedStation.longitude && (
+          <Popup
+            longitude={selectedStation.longitude}
+            latitude={selectedStation.latitude}
+            anchor="top"
+            onClose={() => setSelectedStation(null)}
+            closeButton={true}
+            closeOnClick={false}
+          >
+            <div className="p-2">
+              <h3 className="font-bold text-sm">{selectedStation.name || selectedStation.state}</h3>
+              {selectedStation.city && (
+                <p className="text-xs text-gray-600">{selectedStation.city}</p>
+              )}
+              {selectedStation.address && (
+                <p className="text-xs text-gray-500">{selectedStation.address}</p>
+              )}
+              {selectedStation.country && (
+                <p className="text-xs text-gray-500">{selectedStation.country}</p>
+              )}
+            </div>
+          </Popup>
+        )}
+      </Map>
+    </div>
   );
-};
-
-export default MapDetailStation;
+}

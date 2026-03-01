@@ -1,18 +1,17 @@
-import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { useEffect } from "react";
 
 interface PageTitleProps {
-  title: string
+  title: string;
 }
 
-const PageTitle = ({ title }: PageTitleProps) => {
-  const location = useLocation()
-
+/**
+ * Component to set the document title
+ * Usage: <PageTitle title="My Page" />
+ */
+export default function PageTitle({ title }: PageTitleProps) {
   useEffect(() => {
-    document.title = title
-  }, [location, title])
+    document.title = title ? `${title} - KwimSoft ERP` : "KwimSoft ERP";
+  }, [title]);
 
-  return null
+  return null;
 }
-
-export default PageTitle

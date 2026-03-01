@@ -5,7 +5,7 @@ import axios from "axios";
 import { CalendarFold, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ReusableSelect from "@/components/utilitie/ReusableSelect";
-import AddHoraire from "./AddHoraire.tsx";
+import AddHoraire from "./AddHoraire";
 import HoraireComponent from "@/components/utilitie/HoraireComponent";
 import { setBreadCrumbItemsAction } from "@/store/actions/appActions";
 import { JOURS } from "@/types/constants";

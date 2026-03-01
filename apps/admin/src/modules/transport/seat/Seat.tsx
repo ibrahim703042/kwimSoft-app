@@ -1,5 +1,5 @@
 import { Trash2 } from "lucide-react";
-import CardDataTable from "@/components/others/carddataTable/CardDataTable";
+import CardDataTable from "@/components/utilitie/CardDataTable";
 import { ReusableDataTable } from "@/components/utilitie/ReusableDataTable";
 import SearchBar from "@/components/utilitie/SearchBar";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import Loading from "@/components/utilitie/Loading";
-import EditSeat from "./EditSeat.tsx";
+import EditSeat from "./EditSeat";
 
 const fetchBus = async () => {
     const { data } = await axios.get(`${API_ROUTE}/buses`);

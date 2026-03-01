@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import mapboxgl from "mapbox-gl";
-import MapComponent from "@/components/others/cartoTrip/MapComponent";
+import MapComponent from "@/components/utilitie/map/MapComponent";
 import axios from "axios";
 import { API_ROUTE } from "@/config";
 import { useMutation } from "@tanstack/react-query";

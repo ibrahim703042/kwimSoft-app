@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useUserStore from "../../../store/useUserStore.tsx";
+import useUserStore from "../../../store/useUserStore";
 import { API_ROUTE_PASSWORD } from "@/config/index";
 import { motion } from "framer-motion";
 import {

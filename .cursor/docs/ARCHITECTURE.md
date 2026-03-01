@@ -112,7 +112,34 @@ src/
 │       ├── api/                 # API calls
 │       └── schemas/             # Zod schemas
 │
-├── components/                   # Shared components (shadcn/ui)
+├── components/                   # Shared components (shadcn/ui + re-exports)
+│   ├── ui/                      # shadcn/ui components (re-exported from @kwim/shared-ui)
+│   │   ├── index.ts            # Central re-export hub for all UI components
+│   │   │                       # - Exports all from @kwim/shared-ui
+│   │   │                       # - Re-exports from individual component files for better module resolution
+│   │   ├── button.tsx          # Re-exports Button from shared-ui
+│   │   ├── input.tsx           # Re-exports Input from shared-ui
+│   │   ├── table.tsx           # Re-exports Table components from shared-ui
+│   │   └── ...                 # Other UI component re-exports (25+ components)
+│   ├── utilitie/                # Utility components
+│   │   ├── CardDataTable.tsx   # Data card component with stats display
+│   │   ├── ReusableDataTable.tsx # Generic table with TanStack Table
+│   │   ├── Loading.tsx         # Re-exported from @kwim/shared-ui
+│   │   ├── AlertPopup.tsx      # SweetAlert2 wrappers
+│   │   ├── SearchBar.tsx       # Search input component
+│   │   └── map/                # Map components
+│   │       ├── MapHoraire.tsx  # Route visualization map
+│   │       ├── MapDetailStation.tsx # Station detail map
+│   │       ├── MapTrip.tsx     # Trip map component
+│   │       ├── MapComponent.tsx # Generic map component
+│   │       ├── MapComponentDyn.tsx # Dynamic map component
+│   │       ├── GeocoderControl.tsx # Geocoder control for maps
+│   │       └── ControlPanel.tsx # Map control panel
+│   ├── ErrorBanner.tsx          # Error display with retry/dismiss
+│   ├── SkeletonCard.tsx         # Loading skeleton component
+│   ├── sidebar/                 # Sidebar components (re-exported from shared-ui)
+│   ├── navbar/                  # Navbar components (re-exported from shared-ui)
+│   └── ...
 ├── hooks/                        # Shared hooks
 ├── lib/                          # Utilities
 ├── locales/                      # i18n translations
@@ -270,6 +297,259 @@ if (hasPermission('driver.create')) {
 ```
 
 ## 🎨 UI Patterns
+
+### Shared UI Components
+
+The application uses the `@kwim/shared-ui` package for common UI components across all modules. This ensures consistency and reduces code duplication.
+
+**Component Re-exports:**
+Components in `apps/admin/src/components/` re-export from `@kwim/shared-ui` to maintain consistent import paths:
+
+```tsx
+// apps/admin/src/components/utilitie/Loading.tsx
+export { Loading as default } from "@kwim/shared-ui";
+
+// apps/admin/src/components/ui/index.ts
+// Central re-export hub with dual export strategy:
+export * from "@kwim/shared-ui";  // Bulk export from shared-ui
+
+// Individual component re-exports for better module resolution
+export * from "./button";
+export * from "./input";
+export * from "./label";
+export * from "./textarea";
+export * from "./select";
+export * from "./dialog";
+export * from "./checkbox";
+export * from "./table";
+export * from "./form";
+export * from "./radio-group";
+export * from "./tabs";
+export * from "./badge";
+export * from "./breadcrumb";
+export * from "./alert-dialog";
+export * from "./calendar";
+export * from "./pagination";
+export * from "./popover";
+export * from "./dropdown-menu";
+export * from "./tooltip";
+export * from "./toast";
+export * from "./toaster";
+
+// apps/admin/src/components/ui/Breadcrumbs.tsx
+export { default } from "@kwim/shared-ui";
+export type { BreadcrumbItem } from "@kwim/shared-ui";
+```
+
+**Available Shared Components:**
+- **UI Components** (via `@/components/ui/`):
+  - `Button` - Button component with variants
+  - `Input`, `Textarea`, `Label` - Form components
+  - `Dialog`, `Select`, `Checkbox`, `RadioGroup` - Interactive components
+  - `Table` - Table components for data display
+  - `Form` - Form components with validation
+  - `Tabs` - Tabbed interface components
+  - `Badge` - Badge/tag components
+  - `Breadcrumb` - Breadcrumb navigation component with BreadcrumbItem type
+  - `AlertDialog` - Alert dialog components
+  - `Calendar` - Calendar/date picker components
+  - `Pagination` - Pagination controls
+  - `Popover` - Popover/tooltip positioning
+  - `DropdownMenu` - Dropdown menu components
+  - `Tooltip` - Tooltip components
+  - `Toast`, `Toaster` - Toast notification system
+  - All shadcn/ui components from shared-ui package (25+ components)
+- **Utility Components** (via `@/components/utilitie/`):
+  - `CardDataTable` - Data card component with title, count, and stats display
+  - `ReusableDataTable` - Generic table component using TanStack Table with pagination
+  - `Loading` - Spinner component using react-spinners/ClipLoader
+  - `AlertPopup` - SweetAlert2 wrapper functions
+  - `ErrorBanner` - Error display component with retry/dismiss actions
+  - `SearchBar` - Search input component
+  - `map/*` - Map components:
+    - `MapHoraire` - Route visualization map with departure/arrival stations
+    - `MapDetailStation` - Station detail map with markers and popups
+    - `MapTrip` - Trip map component for route display
+    - `MapComponent` - Generic reusable map component
+    - `MapComponentDyn` - Dynamic map component with interactive features
+    - `GeocoderControl` - Geocoder control for location search
+    - `ControlPanel` - Map control panel for settings
+- **Layout Components** (from `@kwim/shared-ui`):
+  - `AppLayout`, `LayoutSidebar`, `LayoutNavbar`
+  - `Sidebar`, `SidebarMenuItem`, `SidebarSearch`, `SidebarFooter`
+  - `ModuleShell` - Reusable sidebar + content layout for module pages
+- **Other Components**:
+  - `SkeletonCard` - Loading skeleton for card layouts
+  - `ErrorBanner` - Error display with retry/dismiss actions
+
+**Usage:**
+```tsx
+// UI components - import from @/components/ui/
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Breadcrumbs, { BreadcrumbItem } from "@/components/ui/Breadcrumbs";
+
+// Utility components
+import CardDataTable from "@/components/utilitie/CardDataTable";
+import { ReusableDataTable } from "@/components/utilitie/ReusableDataTable";
+import Loading from "@/components/utilitie/Loading";
+import { showSuccessAlert } from "@/components/utilitie/AlertPopup";
+import ErrorBanner from "@/components/ErrorBanner";
+import SearchBar from "@/components/utilitie/SearchBar";
+import MapHoraire from "@/components/utilitie/map/MapHoraire";
+import MapDetailStation from "@/components/utilitie/map/MapDetailStation";
+import MapTrip from "@/components/utilitie/map/MapTrip";
+import MapComponent from "@/components/utilitie/map/MapComponent";
+
+// Direct from shared-ui (for layout components)
+import { AppLayout } from "@kwim/shared-ui";
+
+// Component usage examples
+<Button variant="default">Click me</Button>
+<Loading loading={isLoading} size={150} color="#0F123F" />
+
+// CardDataTable usage (stats card)
+<CardDataTable title="Total Employees" nmbre={305} />
+
+// ReusableDataTable usage (generic table)
+<ReusableDataTable
+  data={employees}
+  columns={employeeColumns}
+  titleDataTable="Employee List"
+  ComponentButtonAdd={<Button>Add Employee</Button>}
+  isLoading={isLoading}
+  enablePagination={true}
+  pageSize={10}
+/>
+
+// Table usage
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Email</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>John Doe</TableCell>
+      <TableCell>john@example.com</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+// Breadcrumbs usage
+const items: BreadcrumbItem[] = [
+  { path: "/dashboard", name: "Dashboard" },
+  { path: "/users", name: "Users" }
+];
+<Breadcrumbs items={items} />
+
+// ErrorBanner usage
+<ErrorBanner
+  message="Failed to load data"
+  details="Network connection error"
+  variant="error"
+  onRetry={() => refetch()}
+  onDismiss={() => setError(null)}
+/>
+
+// Map usage
+<MapHoraire
+  departureStation={departure}
+  arrivalStation={arrival}
+  routes={intermediateStops}
+/>
+```
+
+**Import Path Strategy:**
+- Use `@/components/ui/*` for UI components (re-exported from shared-ui)
+  - Individual component imports (e.g., `@/components/ui/button`) are supported via dual export strategy
+  - Bulk imports from `@/components/ui` also work via wildcard re-export
+- Use `@/components/utilitie/*` for utility components:
+  - `CardDataTable` - Stats card component
+  - `ReusableDataTable` - Generic table with pagination
+  - `Loading` - Spinner component
+  - `AlertPopup` - Alert functions
+  - `SearchBar` - Search input
+  - `map/*` - Map components (MapHoraire, MapDetailStation)
+- Use `@/components/ErrorBanner` for error display component
+- Use `@/components/SkeletonCard` for loading skeletons
+- Use `@kwim/shared-ui` directly for layout components in app shell
+- This approach maintains backward compatibility while centralizing components
+
+**Dual Export Strategy:**
+The `@/components/ui/index.ts` file uses a dual export strategy for maximum compatibility:
+1. **Bulk export**: `export * from "@kwim/shared-ui"` - Exports all components from shared-ui
+2. **Individual re-exports**: `export * from "./button"` - Re-exports from individual component files
+
+This ensures both import patterns work:
+```tsx
+// Pattern 1: Direct component import (recommended)
+import { Button } from "@/components/ui/button";
+
+// Pattern 2: Bulk import from index
+import { Button } from "@/components/ui";
+```
+
+**Component Dependencies:**
+- `ErrorBanner` imports `Button` from `@kwim/shared-ui` (not from local re-exports)
+- This ensures consistent component versions across the application
+
+### Alert System
+
+The application uses **SweetAlert2** for user notifications and alerts. A utility wrapper is provided for common alert types:
+
+```tsx
+import { 
+  showSuccessAlert, 
+  showErrorAlert, 
+  showInfoAlert, 
+  showWarningAlert 
+} from '@/components/utilitie/AlertPopup';
+
+// Success notification
+showSuccessAlert('Operation completed successfully');
+
+// Error notification
+showErrorAlert('An error occurred');
+
+// Info notification
+showInfoAlert('Please note this information');
+
+// Warning notification
+showWarningAlert('This action requires confirmation');
+```
+
+**Alert Configuration:**
+- Position: `top-end` (toast-style)
+- Auto-dismiss: 3-4 seconds
+- No confirm button (toast mode)
+- Icons: success, error, info, warning
+
+For confirmation dialogs, use SweetAlert2 directly:
+
+```tsx
+import Swal from 'sweetalert2';
+
+Swal.fire({
+  title: 'Are you sure?',
+  text: 'This action cannot be undone',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#d33',
+  cancelButtonColor: '#3085d6',
+  confirmButtonText: 'Yes, delete it!',
+  cancelButtonText: 'Cancel'
+}).then((result) => {
+  if (result.isConfirmed) {
+    // Perform action
+  }
+});
+```
 
 ### Standard Page Layout
 
@@ -434,6 +714,64 @@ function DriverList() {
 - ✅ Use apiClient for automatic tenant headers
 - ✅ Handle errors consistently
 - ✅ Use TypeScript for request/response types
+
+## 🗺️ Map Components
+
+### Mapbox Integration
+
+The application uses **react-map-gl** (declarative React wrapper) for map components instead of imperative mapbox-gl API. This provides better React integration and cleaner component code.
+
+**Map Components:**
+- `MapHoraire` - Route visualization with departure/arrival stations and intermediate stops
+
+**Example Usage:**
+```tsx
+import MapHoraire from '@/components/utilitie/map/MapHoraire';
+
+<MapHoraire
+  departureStation={{
+    name: "Station A",
+    locations: { coordinates: [-73.935242, 40.730610] }
+  }}
+  arrivalStation={{
+    name: "Station B",
+    locations: { coordinates: [-73.935242, 40.730610] }
+  }}
+  routes={[
+    { station: { name: "Stop 1", locations: { coordinates: [...] } } }
+  ]}
+/>
+```
+
+**Features:**
+- Automatic center calculation between departure and arrival
+- Route line visualization (LineString GeoJSON)
+- Color-coded markers:
+  - Green: Departure station
+  - Blue: Intermediate stops
+  - Red: Arrival station
+- Responsive container (400px height)
+
+**Implementation Pattern:**
+```tsx
+import Map, { Marker, Source, Layer } from "react-map-gl";
+
+// Declarative approach with react-map-gl
+<Map
+  initialViewState={{ longitude, latitude, zoom }}
+  mapStyle="mapbox://styles/mapbox/streets-v12"
+  mapboxAccessToken={TOKEN}
+>
+  <Marker longitude={lng} latitude={lat} color="green" />
+  <Source id="route" type="geojson" data={routeGeoJSON}>
+    <Layer {...layerStyle} />
+  </Source>
+</Map>
+```
+
+**Migration Notes:**
+- Components have been migrated from imperative `mapbox-gl` API to declarative `react-map-gl` for better React integration and maintainability
+- Map components have been reorganized from `@/components/others/cartoTrip/` to `@/components/utilitie/map/` for better structure and discoverability (March 2026)
 
 ## 🔧 Development Workflow
 

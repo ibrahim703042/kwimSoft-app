@@ -1,125 +1,77 @@
-import { useState, MouseEvent } from "react";
+import { ReactNode } from "react";
 import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  flexRender,
   ColumnDef,
-  SortingState,
-  VisibilityState,
-  RowSelectionState,
-  ColumnFiltersState,
 } from "@tanstack/react-table";
-
-import FileDownloadSharpIcon from "@mui/icons-material/FileDownloadSharp";
-import Box from "@mui/material/Box";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "../../components/ui/pagination";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../../components/ui/table";
-import { IconButton } from "@mui/material";
-import PacmanLoader from "react-spinners/PacmanLoader";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Loading from "./Loading";
 
 interface ReusableDataTableProps<T> {
   data: T[];
-  columns: ColumnDef<T>[];
-  enablePagination?: boolean;
-  enableRowSelection?: boolean;
-  customActions?: (row: T) => React.ReactNode;
-  ButtonIconsAdd?: React.ReactNode;
-  ComponentButtonAdd?: React.ReactNode;
+  columns: ColumnDef<T, unknown>[];
   titleDataTable?: string;
+  ComponentButtonAdd?: ReactNode;
   isLoading?: boolean;
+  enablePagination?: boolean;
   pageSize?: number;
+  customActions?: (row: T) => ReactNode;
 }
 
-
 export function ReusableDataTable<T>({
-  data = [],
-  columns = [],
-  enablePagination = true,
-  customActions,
-  ComponentButtonAdd,
+  data,
+  columns,
   titleDataTable,
+  ComponentButtonAdd,
   isLoading = false,
+  enablePagination = true,
   pageSize = 10,
+  customActions,
 }: ReusableDataTableProps<T>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // Add actions column if customActions is provided
+  const tableColumns: ColumnDef<T, unknown>[] = customActions
+    ? [
+        ...columns,
+        {
+          id: "actions",
+          header: "Actions",
+          cell: ({ row }) => customActions(row.original),
+        },
+      ]
+    : columns;
 
   const table = useReactTable({
     data,
-    columns,
-    initialState: enablePagination
-      ? {
-        pagination: {
-          pageSize: pageSize
-        }
-      }
-      : undefined,
-    state: { sorting, columnFilters, columnVisibility, rowSelection },
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: enablePagination ? getPaginationRowModel() : undefined,
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    initialState: {
+      pagination: {
+        pageSize,
+      },
+    },
   });
 
-  return (
-    <div className="w-full">
-      <div className="flex items-center space-x-4 border-b">
-        <div className="p-4 pb-0 border-b-2 border-[#1D3686]">
-          <p className="text-[#1D3686] text-[0.9rem] font-medium inline-block pb-3">
-            {titleDataTable}
-          </p>
-        </div>
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center p-8">
+        <Loading loading={true} />
       </div>
+    );
+  }
 
-      <div className="mt-3 px-3 flex items-center gap-3 justify-between mb-3">
-        <div className="flex items-center space-x-3">
-          <div className="border inline-block p-1 px-3 rounded-lg">
-            <FileDownloadSharpIcon sx={{ color: "#707EAE", fontSize: "18px" }} />
-          </div>
-          <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-            <IconButton
-              onClick={handleClick}
-              size="small"
-              sx={{ ml: 2 }}
-              aria-controls={open ? "account-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-            />
-          </Box>
+  return (
+    <div className="space-y-4">
+      {(titleDataTable || ComponentButtonAdd) && (
+        <div className="flex justify-between items-center p-4">
+          {titleDataTable && <h2 className="text-lg font-semibold">{titleDataTable}</h2>}
+          {ComponentButtonAdd}
         </div>
-        <div className="flex items-center space-x-3">{ComponentButtonAdd}</div>
-      </div>
+      )}
 
       <div className="rounded-md border">
         <Table>
@@ -137,29 +89,20 @@ export function ReusableDataTable<T>({
             ))}
           </TableHeader>
           <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center whitespace-nowrap">
-                  <div className="w-full flex justify-center">
-                    <PacmanLoader size={10} color="#0F123F" />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : table.getRowModel().rows.length > 0 ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
-                  {customActions && <TableCell>{customActions(row.original)}</TableCell>}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center whitespace-nowrap">
-                  <p className="text-[0.8rem] text-red-500">Aucune donnée trouvée</p>
+                <TableCell colSpan={tableColumns.length} className="h-24 text-center">
+                  No results.
                 </TableCell>
               </TableRow>
             )}
@@ -168,37 +111,30 @@ export function ReusableDataTable<T>({
       </div>
 
       {enablePagination && (
-        <div className="flex items-center justify-end space-x-2 py-3 px-5">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  className="cursor-pointer"
-                />
-              </PaginationItem>
-
-              {Array.from({ length: table.getPageCount() }, (_, index) => (
-                <PaginationItem key={index}>
-                  <PaginationLink
-                    isActive={index === table.getState().pagination.pageIndex}
-                    onClick={() => table.setPageIndex(index)}
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                  className="cursor-pointer"
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+        <div className="flex items-center justify-between px-4">
+          <div className="text-sm text-muted-foreground">
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       )}
     </div>

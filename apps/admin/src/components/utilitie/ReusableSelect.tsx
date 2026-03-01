@@ -1,44 +1,34 @@
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-interface SelectOption {
-  value: string;
-  label: string;
-}
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ReusableSelectProps {
-  options: SelectOption[];
-  label?: string;
+  options: Array<{ value: string; label: string }>;
   placeholder?: string;
   onChange: (value: string) => void;
   value?: string;
+  disabled?: boolean;
+  className?: string;
 }
 
-const ReusableSelect = ({ options, label, placeholder, onChange, value }: ReusableSelectProps) => {
+export default function ReusableSelect({
+  options,
+  placeholder = "Select an option",
+  onChange,
+  value,
+  disabled = false,
+  className = "",
+}: ReusableSelectProps) {
   return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-full">
+    <Select value={value} onValueChange={onChange} disabled={disabled}>
+      <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          {label && <SelectLabel>{label}</SelectLabel>}
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectGroup>
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );
-};
-
-export default ReusableSelect;
+}

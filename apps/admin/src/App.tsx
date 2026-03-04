@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import { useAuthStore } from "./core/auth";
 import { AppShell } from "./app/AppShell";
 import { useThemeStore } from "@kwim/shared-ui";
+import { setApiClient } from "@/core/crud";
+import { apiClient } from "@/core/api";
+
+setApiClient(apiClient);
 
 const App: React.FC = () => {
   const { setUser } = useAuthStore();

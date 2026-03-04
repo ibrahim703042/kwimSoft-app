@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { UserCheck, Clock } from "lucide-react";
-import { FormTab } from "@/core/crud/TabbedForm";
+import type { FormTab } from "@/core/crud";
 import type { AttendanceFormValues } from "./attendance.schema";
 import { PresenceTab } from "./tabs/PresenceTab";
 import { ScheduleTab } from "./tabs/ScheduleTab";

@@ -1,4 +1,4 @@
-import { createGroupedModule } from "@/core/crud/createModule";
+import { createGroupedModule } from "@/core/crud";
 import { Truck } from "lucide-react";
 
 export const vehicleModule = createGroupedModule({

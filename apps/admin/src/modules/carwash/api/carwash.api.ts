@@ -2,7 +2,7 @@
  * Carwash Module API Layer
  * Connects to the Transport microservice (port 9084)
  */
-import { createEntityApi } from "@/core/crud/createModule";
+import { createEntityApi } from "@/core/crud";
 
 // ─── Exports ──────────────────────────────────────────────────
 export const washServiceApi = createEntityApi("transport", "/wash-service");

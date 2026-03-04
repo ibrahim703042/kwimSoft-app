@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { FileText, Wallet } from "lucide-react";
-import { FormTab } from "@/core/crud/TabbedForm";
+import type { FormTab } from "@/core/crud";
 import type { PayrollFormValues } from "./payroll.schema";
 import { GeneralTab } from "./tabs/GeneralTab";
 import { SalaryTab } from "./tabs/SalaryTab";

@@ -1,7 +1,5 @@
 import { z } from "zod";
-import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
-import { FieldConfig } from "@/core/crud/DynamicFormFields";
-import { RelationalField } from "@/core/crud/RelationalField";
+import { createFullEntityPage, RelationalField, type FieldConfig } from "@/core/crud";
 
 const columns = [
   { header: "Reference", accessorKey: "reference" },

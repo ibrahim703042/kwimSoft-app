@@ -5,7 +5,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { RelationalField } from "@/core/crud/RelationalField";
+import { RelationalField } from "@/core/crud";
 import type { MOFormValues } from "./mo.schema";
 
 const statusSteps = [

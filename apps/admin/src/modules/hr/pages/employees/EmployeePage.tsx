@@ -10,9 +10,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CrudPage } from "@/core/crud/CrudPage";
-import { CrudForm } from "@/core/crud/CrudForm";
-import { TabbedForm } from "@/core/crud/TabbedForm";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { FormField, FormItem, FormControl } from "@/components/ui/form";
 import Swal from "sweetalert2";
 
 import { employeeApi, departmentApi, positionApi } from "../../api/hr.api";
@@ -20,6 +20,7 @@ import { employeeSchema, defaultValues, type EmployeeFormValues } from "./employ
 import { employeeColumns } from "./employee.columns";
 import { useEmployeeTabs } from "./useEmployeeTabs";
 import { EmployeeDetailView } from "./EmployeeDetailView";
+import { CrudForm, CrudPage, TabbedForm } from "@/core/crud";
 
 export default function EmployeePage() {
   const [formOpen, setFormOpen] = useState(false);
@@ -88,6 +89,10 @@ export default function EmployeePage() {
         biometricId: editing.biometricId || "",
         wifiMac: editing.wifiMac || "",
         deviceId: editing.deviceId || "",
+        showEntreprise: editing.showEntreprise ?? false,
+        showConge: editing.showConge ?? false,
+        showBanque: editing.showBanque ?? false,
+        showIdentification: editing.showIdentification ?? false,
       });
     } else {
       form.reset(defaultValues);
@@ -150,14 +155,14 @@ export default function EmployeePage() {
         }}
         addButton={
           <Button
-            className="bg-[#0F123F]"
+            className="bg-primary hover:bg-primary/90 text-white shadow-sm"
             size="sm"
             onClick={() => {
               setEditing(null);
               setFormOpen(true);
             }}
           >
-            <Plus className="h-4 w-4 mr-1" /> Nouveau
+            <Plus className="h-4 w-4 mr-2" /> Nouveau
           </Button>
         }
         onEdit={(row: any) => {
@@ -169,19 +174,69 @@ export default function EmployeePage() {
 
       <CrudForm
         open={formOpen}
-        onOpenChange={(open) => {
+        onOpenChange={(open: boolean) => {
           if (!open) closeForm();
           else setFormOpen(true);
         }}
         title={editing ? "Modifier l'employé" : "Nouvel employé"}
         form={form}
-        onSubmit={(data) => mutation.mutateAsync(data)}
+        onSubmit={(data: EmployeeFormValues) => mutation.mutateAsync(data)}
         isLoading={mutation.isPending}
         submitText={editing ? "Enregistrer" : "Créer"}
         cancelText="Annuler"
         wide
       >
-        <div className="border-b my-2" />
+        <div className="flex flex-wrap items-center gap-4 pb-3 border-b">
+          <span className="text-sm font-medium text-muted-foreground">Sections:</span>
+          <FormField
+            control={form.control}
+            name="showEntreprise"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </FormControl>
+                <Label className="font-normal text-sm cursor-pointer">Détail entreprise</Label>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="showConge"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </FormControl>
+                <Label className="font-normal text-sm cursor-pointer">Congés</Label>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="showBanque"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </FormControl>
+                <Label className="font-normal text-sm cursor-pointer">Banque</Label>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="showIdentification"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </FormControl>
+                <Label className="font-normal text-sm cursor-pointer">Identification / Suivi</Label>
+              </FormItem>
+            )}
+          />
+        </div>
         <TabbedForm form={form} tabs={tabs} />
       </CrudForm>
 

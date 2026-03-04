@@ -2,7 +2,7 @@
  * Finance Module API Layer
  * Connects to the Stock microservice (port 9083)
  */
-import { createEntityApi } from "@/core/crud/createModule";
+import { createEntityApi } from "@/core/crud";
 
 // ─── Exports ──────────────────────────────────────────────────
 export const accountApi      = createEntityApi("stock", "/account");

@@ -1,17 +1,37 @@
-export { CrudPage } from "./CrudPage";
-export { CrudTable } from "./CrudTable";
-export { CrudForm } from "./CrudForm";
-export { ActionBar } from "./ActionBar";
-export { DynamicFormFields } from "./DynamicFormFields";
-export { ModuleDashboard } from "./ModuleDashboard";
-export { createFullEntityPage } from "./createFullEntityPage";
-export { createGroupedModule, createEntityApi, createListPage } from "./createModule";
-export { RelationalField } from "./RelationalField";
-export { ImageUploadField } from "./ImageUploadField";
-export { TabbedForm } from "./TabbedForm";
-export type { CrudConfig, CrudPermissions, Action } from "./types";
-export type { GroupedModuleConfig, ModuleEntityConfig, ServiceName } from "./createModule";
-export type { FieldConfig, SelectOption } from "./DynamicFormFields";
-export type { DashboardConfig, StatCardConfig, ChartConfig } from "./ModuleDashboard";
-export type { FullEntityPageConfig } from "./createFullEntityPage";
-export type { FormTab } from "./TabbedForm";
+// Re-export everything from @kwim/core
+export {
+  CrudPage,
+  CrudTable,
+  CrudForm,
+  ActionBar,
+  DynamicFormFields,
+  ModuleDashboard,
+  ImageUploadField,
+  TabbedForm,
+  RelationalField,
+  createFullEntityPage,
+  createGroupedModule,
+  createEntityApi,
+  createListPage,
+  setApiClient,
+  getApiClient,
+} from "@kwim/core";
+
+export type {
+  CrudConfig,
+  CrudPermissions,
+  Action,
+  CrudFilterSelect,
+  CrudFilterSelectOption,
+  FieldConfig,
+  SelectOption,
+  DashboardConfig,
+  StatCardConfig,
+  ChartConfig,
+  FormTab,
+  RelationalFieldProps,
+  FullEntityPageConfig,
+  ServiceName,
+  ModuleEntityConfig,
+  GroupedModuleConfig,
+} from "@kwim/core";

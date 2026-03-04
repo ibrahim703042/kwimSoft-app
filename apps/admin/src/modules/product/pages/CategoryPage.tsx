@@ -1,7 +1,5 @@
 import { z } from "zod";
-import { createFullEntityPage } from "@/core/crud/createFullEntityPage";
-import { FieldConfig } from "@/core/crud/DynamicFormFields";
-import { ImageUploadField } from "@/core/crud/ImageUploadField";
+import { createFullEntityPage, ImageUploadField, type FieldConfig } from "@/core/crud";
 
 const columns = [
   {

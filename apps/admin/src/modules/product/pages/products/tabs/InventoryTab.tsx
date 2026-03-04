@@ -4,7 +4,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
-import { RelationalField } from "@/core/crud/RelationalField";
+import { RelationalField } from "@/core/crud";
 
 export function InventoryTab({ form }: { form: UseFormReturn<any> }) {
   return (

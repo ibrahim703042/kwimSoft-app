@@ -11,10 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CrudPage } from "@/core/crud/CrudPage";
-import { CrudForm } from "@/core/crud/CrudForm";
-import { TabbedForm } from "@/core/crud/TabbedForm";
-import { createEntityApi } from "@/core/crud/createModule";
+import { CrudPage, CrudForm, TabbedForm, createEntityApi } from "@/core/crud";
 import Swal from "sweetalert2";
 
 import { poSchema, poDefaultValues, type POFormValues } from "./po.schema";

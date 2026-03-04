@@ -4,10 +4,8 @@
  * Fetches employees, departments, leave, attendance, payroll, etc.
  * and displays stat cards + optional charts (leave by status, payroll by status).
  */
-import {
-  ModuleDashboard,
-  DashboardConfig,
-} from "@/core/crud/ModuleDashboard";
+import { ModuleDashboard } from "@/core/crud";
+import type { DashboardConfig } from "@/core/crud";
 import {
   Users,
   Building2,

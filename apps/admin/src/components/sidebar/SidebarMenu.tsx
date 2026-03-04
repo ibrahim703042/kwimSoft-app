@@ -12,9 +12,11 @@ interface SidebarMenuProps {
  * protection still enforces access when a page is opened.
  */
 export default function SidebarMenu({ menus, isOpen }: SidebarMenuProps) {
+  const validMenus = (menus || []).filter((menu): menu is MenuItem => !!menu && !!menu.id);
+  
   return (
     <div className="mt-4 flex flex-col gap-4 relative">
-      {menus.map((menu, index) => (
+      {validMenus.map((menu, index) => (
         <SidebarMenuItem key={menu.id} item={menu} isOpen={isOpen} index={index} />
       ))}
     </div>

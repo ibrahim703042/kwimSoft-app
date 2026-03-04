@@ -7,8 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { leaveApi, employeeApi } from "../../api/hr.api";
 import EnhancedTable from "@/modules/user/pages/EnhancedTable";
-import { CrudForm } from "@/core/crud/CrudForm";
-import { TabbedForm } from "@/core/crud/TabbedForm";
+import { CrudForm, TabbedForm } from "@/core/crud";
 import { leaveSchema, defaultValues, type LeaveFormValues } from "./leave.schema";
 import { useLeaveTabs } from "./useLeaveTabs";
 

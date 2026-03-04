@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { Package, Wrench, FileText } from "lucide-react";
-import { FormTab } from "@/core/crud/TabbedForm";
+import type { FormTab } from "@/core/crud";
 import type { MOFormValues } from "./mo.schema";
 import { ComponentsTab } from "./tabs/ComponentsTab";
 import { WorkOrdersTab } from "./tabs/WorkOrdersTab";

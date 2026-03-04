@@ -1,4 +1,4 @@
-import { createEntityApi } from "@/core/crud/createModule";
+import { createEntityApi } from "@/core/crud";
 
 export const bomApi = createEntityApi("stock", "/bom");
 export const moApi = createEntityApi("stock", "/manufacturing-order");

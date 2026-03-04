@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { CalendarRange, FileText } from "lucide-react";
-import { FormTab } from "@/core/crud/TabbedForm";
+import type { FormTab } from "@/core/crud";
 import type { LeaveFormValues } from "./leave.schema";
 import { RequestTab } from "./tabs/RequestTab";
 import { PeriodTab } from "./tabs/PeriodTab";

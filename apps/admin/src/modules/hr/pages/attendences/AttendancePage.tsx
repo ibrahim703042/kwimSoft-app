@@ -7,8 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { attendanceApi, employeeApi } from "../../api/hr.api";
 import EnhancedTable from "@/modules/user/pages/EnhancedTable";
-import { CrudForm } from "@/core/crud/CrudForm";
-import { TabbedForm } from "@/core/crud/TabbedForm";
+import { CrudForm, TabbedForm } from "@/core/crud";
 import { attendanceSchema, defaultValues, type AttendanceFormValues } from "./attendance.schema";
 import { useAttendanceTabs } from "./useAttendanceTabs";
 

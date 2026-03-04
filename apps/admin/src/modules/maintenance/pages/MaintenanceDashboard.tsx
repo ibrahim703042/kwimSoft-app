@@ -1,5 +1,5 @@
-import { ModuleDashboard, DashboardConfig } from "@/core/crud/ModuleDashboard";
-import { createEntityApi } from "@/core/crud/createModule";
+import { ModuleDashboard, createEntityApi } from "@/core/crud";
+import type { DashboardConfig } from "@/core/crud";
 import { Wrench, ClipboardCheck, AlertTriangle, DollarSign } from "lucide-react";
 
 const maintenanceApi = createEntityApi("transport", "/maintenance-request");

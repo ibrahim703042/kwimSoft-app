@@ -1,470 +1,248 @@
 /**
- * EmployeePage — Employee list with CrudTable
+ * EmployeePage — List with CrudPage; create/edit in CrudForm + TabbedForm.
+ * Form validation and fields from employee.schema.ts; UI from @kwim/core (CrudPage, CrudForm, TabbedForm).
  */
-import { useState } from "react";
-import { Plus, Users, Download, Upload } from "lucide-react";
-import { ColumnDef } from "@tanstack/react-table";
-import {
-  Button,
-  Input,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@kwim/shared-ui";
-import { CrudTable } from "@kwim/core";
-import { PageHeader } from "@/components/PageHeader";
-import { PageFilters } from "@/components/PageFilters";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Plus, Users } from "lucide-react";
+import { Button, Checkbox, Label, FormField, FormItem, FormControl } from "@kwim/shared-ui";
+import { CrudPage, CrudForm, TabbedForm } from "@kwim/core";
+import Swal from "sweetalert2";
 
-interface Employee {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  department: string;
-  position: string;
-  branch: string;
-  joinDate: string;
-  status: "active" | "inactive";
-  avatar?: string;
-}
-
-const mockEmployees: Employee[] = [
-  {
-    id: "1",
-    firstName: "Jean",
-    lastName: "Dupont",
-    email: "jean.dupont@company.com",
-    phone: "0685873736262",
-    department: "IT",
-    position: "Developer",
-    branch: "Paris",
-    joinDate: "2024-01-15",
-    status: "active",
-  },
-  {
-    id: "2",
-    firstName: "Marie",
-    lastName: "Martin",
-    email: "marie.martin@company.com",
-    phone: "434343434",
-    department: "HR",
-    position: "Manager",
-    branch: "Lyon",
-    joinDate: "2023-06-20",
-    status: "active",
-  },
-  {
-    id: "3",
-    firstName: "Pierre",
-    lastName: "Bernard",
-    email: "pierre.bernard@company.com",
-    phone: "12345",
-    department: "Finance",
-    position: "Analyst",
-    branch: "Marseille",
-    joinDate: "2022-11-10",
-    status: "inactive",
-  },
-  {
-    id: "4",
-    firstName: "Sophie",
-    lastName: "Durand",
-    email: "sophie.durand@company.com",
-    phone: "43434546456",
-    department: "Sales",
-    position: "Sales Rep",
-    branch: "Paris",
-    joinDate: "2024-02-01",
-    status: "active",
-  },
-  {
-    id: "5",
-    firstName: "Omar",
-    lastName: "Bashir",
-    email: "omar@hub.com",
-    phone: "07550705445",
-    department: "Marketing",
-    position: "Designer",
-    branch: "Lyon",
-    joinDate: "2023-09-15",
-    status: "active",
-  },
-  {
-    id: "6",
-    firstName: "Numan",
-    lastName: "Khan",
-    email: "ijazin9645@gmail.com",
-    phone: "00415814314",
-    department: "IT",
-    position: "Senior Dev",
-    branch: "Paris",
-    joinDate: "2021-03-20",
-    status: "active",
-  },
-];
-
-const columns: ColumnDef<Employee>[] = [
-  {
-    accessorKey: "avatar",
-    header: "IMG",
-    cell: ({ row }) => (
-      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium text-sm">
-        {row.original.firstName.charAt(0)}{row.original.lastName.charAt(0)}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "name",
-    header: "NAME",
-    cell: ({ row }) => (
-      <div className="font-medium text-primary hover:underline cursor-pointer">
-        {row.original.firstName} {row.original.lastName}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "EMAIL",
-    cell: ({ row }) => <span className="text-muted-foreground">{row.original.email}</span>,
-  },
-  {
-    accessorKey: "phone",
-    header: "CONTACT",
-    cell: ({ row }) => <span>{row.original.phone}</span>,
-  },
-  {
-    accessorKey: "department",
-    header: "DEPARTMENT",
-  },
-  {
-    accessorKey: "position",
-    header: "POSITION",
-  },
-  {
-    accessorKey: "branch",
-    header: "BRANCH",
-  },
-  {
-    accessorKey: "status",
-    header: "STATUS",
-    cell: ({ row }) => (
-      <span
-        className={`px-2 py-1 rounded-full text-xs font-medium ${row.original.status === "active"
-            ? "bg-green-100 text-green-800"
-            : "bg-gray-100 text-gray-800"
-          }`}
-      >
-        {row.original.status === "active" ? "Active" : "Inactive"}
-      </span>
-    ),
-  },
-];
-
-const DEPARTMENT_OPTIONS = [
-  { value: "all", label: "All Departments" },
-  { value: "it", label: "IT" },
-  { value: "hr", label: "HR" },
-  { value: "finance", label: "Finance" },
-  { value: "sales", label: "Sales" },
-  { value: "marketing", label: "Marketing" },
-];
-
-const STATUS_OPTIONS = [
-  { value: "all", label: "All Status" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-];
+import { employeeApi, departmentApi, positionApi } from "../../api/hr.api";
+import { employeeSchema, defaultValues, type EmployeeFormValues } from "./employee.schema";
+import { employeeColumns } from "./employee.columns";
+import { useEmployeeTabs } from "./useEmployeeTabs";
+import { EmployeeDetailView } from "./EmployeeDetailView";
 
 export default function EmployeePage() {
-  const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
-  const [search, setSearch] = useState("");
-  const [departmentFilter, setDepartmentFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editing, setEditing] = useState<Employee | null>(null);
-  const [formData, setFormData] = useState<{
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    department: string;
-    position: string;
-    branch: string;
-    joinDate: string;
-    status: "active" | "inactive";
-  }>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    department: "",
-    position: "",
-    branch: "",
-    joinDate: "",
-    status: "active",
+  const [formOpen, setFormOpen] = useState(false);
+  const [editing, setEditing] = useState<any>(null);
+  const [viewing, setViewing] = useState<any>(null);
+  const qc = useQueryClient();
+
+  const { data: deptData } = useQuery({
+    queryKey: ["departments-lookup"],
+    queryFn: async () => (await departmentApi.getAll()).data,
+  });
+  const departments = deptData?.data || [];
+
+  const { data: posData } = useQuery({
+    queryKey: ["positions-lookup"],
+    queryFn: async () => (await positionApi.getAll()).data,
+  });
+  const positions = posData?.data || [];
+
+  const { data: empLookupData } = useQuery({
+    queryKey: ["employees-lookup"],
+    queryFn: async () => (await employeeApi.getAll()).data,
+  });
+  const employeesLookup = empLookupData?.data ?? (Array.isArray(empLookupData) ? empLookupData : []);
+  const employees = Array.isArray(employeesLookup) ? employeesLookup : [];
+
+  const form = useForm<EmployeeFormValues>({
+    resolver: zodResolver(employeeSchema),
+    defaultValues,
   });
 
-  const filteredEmployees = employees.filter((e) => {
-    const matchesSearch =
-      e.firstName.toLowerCase().includes(search.toLowerCase()) ||
-      e.lastName.toLowerCase().includes(search.toLowerCase()) ||
-      e.email.toLowerCase().includes(search.toLowerCase()) ||
-      e.department.toLowerCase().includes(search.toLowerCase());
-    const matchesDept = departmentFilter === "all" || e.department.toLowerCase() === departmentFilter;
-    const matchesStatus = statusFilter === "all" || e.status === statusFilter;
-    return matchesSearch && matchesDept && matchesStatus;
-  });
-
-  const openCreate = () => {
-    setEditing(null);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      department: "",
-      position: "",
-      branch: "",
-      joinDate: "",
-      status: "active",
-    });
-    setDialogOpen(true);
-  };
-
-  const openEdit = (emp: Employee) => {
-    setEditing(emp);
-    setFormData({
-      firstName: emp.firstName,
-      lastName: emp.lastName,
-      email: emp.email,
-      phone: emp.phone,
-      department: emp.department,
-      position: emp.position,
-      branch: emp.branch,
-      joinDate: emp.joinDate,
-      status: emp.status,
-    });
-    setDialogOpen(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
     if (editing) {
-      setEmployees((prev) =>
-        prev.map((emp) => (emp.id === editing.id ? { ...emp, ...formData } : emp))
-      );
+      form.reset({
+        ...defaultValues,
+        employeeCode: editing.employeeCode || "",
+        firstName: editing.firstName || "",
+        lastName: editing.lastName || "",
+        email: editing.email || "",
+        phone: editing.phone || "",
+        gender: editing.gender || "",
+        birthDate: editing.birthDate ? editing.birthDate.slice(0, 10) : "",
+        maritalStatus: editing.maritalStatus || "",
+        nationalId: editing.nationalId || "",
+        address: editing.address || "",
+        description: editing.description || "",
+        avatar: editing.avatar || "",
+        department: editing.department?._id || "",
+        position: editing.position?._id || "",
+        branch: editing.branch || "",
+        supervisor: editing.supervisor?._id || editing.supervisor || "",
+        employmentType: editing.employmentType || "",
+        officeTime: editing.officeTime || "",
+        workspace: editing.workspace || "",
+        attendanceDuringHoliday: editing.attendanceDuringHoliday ?? false,
+        hireDate: editing.hireDate ? editing.hireDate.slice(0, 10) : "",
+        status: editing.status || "active",
+        leaveAllocated: editing.leaveAllocated ?? 0,
+        assignedLeaves: editing.assignedLeaves ?? [],
+        emergencyContact: editing.emergencyContact || "",
+        emergencyPhone: editing.emergencyPhone || "",
+        bankName: editing.bankName || "",
+        bankAccountNumber: editing.bankAccountNumber || "",
+        accountHolderName: editing.accountHolderName || "",
+        bankAccountType: editing.bankAccountType || "",
+        biometricId: editing.biometricId || "",
+        wifiMac: editing.wifiMac || "",
+        deviceId: editing.deviceId || "",
+        showEntreprise: editing.showEntreprise ?? false,
+        showConge: editing.showConge ?? false,
+        showBanque: editing.showBanque ?? false,
+        showIdentification: editing.showIdentification ?? false,
+      });
     } else {
-      setEmployees((prev) => [...prev, { ...formData, id: Date.now().toString() }]);
+      form.reset(defaultValues);
     }
-    setDialogOpen(false);
+  }, [editing]);
+
+  const mutation = useMutation({
+    mutationFn: async (values: EmployeeFormValues) => {
+      if (editing) {
+        const id = editing._id || editing.id;
+        return employeeApi.update(id, values);
+      }
+      return employeeApi.create(values);
+    },
+    onSuccess: () => {
+      Swal.fire("Succès!", `Employé ${editing ? "modifié" : "créé"} avec succès.`, "success");
+      qc.invalidateQueries({ queryKey: ["employees"] });
+      closeForm();
+    },
+    onError: (err: any) => {
+      Swal.fire("Erreur!", err.response?.data?.message || "Une erreur est survenue.", "error");
+    },
+  });
+
+  const closeForm = () => {
+    setFormOpen(false);
+    setEditing(null);
+    form.reset(defaultValues);
   };
 
-  const handleDelete = (emp: Employee) => {
-    if (confirm(`Are you sure you want to delete ${emp.firstName} ${emp.lastName}?`)) {
-      setEmployees((prev) => prev.filter((e) => e.id !== emp.id));
-    }
-  };
-
-  const handleBulkDelete = (rows: Employee[]) => {
-    if (confirm(`Are you sure you want to delete ${rows.length} employee(s)?`)) {
-      const ids = new Set(rows.map((r) => r.id));
-      setEmployees((prev) => prev.filter((e) => !ids.has(e.id)));
-    }
-  };
-
-  const handleView = (emp: Employee) => {
-    console.log("View employee:", emp);
-  };
+  const tabs = useEmployeeTabs({
+    form,
+    departments,
+    positions,
+    employees,
+    currentEmployeeId: editing?._id ?? null,
+  });
 
   return (
-    <div className="space-y-6 min-w-0">
-      <PageHeader
-        title="Employees"
-        description="Manage your organization's employees"
-        icon={Users}
-        actions={[
-          { icon: Upload, label: "Import", variant: "outline" },
-          { icon: Download, label: "Export", variant: "outline" },
-          { icon: Plus, label: "Add Employee", variant: "default", onClick: openCreate },
-        ]}
-      />
-
-      <PageFilters
-        cardTitle="Data"
-        cardCount={filteredEmployees.length}
-        searchPlaceholder="Search employees..."
-        searchValue={search}
-        onSearchChange={setSearch}
-        selects={[
-          {
-            placeholder: "Department",
-            value: departmentFilter,
-            onValueChange: setDepartmentFilter,
-            options: DEPARTMENT_OPTIONS,
+    <>
+      <CrudPage
+        config={{
+          title: "Employés",
+          queryKey: ["employees"],
+          headerIcon: Users,
+          filterCardTitle: "Data",
+          searchPlaceholder: "Rechercher les employés...",
+          queryFn: async ({ search }) => {
+            const res = await employeeApi.getAll({ search });
+            const list = (res as any).data?.data ?? (res as any).data ?? [];
+            return { data: Array.isArray(list) ? list : [] };
           },
-          {
-            placeholder: "Status",
-            value: statusFilter,
-            onValueChange: setStatusFilter,
-            options: STATUS_OPTIONS,
+          columns: employeeColumns,
+          deleteFn: async (id: string) => {
+            await employeeApi.delete(id);
           },
-        ]}
-      />
-
-      <div className="bg-white dark:bg-gray-800 rounded-lg border min-w-0 overflow-hidden">
-        <CrudTable
-          data={filteredEmployees}
-          columns={columns}
-          enablePagination
-          pageSize={10}
-          onEdit={openEdit}
-          onDelete={handleDelete}
-          onView={handleView}
-          enableRowSelection
-          getRowId={(row) => row.id}
-          onBulkDelete={handleBulkDelete}
-          permissions={{
+          permissions: {
             read: "employee.read",
             create: "employee.create",
             update: "employee.update",
             delete: "employee.delete",
-          }}
-        />
-      </div>
+          },
+        }}
+        addButton={
+          <Button
+            className="bg-[#0F123F]"
+            size="sm"
+            onClick={() => {
+              setEditing(null);
+              setFormOpen(true);
+            }}
+          >
+            <Plus className="h-4 w-4 mr-1" /> Nouveau
+          </Button>
+        }
+        onEdit={(row: any) => {
+          setEditing(row);
+          setFormOpen(true);
+        }}
+        onView={(row: any) => setViewing(row)}
+      />
 
-      {/* Create/Edit Dialog */}
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>
-              {editing ? "Edit Employee" : "Add New Employee"}
-            </DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>First Name</Label>
-                <Input
-                  value={formData.firstName}
-                  onChange={(e) => setFormData((p) => ({ ...p, firstName: e.target.value }))}
-                  required
-                />
-              </div>
-              <div>
-                <Label>Last Name</Label>
-                <Input
-                  value={formData.lastName}
-                  onChange={(e) => setFormData((p) => ({ ...p, lastName: e.target.value }))}
-                  required
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Email</Label>
-                <Input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData((p) => ({ ...p, email: e.target.value }))}
-                  required
-                />
-              </div>
-              <div>
-                <Label>Phone</Label>
-                <Input
-                  value={formData.phone}
-                  onChange={(e) => setFormData((p) => ({ ...p, phone: e.target.value }))}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Department</Label>
-                <Select
-                  value={formData.department}
-                  onValueChange={(v) => setFormData((p) => ({ ...p, department: v }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select department" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="IT">IT</SelectItem>
-                    <SelectItem value="HR">HR</SelectItem>
-                    <SelectItem value="Finance">Finance</SelectItem>
-                    <SelectItem value="Sales">Sales</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Position</Label>
-                <Input
-                  value={formData.position}
-                  onChange={(e) => setFormData((p) => ({ ...p, position: e.target.value }))}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Branch</Label>
-                <Select
-                  value={formData.branch}
-                  onValueChange={(v) => setFormData((p) => ({ ...p, branch: v }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select branch" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Paris">Paris</SelectItem>
-                    <SelectItem value="Lyon">Lyon</SelectItem>
-                    <SelectItem value="Marseille">Marseille</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Join Date</Label>
-                <Input
-                  type="date"
-                  value={formData.joinDate}
-                  onChange={(e) => setFormData((p) => ({ ...p, joinDate: e.target.value }))}
-                />
-              </div>
-            </div>
-            <div>
-              <Label>Status</Label>
-              <Select
-                value={formData.status}
-                onValueChange={(v: "active" | "inactive") => setFormData((p) => ({ ...p, status: v }))}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit" className="bg-[#0F123F]">
-                {editing ? "Save Changes" : "Add Employee"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </div>
+      <CrudForm
+        open={formOpen}
+        onOpenChange={(open) => {
+          if (!open) closeForm();
+          else setFormOpen(true);
+        }}
+        title={editing ? "Modifier l'employé" : "Nouvel employé"}
+        form={form}
+        onSubmit={(data) => mutation.mutateAsync(data)}
+        isLoading={mutation.isPending}
+        submitText={editing ? "Enregistrer" : "Créer"}
+        cancelText="Annuler"
+        wide
+      >
+        <div className="flex flex-wrap items-center gap-4 pb-3 border-b">
+          <span className="text-sm font-medium text-muted-foreground">Sections:</span>
+          <FormField
+            control={form.control}
+            name="showEntreprise"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </FormControl>
+                <Label className="font-normal text-sm cursor-pointer">Détail entreprise</Label>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="showConge"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </FormControl>
+                <Label className="font-normal text-sm cursor-pointer">Congés</Label>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="showBanque"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </FormControl>
+                <Label className="font-normal text-sm cursor-pointer">Banque</Label>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="showIdentification"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value ?? false} onCheckedChange={field.onChange} />
+                </FormControl>
+                <Label className="font-normal text-sm cursor-pointer">Identification / Suivi</Label>
+              </FormItem>
+            )}
+          />
+        </div>
+        <TabbedForm form={form} tabs={tabs} />
+      </CrudForm>
+
+      <EmployeeDetailView
+        employee={viewing}
+        open={!!viewing}
+        onOpenChange={(open: boolean) => !open && setViewing(null)}
+      />
+    </>
   );
 }

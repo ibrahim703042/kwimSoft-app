@@ -56,11 +56,11 @@ export function CrudForm({
           expanded
             ? "!max-w-[95vw] !w-[95vw] !max-h-[95vh] !h-[95vh]"
             : wide
-              ? "max-w-4xl max-h-[90vh]"
-              : "max-w-2xl max-h-[90vh]"
+              ? "max-w-5xl max-h-[90vh]"
+              : "max-w-3xl max-h-[90vh]"
         )}
       >
-        <DialogHeader className="flex flex-row items-start justify-between">
+        <DialogHeader className="flex flex-row items-center justify-between pb-4 border-b">
           <div className="flex-1">
             <DialogTitle>{title}</DialogTitle>
             {description && (
@@ -86,7 +86,7 @@ export function CrudForm({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
             {children}
 
             <DialogFooter className="flex justify-end space-x-2 pt-4">

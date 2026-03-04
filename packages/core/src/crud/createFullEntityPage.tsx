@@ -5,9 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Plus } from "lucide-react";
 import { Button } from "@kwim/shared-ui";
-import { CrudPage, CrudForm, DynamicFormFields } from "@kwim/core";
-import { createEntityApi, ServiceName } from "@kwim/core";
-import type { FieldConfig, CrudConfig } from "@kwim/core";
+import { CrudPage } from "./CrudPage";
+import { CrudForm } from "./CrudForm";
+import { DynamicFormFields } from "./DynamicFormFields";
+import { createEntityApi, ServiceName } from "./createModule";
+import type { FieldConfig, CrudConfig } from "./types";
 import Swal from "sweetalert2";
 
 export interface FullEntityPageConfig {
@@ -92,26 +94,26 @@ export function createFullEntityPage(config: FullEntityPageConfig) {
       },
     });
 
-    // const deleteMutation = useMutation({
-    //   mutationFn: (id: string) => api.delete(id),
-    //   onSuccess: () => {
-    //     queryClient.invalidateQueries({ queryKey: [config.key] });
-    //     Swal.fire({
-    //       title: "Succès!",
-    //       text: `${config.singular} supprimé avec succès.`,
-    //       icon: "success",
-    //       confirmButtonText: "OK",
-    //     });
-    //   },
-    //   onError: (error: any) => {
-    //     Swal.fire({
-    //       title: "Erreur!",
-    //       text: error.message || "Une erreur est survenue.",
-    //       icon: "error",
-    //       confirmButtonText: "OK",
-    //     });
-    //   },
-    // });
+    const deleteMutation = useMutation({
+      mutationFn: (id: string) => api.delete(id),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [config.key] });
+        Swal.fire({
+          title: "Succès!",
+          text: `${config.singular} supprimé avec succès.`,
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      },
+      onError: (error: any) => {
+        Swal.fire({
+          title: "Erreur!",
+          text: error.message || "Une erreur est survenue.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      },
+    });
 
     const handleOpenCreate = () => {
       setEditingItem(null);
@@ -123,14 +125,6 @@ export function createFullEntityPage(config: FullEntityPageConfig) {
       setEditingItem(row);
       form.reset(row);
       setFormOpen(true);
-    };
-
-    const handleSubmit = (values: any) => {
-      if (editingItem) {
-        updateMutation.mutate(values);
-      } else {
-        createMutation.mutate(values);
-      }
     };
 
     const crudConfig: CrudConfig<any> = {
@@ -180,5 +174,13 @@ export function createFullEntityPage(config: FullEntityPageConfig) {
         </CrudForm>
       </>
     );
+
+    function handleSubmit(values: any) {
+      if (editingItem) {
+        updateMutation.mutate(values);
+      } else {
+        createMutation.mutate(values);
+      }
+    }
   };
 }

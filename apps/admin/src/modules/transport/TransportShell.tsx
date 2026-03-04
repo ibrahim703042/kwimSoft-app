@@ -11,7 +11,7 @@ import Reservation from "@/modules/transport/reservation/Reservation";
 import Horaire from "@/modules/transport/horaires/Horaire";
 
 // ── Generated CrudPages for entities without custom pages ─────
-import { createListPage } from "@/core/crud/createModule";
+import { createListPage } from "@/core/crud";
 
 const VehiclePage = createListPage({
   key: "vehicle",

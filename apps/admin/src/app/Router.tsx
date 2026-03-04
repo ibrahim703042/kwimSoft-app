@@ -108,22 +108,24 @@ export function AppRouter() {
         />
 
         {/* Protected dynamic routes from modules */}
-        {routes.map((route) => {
-          const element = route.permission ? (
-            <Can permission={route.permission}>{route.element}</Can>
-          ) : (
-            route.element
-          );
+        {routes
+          .filter((route) => route && route.path)
+          .map((route) => {
+            const element = route.permission ? (
+              <Can permission={route.permission}>{route.element}</Can>
+            ) : (
+              route.element
+            );
 
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<ProtectedRoute>{element}</ProtectedRoute>}
-              index={route.index}
-            />
-          );
-        })}
+            return (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={<ProtectedRoute>{element}</ProtectedRoute>}
+                index={route.index}
+              />
+            );
+          })}
 
         {/* Fallback */}
         <Route path="*" element={<NotFound />} />

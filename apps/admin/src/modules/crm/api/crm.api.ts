@@ -2,7 +2,7 @@
  * CRM Module API Layer
  * Connects to the HR microservice (port 9081)
  */
-import { createEntityApi } from "@/core/crud/createModule";
+import { createEntityApi } from "@/core/crud";
 
 // ─── Exports ──────────────────────────────────────────────────
 export const contactApi     = createEntityApi("hr", "/contact");

@@ -1,5 +1,5 @@
-import { ModuleDashboard, DashboardConfig } from "@/core/crud/ModuleDashboard";
-import { createEntityApi } from "@/core/crud/createModule";
+import { ModuleDashboard, createEntityApi } from "@/core/crud";
+import type { DashboardConfig } from "@/core/crud";
 import { Warehouse, MapPin, BarChart3, ArrowLeftRight, Repeat, ClipboardCheck } from "lucide-react";
 
 const stockApi = createEntityApi("stock", "/stock");

@@ -2,7 +2,7 @@
  * Product Module API Layer
  * Connects to the Product microservice (port 9082)
  */
-import { createEntityApi } from "@/core/crud/createModule";
+import { createEntityApi } from "@/core/crud";
 
 // ─── Exports ──────────────────────────────────────────────────
 export const categoryApi      = createEntityApi("product", "/category");

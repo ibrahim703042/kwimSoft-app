@@ -1,4 +1,4 @@
-import { createGroupedModule } from "@/core/crud/createModule";
+import { createGroupedModule } from "@/core/crud";
 import { BarChart3 } from "lucide-react";
 
 export const reportModule = createGroupedModule({

@@ -4,7 +4,7 @@ import { Plus, Trash2, ImagePlus, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FormField, FormItem, FormControl } from "@/components/ui/form";
-import { RelationalField } from "@/core/crud/RelationalField";
+import { RelationalField } from "@/core/crud";
 import type { ProductFormValues } from "../product.schema";
 
 export function AttributesTab({ form }: { form: UseFormReturn<ProductFormValues> }) {

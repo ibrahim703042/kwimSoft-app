@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { Package, Wallet, FileText } from "lucide-react";
-import { FormTab } from "@/core/crud/TabbedForm";
+import type { FormTab } from "@/core/crud";
 import type { POFormValues } from "./po.schema";
 import { ProductsTab } from "./tabs/ProductsTab";
 import { BudgetTab } from "./tabs/BudgetTab";

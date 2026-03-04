@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { FileText, CalendarRange } from "lucide-react";
-import { FormTab } from "@/core/crud/TabbedForm";
+import type { FormTab } from "@/core/crud";
 import type { ContractFormValues } from "./contract.schema";
 import { ContractTab } from "./tabs/ContractTab";
 import { TermsTab } from "./tabs/TermsTab";

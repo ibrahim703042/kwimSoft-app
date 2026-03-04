@@ -1,17 +1,28 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { z } from "zod";
 
-export interface CrudPermissions {
+export type CrudPermissions = {
   read?: string;
   create?: string;
   update?: string;
   delete?: string;
 }
 
-export interface CrudConfig<T = any> {
+export type CrudFilterSelectOption = {
+  value: string;
+  label: string;
+}
+
+export type CrudFilterSelect = {
+  key: string;
+  placeholder: string;
+  options: CrudFilterSelectOption[];
+}
+
+export type CrudConfig<T = any> = {
   title: string;
   queryKey: string[];
-  queryFn: (params: any) => Promise<any>;
+  queryFn: (params: { search?: string; filters?: Record<string, string> }) => Promise<any>;
   columns: ColumnDef<T>[];
   formSchema?: z.ZodSchema;
   createFn?: (data: any) => Promise<T>;
@@ -22,9 +33,17 @@ export interface CrudConfig<T = any> {
   enablePagination?: boolean;
   pageSize?: number;
   customActions?: (row: T) => React.ReactNode;
+  /** Optional icon component (e.g. Users from lucide-react) for the page header */
+  headerIcon?: React.ComponentType<any>;
+  /** Title for the filter card (e.g. "Data") */
+  filterCardTitle?: string;
+  /** Optional filter dropdowns shown in the filter card when expanded */
+  filterSelects?: CrudFilterSelect[];
+  /** Placeholder for the search input in the filter card */
+  searchPlaceholder?: string;
 }
 
-export interface Action {
+export type Action = {
   id: string;
   label: string;
   onClick: () => void;

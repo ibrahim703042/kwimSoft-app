@@ -1,4 +1,4 @@
-import { createGroupedModule } from "@/core/crud/createModule";
+import { createGroupedModule } from "@/core/crud";
 import { Navigation } from "lucide-react";
 
 export const tripModule = createGroupedModule({

@@ -8,9 +8,10 @@ export const isDevelopment = import.meta.env.DEV;
 export const isProduction = import.meta.env.PROD;
 
 // In development, allow overriding API host via .env (VITE_API_HOST)
-const DEV_API_HOST = (import.meta.env.VITE_API_HOST as string).trim();
-
-const PROD_API_HOST = (import.meta.env.VITE_API_PROD_HOST as string).trim();
+const DEV_API_HOST =
+  (import.meta.env.VITE_API_HOST ?? "").toString().trim() || "http://localhost";
+const PROD_API_HOST =
+  (import.meta.env.VITE_API_PROD_HOST ?? "").toString().trim() || "https://api.example.com";
 
 // Base URLs for different environments
 const BASE_URLS = {

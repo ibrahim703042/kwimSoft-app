@@ -47,6 +47,11 @@ export const employeeSchema = z.object({
   biometricId: z.string().optional(),
   wifiMac: z.string().optional(),
   deviceId: z.string().optional(),
+  // Tab visibility switches
+  showEntreprise: z.boolean().default(false),
+  showConge: z.boolean().default(false),
+  showBanque: z.boolean().default(false),
+  showIdentification: z.boolean().default(false),
 });
 
 export type AssignedLeave = z.infer<typeof assignedLeaveSchema>;
@@ -86,4 +91,8 @@ export const defaultValues: EmployeeFormValues = {
   biometricId: "",
   wifiMac: "",
   deviceId: "",
+  showEntreprise: false,
+  showConge: false,
+  showBanque: false,
+  showIdentification: false,
 };

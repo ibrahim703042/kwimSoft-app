@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { Box, SlidersHorizontal, ShoppingCart, Truck, Warehouse, FileText } from "lucide-react";
-import { FormTab } from "@/core/crud/TabbedForm";
+import type { FormTab } from "@/core/crud";
 import type { ProductFormValues } from "./product.schema";
 import { GeneralTab } from "./tabs/GeneralTab";
 import { AttributesTab } from "./tabs/AttributesTab";

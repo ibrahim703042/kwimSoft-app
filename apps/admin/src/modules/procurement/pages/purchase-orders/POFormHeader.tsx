@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { RelationalField } from "@/core/crud/RelationalField";
+import { RelationalField } from "@/core/crud";
 import type { POFormValues } from "./po.schema";
 
 const supplierCreateFields = [

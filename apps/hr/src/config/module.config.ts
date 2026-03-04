@@ -124,8 +124,8 @@ export const hrModuleConfig: ModuleConfig = {
       icon: HandCoins,
       path: "/loans",
       children: [
-        { id: "loan-type", label: "Loan Type", path: "/loans/type" },
         { id: "loan-list", label: "Loan List", path: "/loans" },
+        { id: "loan-type", label: "Loan Types", path: "/loans/type" },
       ],
     },
     {

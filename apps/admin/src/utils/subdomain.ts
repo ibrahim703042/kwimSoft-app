@@ -10,17 +10,27 @@ export interface SubdomainInfo {
 }
 
 /**
+ * Check if hostname is an IP address
+ */
+function isIpAddress(hostname: string): boolean {
+  const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+  const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+  return ipv4Regex.test(hostname) || ipv6Regex.test(hostname);
+}
+
+/**
  * Get subdomain information from current URL
  */
 export function getSubdomainInfo(): SubdomainInfo {
   const hostname = window.location.hostname;
   
-  // For localhost development
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    // Check if subdomain is stored in localStorage for development
-    const devSubdomain = localStorage.getItem('dev_subdomain');
+  // For localhost or IP address development - treat as app context (not landing)
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || isIpAddress(hostname)) {
+    // For development environments, always treat as "subdomain" context
+    // so the full app shell with sidebar is shown
+    const devSubdomain = localStorage.getItem('dev_subdomain') || 'dev';
     return {
-      isSubdomain: !!devSubdomain,
+      isSubdomain: true,
       subdomain: devSubdomain,
       baseDomain: hostname,
     };

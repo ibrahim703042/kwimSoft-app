@@ -26,10 +26,19 @@
     "build:transport": "pnpm --filter @kwim/transport build",
     "lint": "pnpm -r lint",
     "type-check": "pnpm -r type-check",
-    "clean": "pnpm -r clean"
+    "clean": "pnpm -r clean",
+    "api:generate": "orval --config orval.config.cjs",
+    "api:generate:user": "orval --config orval.config.cjs userService",
+    "api:generate:hr": "orval --config orval.config.cjs hrService",
+    "api:generate:product": "orval --config orval.config.cjs productService",
+    "api:generate:inventory": "orval --config orval.config.cjs inventoryService",
+    "api:generate:transport": "orval --config orval.config.cjs transportService",
+    "api:generate:gateway": "orval --config orval.config.cjs gatewayService",
+    "api:generate:watch": "orval --config orval.config.cjs --watch"
   },
   "devDependencies": {
     "typescript": "^5.7.3",
-    "eslint": "^9.13.0"
+    "eslint": "^9.13.0",
+    "orval": "^7.3.0"
   }
 }

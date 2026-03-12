@@ -83,7 +83,7 @@ export function AppLayout({ children, config }: AppLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
         {/* Header/Navbar - Fixed */}
-        <div className="border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
+        <div className="flex-shrink-0">
           <LayoutNavbar
             user={config.user}
             quickActions={config.quickActions}

@@ -107,9 +107,9 @@ export function LayoutNavbar({
   const computedBreadcrumbs = breadcrumbs || generateBreadcrumbsFromPath(currentPath || "");
 
   return (
-    <div className="flex flex-col gap-0">
-      <div className="flex justify-between items-center px-4 sm:px-5 bg-white dark:bg-gray-900 h-14 rounded-lg shadow-sm border border-border/40">
-        <div className="flex items-center gap-4">
+    <div className="flex flex-col gap-0 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+      <div className="flex justify-between items-center h-14 px-4 sm:px-6 gap-4">
+        <div className="flex items-center gap-4 min-w-0 flex-1">
           <NavBreadcrumbs
             items={computedBreadcrumbs}
             onNavigate={onNavigate}
@@ -117,7 +117,7 @@ export function LayoutNavbar({
           />
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <NavSearch onSearch={onSearch} />
 
           <div className="hidden sm:block h-6 w-px bg-border" />
@@ -217,21 +217,41 @@ function NavBreadcrumbs({
 
 function NavSearch({ onSearch }: { onSearch?: (query: string) => void }) {
   const [query, setQuery] = useState("");
+  const [expanded, setExpanded] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch?.(query);
   };
 
+  const handleBlur = () => {
+    if (!query.trim()) setExpanded(false);
+  };
+
+  if (!expanded) {
+    return (
+      <button
+        type="button"
+        onClick={() => setExpanded(true)}
+        className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-0"
+        aria-label="Search"
+      >
+        <Search size={18} className="text-gray-600 dark:text-gray-300" />
+      </button>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="relative">
-      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+    <form onSubmit={handleSubmit} className="relative flex items-center">
+      <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onBlur={handleBlur}
         placeholder="Search..."
-        className="pl-9 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 w-48 sm:w-64"
+        autoFocus
+        className="pl-9 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 w-40 sm:w-52"
       />
     </form>
   );
@@ -249,7 +269,8 @@ function NavThemeToggle() {
   return (
     <div className="relative group">
       <button
-        className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        type="button"
+        className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition focus:outline-none focus:ring-0"
         aria-label="Theme Menu"
       >
         {themes.find((t) => t.value === theme)?.icon}
@@ -287,8 +308,10 @@ function NavLanguageSwitcher({ languages }: { languages?: Language[] }) {
   return (
     <div className="relative">
       <button
+        type="button"
         onClick={() => setShowMenu(!showMenu)}
-        className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-1"
+        className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-1 focus:outline-none focus:ring-0"
+        aria-label="Language"
       >
         {currentLang?.flag ? (
           <img src={currentLang.flag} alt="" className="w-5 h-5 rounded-full" />
@@ -364,10 +387,14 @@ function NavNotifications({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="relative p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none">
+        <button
+          type="button"
+          className="relative p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-0"
+          aria-label="Notifications"
+        >
           <Bell size={18} className="text-gray-600 dark:text-gray-300" />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[16px] h-[16px] px-1 text-[10px] font-bold text-white bg-red-500 rounded-full">
+            <span className="absolute top-0 right-0 flex items-center justify-center min-w-[14px] h-[14px] px-0.5 text-[10px] font-bold text-white bg-red-500 rounded-full leading-none">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}

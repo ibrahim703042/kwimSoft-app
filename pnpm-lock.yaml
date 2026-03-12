@@ -1211,6 +1211,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@hookform/resolvers':
+        specifier: ^3.9.1
+        version: 3.10.0(react-hook-form@7.71.1(react@18.3.1))
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../shared-ui

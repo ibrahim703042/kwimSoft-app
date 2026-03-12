@@ -10,6 +10,7 @@
     "./hooks": "./src/hooks/index.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@kwim/shared-ui": "workspace:*",
     "@tanstack/react-query": "^5.62.11",
     "@tanstack/react-table": "^8.20.5",

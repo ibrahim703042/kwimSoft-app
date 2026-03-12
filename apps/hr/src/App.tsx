@@ -1,7 +1,6 @@
 import { AppLayout, type AppLayoutConfig } from "@kwim/shared-ui";
 import { hrModuleConfig } from "./config/module.config";
 import { Routes, Route, useNavigate } from "react-router-dom";
-// import { UserPlus, Calendar, FileText, Clock, Users } from "lucide-react";
 
 import Dashboard from "./pages/Dashboard";
 import EmployeeShell from "./pages/employees/EmployeeShell";
@@ -11,6 +10,12 @@ import PayrollShell from "./pages/payroll/PayrollShell";
 import RecruitmentPage from "./pages/recruitements/RecruitmentPage";
 import TrainingPage from "./pages/training/TrainingPage";
 import UserShell from "./pages/users/UserShell";
+import LoanShell from "./pages/loans/LoanShell";
+import NoticePage from "./pages/notice/NoticePage";
+import CompanyShell from "./pages/company/CompanyShell";
+import ProjectShell from "./pages/projects/ProjectShell";
+import SettingsPage from "./pages/settings/SettingsPage";
+import LeavePage from "./pages/leave/LeavePage";
 
 function App() {
   const navigate = useNavigate();
@@ -88,11 +93,17 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/employees/*" element={<EmployeeShell />} />
         <Route path="/organization/*" element={<OrganizationShell />} />
+        <Route path="/company/*" element={<CompanyShell />} />
         <Route path="/attendance/*" element={<AttendanceShell />} />
         <Route path="/payroll/*" element={<PayrollShell />} />
-        <Route path="/recruitment" element={<RecruitmentPage />} />
-        <Route path="/training" element={<TrainingPage />} />
+        <Route path="/recruitment/*" element={<RecruitmentPage />} />
+        <Route path="/training/*" element={<TrainingPage />} />
         <Route path="/users/*" element={<UserShell />} />
+        <Route path="/loans/*" element={<LoanShell />} />
+        <Route path="/leave/*" element={<LeavePage />} />
+        <Route path="/notice" element={<NoticePage />} />
+        <Route path="/projects/*" element={<ProjectShell />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </AppLayout>
   );

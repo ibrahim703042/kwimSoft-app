@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import SearchBar from "@/components/utilitie/SearchBar";
+import { SearchBar } from "@kwim/shared-ui";
 
 interface PageToolbarProps {
   search?: string;
@@ -25,7 +25,7 @@ export function PageToolbar({
       <div className="flex items-center gap-2 flex-1">
         {onSearchChange && (
           <div className="flex-1 max-w-sm">
-            <SearchBar setSearch={onSearchChange} />
+            <SearchBar setSearch={onSearchChange} placeholder="Recherche" />
           </div>
         )}
         {filters}

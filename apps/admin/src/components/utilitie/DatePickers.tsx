@@ -26,7 +26,7 @@ export function DatePickers({ value, onChange, place }: DatePickersProps) {
   };
 
   return (
-    <Popover className="w-full">
+    <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}

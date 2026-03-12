@@ -1,4 +1,4 @@
-import { FrontModule } from "./ModuleRegistry";
+import type { FrontModule, MenuItem } from "./ModuleRegistry";
 
 /**
  * Register all application modules here
@@ -48,10 +48,11 @@ import { salesModule } from "@/modules/sales";
 import { userModule } from "@/modules/user";
 
 /**
- * Array of all registered modules
- * Order determines sidebar menu order
+ * Array of all registered modules (FrontModule or createGroupedModule-style configs).
+ * Order determines sidebar menu order. Some entries may have no .menu (e.g. reportModule).
  */
-export const modules: FrontModule[] = [
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const modules: Array<FrontModule | { menu?: MenuItem[]; routes?: FrontModule["routes"]; permissions?: string[];[k: string]: any }> = [
   // Core (admin area: Welcome, Server info, Provider info)
   adminAreaModule,
 
@@ -103,12 +104,15 @@ export const getModules = () => modules;
 /**
  * Get all routes from all modules
  */
-export const getAllRoutes = () => modules.flatMap((m) => m.routes);
+export const getAllRoutes = () => modules.flatMap((m) => m.routes ?? []);
 
 /**
- * Get all menus from all modules
+ * Get all menus from all modules.
+ * Uses (m.menu ?? []) so modules without menu (e.g. from createGroupedModule) don't produce undefined entries.
+ * Filters out any undefined or invalid items so LayoutSidebar never receives undefined.
  */
-export const getAllMenus = () => modules.flatMap((m) => m.menu);
+export const getAllMenus = () =>
+  modules.flatMap((m) => m.menu ?? []).filter((menu) => menu != null && typeof menu === "object" && "id" in menu);
 
 /**
  * Get all permissions from all modules

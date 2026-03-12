@@ -1,7 +1,7 @@
 import { ComponentType, ReactNode, useState, useEffect, useCallback } from "react";
 import { NavLink, useSearchParams } from "react-router-dom";
 import {
-  IndentDecrease,
+  PanelLeftClose,
   LucideIcon,
   Menu,
   ChevronRight,
@@ -113,7 +113,7 @@ export function ModuleShell({
             className="border mx-3 bg-background p-1 rotate-180 rounded-b-lg rounded-l-lg cursor-pointer hover:bg-muted transition-colors"
             onClick={toggle}
           >
-            <IndentDecrease size={18} />
+            <PanelLeftClose size={18} />
           </div>
         </div>
 
@@ -135,7 +135,7 @@ export function ModuleShell({
                 className="border border-border/60 p-1 rounded-lg cursor-pointer hover:bg-muted transition-colors"
                 onClick={toggle}
               >
-                <IndentDecrease size={18} />
+                <PanelLeftClose size={18} />
               </button>
             </div>
 

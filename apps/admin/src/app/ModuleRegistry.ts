@@ -1,38 +1,18 @@
-import { ReactNode, ComponentType } from "react";
+import type { MenuItem, AppRoute } from "@kwim/shared-ui";
 
 /**
- * Route definition for a module
- */
-export type AppRoute = {
-  path: string;
-  element: ReactNode;
-  permission?: string;
-  index?: boolean;
-}
-
-/**
- * Menu item definition
- */
-export type MenuItem = {
-  id: string;
-  label: string;
-  icon?: ComponentType<any>;
-  path?: string;
-  children?: MenuItem[];
-  permission?: string;
-  gap?: boolean;
-}
-
-/**
- * Front-end module definition (Odoo-like)
- * Each module declares its routes, menus, and permissions
+ * Front-end module definition (Odoo-like).
+ * Each module declares its routes, menus, and permissions.
+ * Uses MenuItem and AppRoute from @kwim/shared-ui.
  */
 export type FrontModule = {
   name: string;
   routes: AppRoute[];
   menu: MenuItem[];
   permissions?: string[];
-}
+};
+
+export type { MenuItem, AppRoute };
 
 /**
  * Module registry - holds all registered modules

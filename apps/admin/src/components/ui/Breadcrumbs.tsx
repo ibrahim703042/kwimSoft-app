@@ -5,18 +5,18 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from "@kwim/shared-ui";
 import { breadCrumbItemsSelector } from "@/store/selectors/appSelectors";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-interface BreadcrumbItem {
+interface BreadcrumbItemData {
   name: string;
   path?: string;
 }
 
 export default function Breadcrumbs() {
-  const breadCrumbItems = useSelector(breadCrumbItemsSelector) as BreadcrumbItem[];
+  const breadCrumbItems = useSelector(breadCrumbItemsSelector) as BreadcrumbItemData[];
 
   return (
     <div className="flex items-center justify-between">

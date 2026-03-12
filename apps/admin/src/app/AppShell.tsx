@@ -1,76 +1,70 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { AppLayout, type AppLayoutConfig } from "@kwim/shared-ui";
 import { useAuthStore } from "@/core/auth";
-import { useEffect } from "react";
-import Navbar from "../components/navbar";
-import Sidebar from "../components/sidebar";
 import { AppRouter } from "./Router";
 import { getAllMenus } from "./registerModules";
 import { isLandingPage } from "@/utils/subdomain";
 
 /**
- * Main application shell
- * Replaces the old AppLayout component
+ * Main application shell using shared-ui AppLayout.
  */
 export function AppShell() {
   const location = useLocation();
-  const { isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuthStore();
   const menus = getAllMenus();
   const showLanding = isLandingPage();
 
-  // Check if current page needs special layout (no padding)
   const isSpecialPage =
     location.pathname.startsWith("/trajet") ||
     location.pathname.startsWith("/administration/map-detail");
 
-  // Check if current route is a public route (no shell needed)
   const isPublicRoute = ["/", "/diagnostic", "/trial", "/register", "/thanks/trial", "/odoo-enterprise/invite-users", "/create-enterprise", "/login", "/forgot-password", "/update-password"].includes(location.pathname);
-
-  // Check if on welcome page (authenticated but no shell)
   const isWelcomePage = location.pathname === "/welcome";
 
-  // Add/remove dashboard-layout class on body for overflow control
-  useEffect(() => {
-    if (!isPublicRoute && !isWelcomePage && isAuthenticated && !showLanding) {
-      // document.body.classList.add("dashboard-layout");
-    } else {
-      // document.body.classList.remove("dashboard-layout");
-    }
-    return () => document.body.classList.remove("dashboard-layout");
-  }, [isPublicRoute, isWelcomePage, isAuthenticated, showLanding]);
-
-  // If on landing page (main domain), show only router without shell
   if (showLanding) {
     return <AppRouter />;
   }
-
-  // For public routes, welcome page, or unauthenticated users, show only the router without shell
   if (isPublicRoute || isWelcomePage || !isAuthenticated) {
     return <AppRouter />;
   }
 
-  // For authenticated users, show full shell
+  const fullName = user ? [user.firstName, user.lastName].filter(Boolean).join(" ") || user.username || "User" : "User";
+  const role = user?.roles?.[0];
+  const roleStr = typeof role === "string" ? role : (role as any)?.name ?? "Member";
+
+  const config: AppLayoutConfig = {
+    appName: "Kwim Admin",
+    menus,
+    user: user
+      ? { fullName, email: user.email, role: roleStr, avatar: user.avatar }
+      : undefined,
+    currentPath: location.pathname,
+    onLogout: () => {
+      logout();
+      window.location.href = "/login";
+    },
+    onProfile: () => navigate("/profile"),
+    onSettings: () => navigate("/settings"),
+    onNavigate: (path) => navigate(path),
+    LinkComponent: ({ to, children, ...props }) => (
+      <Link to={to} {...props}>
+        {children}
+      </Link>
+    ),
+    showSearch: true,
+    showQuickActions: false,
+    showNotifications: true,
+    showLanguageSwitcher: true,
+    showThemeToggle: true,
+    notifications: [],
+  };
+
   return (
-    <div className="flex h-screen bg-white text-gray-800 dark:bg-[#0F123F] dark:text-gray-100">
-      {/* Sidebar */}
-      <div className="border-r border-gray-200 dark:border-gray-700">
-        <Sidebar menus={menus} />
+    <AppLayout config={config}>
+      <div className={isSpecialPage ? "-m-4 p-0 scrollbar-hide" : ""}>
+        <AppRouter />
       </div>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-gray-50 dark:bg-[#101530] transition-colors duration-300">
-        {/* Header/Navbar */}
-        <div className="border-b border-gray-200 dark:border-gray-700">
-          <Navbar />
-        </div>
-
-        {/* Content Area — scrollbar hidden on all pages */}
-        <div
-          className={`flex-1 overflow-y-auto scrollbar-hide ${isSpecialPage ? "p-0" : "p-4"}`}
-        >
-          {/* Router renders page content */}
-          <AppRouter />
-        </div>
-      </div>
-    </div>
+    </AppLayout>
   );
 }

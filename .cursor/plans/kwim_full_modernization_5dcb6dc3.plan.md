@@ -4,7 +4,7 @@ overview: Stabilize the KWIM Vite/React app so it builds and runs, then unify UI
 todos:
   - id: phase0-imports
     content: Fix all broken component/ imports; create missing shared/map components (SearchBar, LoadingState, DialogSteps, MapPicker)
-    status: pending
+    status: in_progress
   - id: phase0-routes
     content: Wire administrator, horaire, update-password routes; fix inventory case import; align sidebar links
     status: pending

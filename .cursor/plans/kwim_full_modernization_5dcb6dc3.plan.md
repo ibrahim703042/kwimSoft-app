@@ -4,16 +4,16 @@ overview: Stabilize the KWIM Vite/React app so it builds and runs, then unify UI
 todos:
   - id: phase0-imports
     content: Fix all broken component/ imports; create missing shared/map components (SearchBar, LoadingState, DialogSteps, MapPicker)
-    status: in_progress
+    status: completed
   - id: phase0-routes
     content: Wire administrator, horaire, update-password routes; fix inventory case import; align sidebar links
-    status: pending
+    status: completed
   - id: phase0-auth-shell
     content: Add ProtectedRoute, auth-free layout for login, logout handler, mount Toaster, unify QueryClient
-    status: pending
+    status: completed
   - id: phase1-ui
     content: Create LoadingState/EmptyState/ErrorState/FeatureTabShell; a11y fixes; remove duplicate jsx files
-    status: pending
+    status: in_progress
   - id: phase1-design-system
     content: Remove all MUI and SweetAlert2; unify on shadcn + lucide + design tokens across every page
     status: pending

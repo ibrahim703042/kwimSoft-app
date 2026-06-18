@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { Button, FilledInput, FormControl, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { API_ROUTE_PASSWORD } from "../../../config";
 import { jwtDecode } from "jwt-decode";
-import "./login.css";
 import useUserStore from "@/store/useUserStore";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { identityApi } from "@/domains/identity/api";
+import { createGuestUser } from "@/core/auth/guestSession";
+import { UserRound } from "lucide-react";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -15,59 +18,50 @@ export default function Login() {
   const navigate = useNavigate();
   const { setUser } = useUserStore();
 
+  const handleGuestLogin = () => {
+    const guest = createGuestUser();
+    localStorage.setItem("user", JSON.stringify(guest));
+    setUser(guest);
+    navigate("/");
+  };
+
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      pswd: "",
-    },
+    initialValues: { email: "", pswd: "" },
     validationSchema: Yup.object({
       email: Yup.string().email("Email invalide").required("L'email est requis"),
-      pswd: Yup.string().min(6, "Le mot de passe doit contenir au moins 6 caractères").required("Le mot de passe est requis"),
+      pswd: Yup.string()
+        .min(6, "Le mot de passe doit contenir au moins 6 caractères")
+        .required("Le mot de passe est requis"),
     }),
     onSubmit: async (values) => {
       setLoading(true);
       setError("");
-
       try {
-        const response = await axios.post(`${API_ROUTE_PASSWORD}/user/login`, values);
-        console.log("response.data", response.data);
+        const response = await identityApi.login(values);
         if (!response?.data) throw new Error("Données de réponse invalides.");
 
         const { requiresPasswordReset, userid, accessToken } = response.data;
+        const needsReset =
+          requiresPasswordReset === true || requiresPasswordReset === "true";
 
-        // Convertir requiresPasswordReset en booléen si c'est une chaîne
-        const needsReset = requiresPasswordReset === true || requiresPasswordReset === "true";
-
-        // Si une mise à jour du mot de passe est requise, on stocke l'utilisateur sans décoder le token
         if (needsReset) {
-          console.log("CONDITION VERIFIE AVEC SUCCEESS");
           const user = {
             tokenDecode: null,
             token: typeof accessToken === "string" ? accessToken : "",
             requiresPasswordReset: true,
             userID: response?.data?.userId,
           };
-
           localStorage.setItem("user", JSON.stringify(user));
           setUser(user);
           navigate("/update-password");
           return;
         }
 
-        // Pour le cas normal, vérifier que accessToken est bien une chaîne
         if (!accessToken || typeof accessToken !== "string") {
           throw new Error("Token non valide ou absent.");
         }
 
-        let decodedToken = null;
-        try {
-          decodedToken = jwtDecode(accessToken);
-        } catch (decodeError) {
-          console.error("Erreur lors du décodage du token:", decodeError);
-          throw new Error("Échec du décodage du token.");
-        }
-
-        // Création de l'objet utilisateur
+        const decodedToken = jwtDecode<{ sub?: string }>(accessToken);
         const user = {
           tokenDecode: decodedToken?.sub || null,
           token: accessToken,
@@ -75,16 +69,13 @@ export default function Login() {
           userID: userid,
         };
 
-        console.log("User avant stockage :", user);
-
-        // Stockage dans le localStorage et dans le store Zustand
         localStorage.setItem("user", JSON.stringify(user));
         setUser(user);
-
         navigate("/");
-      } catch (err: any) {
-        console.error("Erreur de connexion :", err);
-        setError(err.message || "Échec de connexion. Vérifiez vos informations.");
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error ? err.message : "Échec de connexion. Vérifiez vos informations.";
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -92,64 +83,79 @@ export default function Login() {
   });
 
   return (
-    // style={{ backgroundImage: `url(${bgImg})`, backgroundSize: "cover", backgroundPosition: "center", height: "auto" }}
-    <div >
-      <div className="flex justify-center items-center h-screen">
-        <div className="w-[37%] 2xl:w-[30%] 2xl:py-14 py-10 mx-auto bg-[#19181832] rounded-md border border-[#ffffff3d]">
-          <div className="flex justify-center mx-auto">
-            <div className="w-56 mx-auto">
-              {/* <img src={waangulogo} alt="Logo" className="" /> */}
-              Logo
-            </div>
-          </div>
-          <p className="font-bold text-center text-[#ffffff] text-[1.5rem] m-0 p-0">Se connecter</p>
-          <form onSubmit={formik.handleSubmit} className="px-10 py-5">
-            <FormControl variant="filled" sx={{ width: "100%", color: "#ffffff" }}>
-              <InputLabel htmlFor="email" sx={{ color: "#ffffff", fontSize: "0.9rem" }}>Adresse Email</InputLabel>
-              <FilledInput
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary to-primary/80 p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl">Se connecter</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Adresse email</Label>
+              <Input
                 id="email"
                 type="email"
                 placeholder="Entrez votre email"
-                sx={{ color: "#ffffff" }}
+                aria-invalid={Boolean(formik.touched.email && formik.errors.email)}
+                aria-describedby={formik.errors.email ? "email-error" : undefined}
                 {...formik.getFieldProps("email")}
               />
-            </FormControl>
-            {formik.touched.email && formik.errors.email && (
-              <p className="text-red-500 text-sm">{formik.errors.email}</p>
-            )}
-            <div className="pt-5">
-              <FormControl variant="filled" sx={{ width: "100%", color: "#ffffff" }}>
-                <InputLabel htmlFor="password" sx={{ color: "#ffffff", fontSize: "0.9rem" }}>Mot de passe</InputLabel>
-                <FilledInput
-                  id="password"
-                  type="password"
-                  placeholder="Entrez votre mot de passe"
-                  sx={{ color: "#ffffff" }}
-                  {...formik.getFieldProps("pswd")}
-                />
-              </FormControl>
-              {formik.touched.pswd && formik.errors.pswd && (
-                <p className="text-red-500 text-sm">{formik.errors.pswd}</p>
+              {formik.touched.email && formik.errors.email && (
+                <p id="email-error" className="text-sm text-destructive" role="alert">
+                  {formik.errors.email}
+                </p>
               )}
             </div>
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-            <div className="w-full pt-5">
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Connexion..." : "Se connecter"}
-              </Button>
+            <div className="space-y-2">
+              <Label htmlFor="password">Mot de passe</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Entrez votre mot de passe"
+                aria-invalid={Boolean(formik.touched.pswd && formik.errors.pswd)}
+                aria-describedby={formik.errors.pswd ? "password-error" : undefined}
+                {...formik.getFieldProps("pswd")}
+              />
+              {formik.touched.pswd && formik.errors.pswd && (
+                <p id="password-error" className="text-sm text-destructive" role="alert">
+                  {formik.errors.pswd}
+                </p>
+              )}
             </div>
-            <div className="mt-10 mx-0">
-              <hr className="border border-[#d6d6d6d6]" />
-            </div>
-
-            <div className="text-center pt-5">
-              <p className="text-[0.8rem] text-[#e9e9e9]">
-                Vous n'avez pas de compte ?
+            {error && (
+              <p className="text-sm text-destructive" role="alert">
+                {error}
               </p>
-            </div>
+            )}
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Connexion..." : "Se connecter"}
+            </Button>
           </form>
-        </div>
-      </div>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">ou</span>
+            </div>
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            disabled={loading}
+            onClick={handleGuestLogin}
+          >
+            <UserRound className="mr-2 h-4 w-4" />
+            Continuer en invité
+          </Button>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Explorez l&apos;application sans compte. Les données API peuvent être limitées.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

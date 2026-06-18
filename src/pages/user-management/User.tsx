@@ -6,15 +6,29 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "../../components/ui/label";
 import { useFormik } from "formik";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
+import { notifyError, notifySuccess } from "@/lib/notify";
 import { API_ROUTE_PASSWORD } from "../../../config";
 import axios from "axios";
 import { useUserData } from "../../hooks/useUserData";
 import { useEffect, useState } from "react";
 import OrderTable from "./OrderTable";
 
+interface GroupItem {
+  id: string;
+  name: string;
+}
 
-const fetchUser = async (id) => {
+interface DriverItem {
+  _id: string;
+  fullName?: string;
+}
+
+interface AssignUserValues {
+  userId: string;
+  groupId: string;
+}
+
+const fetchUser = async (id: string) => {
     console.log("ID compagni", id);
     try {
         const { data } = await axios.get(`${API_ROUTE_PASSWORD}/group/subgroup?groupId=${id}`);
@@ -25,7 +39,7 @@ const fetchUser = async (id) => {
     }
 };
 
-const createUser = async (values) => {
+const createUser = async (values: AssignUserValues) => {
     console.log("Values sender", values);
     const response = await axios.patch(
         `${API_ROUTE_PASSWORD}/drivers/staff-account/${values.userId}?groupId=${values.groupId}`
@@ -34,7 +48,7 @@ const createUser = async (values) => {
 };
 
 const fetchDriver = async () => {
-    const { data } = await axios.get(`${API_ROUTE_PASSWORD}/drivers?company/67cfe955595f541695c1b99b`);
+    const { data } = await axios.get(`${API_ROUTE_PASSWORD}/drivers?company=67cfe955595f541695c1b99b`);
     return data;
 };
 
@@ -45,7 +59,7 @@ const fetchUserGroup = async () => {
 
 export default function User() {
     const { data } = useUserData();
-    const [rows, setRows] = useState([]);
+    const [rows, setRows] = useState<GroupItem[]>([]);
     const queryClient = useQueryClient();
 
 
@@ -63,19 +77,21 @@ export default function User() {
 
 
 
-    const driver = driverData?.data?.content || [];
+    const driver: DriverItem[] = driverData?.data?.content || [];
 
     console.log("Driver<<<<<<<<<<<<<<<<", driver);
 
 
     const {
         data: responseData,
-        isLoading: isLoadingData,
-        error: errorData,
     } = useQuery({
         queryKey: ["users", data?.companyId?.keycloakGroupId],
-        queryFn: () => fetchUser(data?.companyId?.keycloakGroupId),
-        enabled: !!data?.companyId?.keycloakGroupId, // exécute la query seulement si l'id existe
+        queryFn: () => {
+          const groupId = data?.companyId?.keycloakGroupId;
+          if (!groupId) throw new Error("Missing company group id");
+          return fetchUser(groupId);
+        },
+        enabled: Boolean(data?.companyId?.keycloakGroupId),
     });
 
     // Utilise useEffect pour mettre à jour rows uniquement lorsque responseData change
@@ -87,33 +103,17 @@ export default function User() {
 
     console.log("Rows>>>>>>>>>>>", rows);
 
-    const columns = [
-        { id: "name", label: "Nom", numeric: false },
-        // { id: "path", label: "Path", numeric: false },
-    ];
-
-    const idGroup = data?.companyId?.keycloakGroupId
+    const idGroup = data?.companyId?.keycloakGroupId;
     console.log("ID Trip>>>>>>>>>", idGroup);
 
     const mutation = useMutation({
         mutationFn: createUser,
         onSuccess: () => {
-            Swal.fire({
-                title: "Succès!",
-                text: "Le group a été enregistré avec succès.",
-                icon: "success",
-                confirmButtonText: "OK",
-                customClass: { popup: "swal-custom" },
-            });
-            queryClient.invalidateQueries(["users"]);
+            notifySuccess("L'utilisateur a été enregistré avec succès.");
+            queryClient.invalidateQueries({ queryKey: ["users"] });
         },
         onError: () => {
-            Swal.fire({
-                title: "Erreur!",
-                text: "Une erreur est survenue. Veuillez réessayer.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
+            notifyError("Une erreur est survenue. Veuillez réessayer.");
         },
     });
 
@@ -174,7 +174,7 @@ export default function User() {
                         <div>
                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <Button className="bg-[#0F123F] py-2 px-2 text-[0.8rem]" size="small">
+                                    <Button className="bg-[#0F123F] py-2 px-2 text-[0.8rem]" size="sm">
                                         <Plus color="white" />
                                         Add section
                                     </Button>
@@ -235,7 +235,7 @@ export default function User() {
                                         </div>
 
                                         <div className="flex sm:justify-end mt-5">
-                                            <Button type="submit" size="small" className="bg-[#0F123F] py-2 text-sm px-4 text-white">
+                                            <Button type="submit" size="sm" className="bg-[#0F123F] py-2 text-sm px-4 text-white">
                                                 Enregistrer
                                             </Button>
                                         </div>

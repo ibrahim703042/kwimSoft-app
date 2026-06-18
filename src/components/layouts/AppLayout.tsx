@@ -8,12 +8,23 @@ type AppLayoutProps = {
   children: ReactNode;
 };
 
+const AUTH_PATHS = new Set(["/login", "/update-password"]);
+
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
+  const isAuthPage = AUTH_PATHS.has(location.pathname);
 
   const isTrajetPage =
     location.pathname.startsWith("/trajet") ||
-    location.pathname.startsWith("/administration/map-detail");
+    location.pathname.startsWith("/operations/map");
+
+  if (isAuthPage) {
+    return (
+      <main className="min-h-screen bg-background" aria-label="Main content">
+        {children}
+      </main>
+    );
+  }
 
   return (
     <div className="flex h-screen">
@@ -22,16 +33,18 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         <Topbar />
 
         {!isTrajetPage && (
-            <div className="mb-1 p-4">
-              <Breadcrumbs />
-            </div>
-          )}
+          <div className="mb-1 p-4">
+            <Breadcrumbs />
+          </div>
+        )}
 
-        <main className="flex-1 bg-gray-50 p-4 overflow-y-auto rounded-md shadow-sm transition-colors duration-300">
+        <main
+          className="flex-1 bg-muted/40 p-4 overflow-y-auto rounded-md shadow-sm transition-colors duration-300"
+          aria-label="Main content"
+        >
           {children}
         </main>
       </div>
-
     </div>
   );
 };

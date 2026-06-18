@@ -2,7 +2,7 @@ import { Route } from "react-router-dom";
 import { ReactElement } from "react";
 import { RouteItem } from "../routeItem";
 import PageTitle from "@/components/utilities/PageTitle";
-import InventoryPage from "@/pages/inventory/inventory";
+import InventoryPage from "@/pages/inventory/Inventory";
 
 export const inventoryRouteItems: Record<string, RouteItem> = {
   reservation: {

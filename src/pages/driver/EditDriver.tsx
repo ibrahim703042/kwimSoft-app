@@ -4,37 +4,25 @@ import { useEffect, useState } from "react";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue, SelectGroup } from "../../components/ui/select";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import { API_ROUTE } from "../../../config";
-import axios from "axios";
-import ScaleLoader from "react-spinners/ScaleLoader";
-import { SEXES } from "../../constants/constants"
-import ReusableDialogStepsEdit from "../../component/utilitie/ReusableDialogStepsEdit";
+import { API_ROUTE_UPLOAD } from "../../../config";
+import { notifyError } from "@/lib/notify";
+import LoadingState from "@/components/shared/LoadingState";
+import { SEXES } from "@/constants/constants";
+import { ReusableDialogStepsEdit } from "@/components/shared/DialogSteps";
+import { useUpdateDriver } from "@/domains/fleet/hooks";
+import type { DriverRecord } from "@/domains/fleet/types";
 
-const updateDriver = async ({ id, values }) => {
-    const response = await axios.put(
-        `${API_ROUTE}/drivers/${id}`,
-        values
-    );
-    return response.data;
-};
-
-
-const fetchCompagnie = async () => {
-    const { data } = await axios.get(`${API_ROUTE}/companies`);
-    return data;
-};
-
-export default function EditDriver({ DriverData, openDialog, setOpenDialog }) {
-    const queryClient = useQueryClient();
-    const { data: responseData, isLoading, error } = useQuery({
-        queryKey: ["compagnies"],
-        queryFn: fetchCompagnie,
-    });
-
-    console.log("DriverData", DriverData);
+export default function EditDriver({
+  DriverData,
+  openDialog,
+  setOpenDialog,
+}: Readonly<{
+  DriverData: DriverRecord;
+  openDialog: boolean;
+  setOpenDialog: (open: boolean) => void;
+}>) {
     const [uploading, setUploading] = useState(false);
+    const updateDriverMutation = useUpdateDriver();
 
     const uploadImages = async (files, setFieldValue) => {
         try {
@@ -64,31 +52,6 @@ export default function EditDriver({ DriverData, openDialog, setOpenDialog }) {
         }
     };
 
-    // Mutation React Query pour envoyer les données
-    const mutation = useMutation({
-        mutationFn: updateDriver,
-        onSuccess: () => {
-            Swal.fire({
-                title: "Succès!",
-                text: "Le chauffeur a été modifier avec succès.",
-                icon: "success",
-                confirmButtonText: "OK",
-                customClass: { popup: "swal-custom" },
-            });
-            queryClient.invalidateQueries(["drivers"]);
-            setOpenDialog(false);
-        },
-        onError: () => {
-            Swal.fire({
-                title: "Erreur!",
-                text: "Une erreur est survenue. Veuillez réessayer.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-            setOpenDialog(false)
-        },
-    });
-
     const formik = useFormik({
         initialValues: {
             fullName: DriverData?.fullName || "",
@@ -105,17 +68,16 @@ export default function EditDriver({ DriverData, openDialog, setOpenDialog }) {
             adresse: DriverData?.adresse || "",
         },
         onSubmit: async (values) => {
-            console.log("Submitted values:", values);
             try {
-                await mutation.mutateAsync({ id: DriverData._id, values });
-            } catch (error) {
-                console.error("Erreur lors de la soumission :", error);
+                await updateDriverMutation.mutateAsync({ id: DriverData._id, values });
+                setOpenDialog(false);
+            } catch {
+                notifyError("Une erreur est survenue. Veuillez réessayer.");
             }
         },
     });
 
-    const { values } = formik
-    console.log("INIT:::::::::", values);
+    const { values } = formik;
     useEffect(() => {
     }, [values]);
 
@@ -288,11 +250,11 @@ export default function EditDriver({ DriverData, openDialog, setOpenDialog }) {
                         </div>
                         <div className="col-span-12 flex justify-end">
                             <Button type="submit"
-                                disabled={mutation.isPending}
+                                disabled={updateDriverMutation.isPending}
                             >
-                                {mutation.isPending ? (
+                                {updateDriverMutation.isPending ? (
                                     <div className="flex items-center space-x-2">
-                                        <ScaleLoader color="#ffffff" height={10} />
+                                        <LoadingState loading className="py-0" />
                                         <span>Encours...</span>
                                     </div>
                                 ) : (

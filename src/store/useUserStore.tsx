@@ -5,6 +5,7 @@ export interface User {
   token: string;
   requiresPasswordReset: boolean;
   userID: string;
+  isGuest?: boolean;
 }
 
 interface UserStore {

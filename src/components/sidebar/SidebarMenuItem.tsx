@@ -2,24 +2,41 @@ import { NavLink } from "react-router-dom";
 
 type MenuItem = {
   title: string;
-  path: string;
-  icon: React.ReactNode;
+  path?: string;
+  icon?: React.ReactNode;
   gap?: boolean;
+  section?: boolean;
 };
 
 export default function SidebarMenuItem({
   item,
   isOpen,
   index,
-}: {
+}: Readonly<{
   item: MenuItem;
   isOpen: boolean;
   index: number;
-}) {
+}>) {
+  if (item.section) {
+    return (
+      <>
+        {item.gap && <hr className="border-t border-gray-600 my-3" />}
+        {isOpen && (
+          <p className="px-2 text-xs font-semibold uppercase tracking-wide text-[#f5f5f5a6]">
+            {item.title}
+          </p>
+        )}
+      </>
+    );
+  }
+
+  if (!item.path || !item.icon) return null;
+
   return (
     <>
       <NavLink
         to={item.path}
+        end={item.path === "/"}
         className={({ isActive }) =>
           `group relative flex items-center text-sm gap-3.5 p-2 rounded-md ${
             item.gap ? "mt-0" : ""

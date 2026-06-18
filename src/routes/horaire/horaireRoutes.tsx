@@ -1,35 +1,30 @@
-import { RouteObject } from "react-router-dom";
-import Horaire from "../../pages/horaires/Horaire";
-import PageTitle from "../../component/utilitie/PageTitle";
-import { lazy } from "react";
+import { Route } from "react-router-dom";
+import { ReactElement } from "react";
+import PageTitle from "@/components/utilities/PageTitle";
+import Horaire from "@/pages/horaires/Horaire";
 
-// Define route config interface
-interface ScheduleRouteItem {
-  path: string;
-  name: string;
-  component: React.ComponentType;
-}
-
-// Central route config object
-export const scheduleRouteItems: Record<string, ScheduleRouteItem> = {
+export const scheduleRouteItems = {
   horaire: {
     path: "horaires",
     name: "Horaires",
+    description: "Gestion des horaires",
     component: Horaire,
   },
 };
 
-// Convert to RouteObject array for Router
-const SchedeleRoutes: RouteObject[] = Object.values(scheduleRouteItems).map(
-  (route) => ({
-    path: route.path,
-    element: (
-      <>
-        <PageTitle title={route.name} />
-        <route.component />
-      </>
-    ),
-  })
+const horaireRoutes: ReactElement[] = Object.values(scheduleRouteItems).map(
+  (route) => (
+    <Route
+      key={route.path}
+      path={route.path}
+      element={
+        <>
+          <PageTitle title={route.name} description={route.description} />
+          <route.component />
+        </>
+      }
+    />
+  )
 );
 
-export default SchedeleRoutes;
+export default horaireRoutes;

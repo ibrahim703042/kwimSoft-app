@@ -3,9 +3,10 @@ import useUserStore from "@/store/useUserStore";
 import AppLayout from "@/components/layouts/AppLayout";
 import { useThemeStore } from "@/store/selectors/themeStore";
 import RoutesProvider from "@/routes/RoutesProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const App: React.FC = () => {
-  const { user, setUser } = useUserStore();
+  const { setUser } = useUserStore();
   const { theme } = useThemeStore();
 
   // Load user on first mount
@@ -21,14 +22,13 @@ const App: React.FC = () => {
     const html = document.documentElement;
 
     if (theme === "system") {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDark = globalThis.matchMedia("(prefers-color-scheme: dark)").matches;
       html.classList.toggle("dark", prefersDark);
     } else {
       html.classList.toggle("dark", theme === "dark");
     }
 
-    // Optional: respond to system theme changes if user selected "system"
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const media = globalThis.matchMedia("(prefers-color-scheme: dark)");
     const listener = (e: MediaQueryListEvent) => {
       if (theme === "system") {
         html.classList.toggle("dark", e.matches);
@@ -42,6 +42,7 @@ const App: React.FC = () => {
   return (
     <AppLayout>
       <RoutesProvider />
+      <Toaster />
     </AppLayout>
   );
 };

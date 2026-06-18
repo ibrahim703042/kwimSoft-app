@@ -1,183 +1,207 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
+import { useMemo, useState } from "react";
 import {
-  Box,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
-  TablePagination,
+  TableHeader,
   TableRow,
-  TableSortLabel,
-  Paper,
-  Checkbox,
-} from '@mui/material';
-import { visuallyHidden } from '@mui/utils';
+} from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
+import EmptyState from "@/components/shared/EmptyState";
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) return -1;
-  if (b[orderBy] > a[orderBy]) return 1;
+interface Column {
+  id: string;
+  label: string;
+  numeric?: boolean;
+}
+
+interface EnhancedTableProps {
+  columns?: Column[];
+  data?: Array<Record<string, unknown> & { id?: string | number }>;
+}
+
+function descendingComparator(a: Record<string, unknown>, b: Record<string, unknown>, orderBy: string) {
+  const av = a[orderBy];
+  const bv = b[orderBy];
+  if (bv == null || av == null) return 0;
+  if (bv < av) return -1;
+  if (bv > av) return 1;
   return 0;
 }
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+function formatCellValue(value: unknown): string {
+  if (value == null) return "";
+  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
+  return JSON.stringify(value);
 }
 
-function EnhancedTableHead({ columns, order, orderBy, onRequestSort, onSelectAllClick, numSelected, rowCount }) {
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+type TableRowData = Record<string, unknown> & { id?: string | number };
 
+function EnhancedTableRow({
+  row,
+  columns,
+  isSelected,
+  onToggle,
+}: Readonly<{
+  row: TableRowData;
+  columns: Column[];
+  isSelected: boolean;
+  onToggle: (checked: boolean) => void;
+}>) {
   return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-          />
+    <TableRow key={String(row.id)} data-state={isSelected ? "selected" : undefined}>
+      <TableCell>
+        <Checkbox
+          checked={isSelected}
+          onCheckedChange={(checked) => onToggle(checked === true)}
+          aria-label="Sélectionner la ligne"
+        />
+      </TableCell>
+      {columns.map((column) => (
+        <TableCell key={column.id} className={column.numeric ? "text-right" : ""}>
+          {formatCellValue(row[column.id])}
         </TableCell>
-        {columns.map((column) => (
-          <TableCell key={column.id} align={column.numeric ? 'right' : 'left'}>
-            <TableSortLabel
-              active={orderBy === column.id}
-              direction={orderBy === column.id ? order : 'asc'}
-              onClick={createSortHandler(column.id)}
-            >
-              {column.label}
-              {orderBy === column.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
+      ))}
+    </TableRow>
   );
 }
 
-EnhancedTableHead.propTypes = {
-  columns: PropTypes.array.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
+export default function EnhancedTable({ columns = [], data = [] }: Readonly<EnhancedTableProps>) {
+  const [order, setOrder] = useState<"asc" | "desc">("asc");
+  const [orderBy, setOrderBy] = useState(columns[0]?.id ?? "");
+  const [selected, setSelected] = useState<Array<string | number>>([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-function EnhancedTable({ columns = [], data = [] }) {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState(columns[0]?.id || '');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  // Vérification que data est bien un tableau
   const validData = Array.isArray(data) ? data : [];
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+  const handleSort = (property: string) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      setSelected(validData.map((n) => n.id));
-      return;
-    }
-    setSelected([]);
-  };
+  const visibleRows = useMemo(() => {
+    const sorted = [...validData].sort((a, b) => {
+      const cmp = descendingComparator(a, b, orderBy);
+      return order === "desc" ? -cmp : cmp;
+    });
+    return sorted.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  }, [validData, order, orderBy, page, rowsPerPage]);
 
-  const handleClick = (event, id) => {
-    const isSelected = selected.includes(id);
-    setSelected((prevSelected) =>
-      isSelected ? prevSelected.filter((item) => item !== id) : [...prevSelected, id]
-    );
-  };
+  const totalPages = Math.max(1, Math.ceil(validData.length / rowsPerPage));
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const visibleRows = React.useMemo(
-    () => [...validData].sort(getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage, validData]
-  );
+  if (!validData.length) {
+    return <EmptyState title="Aucun enregistrement" />;
+  }
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer>
-          <Table>
-            <EnhancedTableHead
-              columns={columns}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              onSelectAllClick={handleSelectAllClick}
-              numSelected={selected.length}
-              rowCount={validData.length}
-            />
-            <TableBody>
-              {visibleRows.map((row) => {
-                const isItemSelected = selected.includes(row.id);
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox checked={isItemSelected} />
-                    </TableCell>
-                    {columns.map((column) => (
-                      <TableCell key={column.id} align={column.numeric ? 'right' : 'left'}>
-                        {row[column.id]}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={validData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </Box>
+    <div className="rounded-md border bg-card">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-12">
+              <Checkbox
+                checked={selected.length === validData.length && validData.length > 0}
+                onCheckedChange={(checked) => {
+                  setSelected(checked ? validData.map((n) => n.id!).filter(Boolean) : []);
+                }}
+                aria-label="Sélectionner tout"
+              />
+            </TableHead>
+            {columns.map((column) => (
+              <TableHead key={column.id} className={column.numeric ? "text-right" : ""}>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="-ml-3 h-8"
+                  onClick={() => handleSort(column.id)}
+                >
+                  {column.label}
+                  <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {visibleRows.map((row) => {
+            const rowId = row.id as string | number;
+            return (
+              <EnhancedTableRow
+                key={String(rowId)}
+                row={row}
+                columns={columns}
+                isSelected={selected.includes(rowId)}
+                onToggle={(checked) => {
+                  setSelected((prev) =>
+                    checked ? [...prev, rowId] : prev.filter((id) => id !== rowId)
+                  );
+                }}
+              />
+            );
+          })}
+        </TableBody>
+      </Table>
+      <div className="flex items-center justify-between gap-4 border-t px-4 py-3">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>Lignes par page</span>
+          <Select
+            value={String(rowsPerPage)}
+            onValueChange={(v) => {
+              setRowsPerPage(Number(v));
+              setPage(0);
+            }}
+          >
+            <SelectTrigger className="h-8 w-20">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {[5, 10, 25].map((n) => (
+                <SelectItem key={n} value={String(n)}>
+                  {n}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={page === 0}
+            onClick={() => setPage((p) => p - 1)}
+          >
+            Précédent
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            Page {page + 1} / {totalPages}
+          </span>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={page >= totalPages - 1}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            Suivant
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
-
-EnhancedTable.propTypes = {
-  columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,
-};
-
-export default EnhancedTable;

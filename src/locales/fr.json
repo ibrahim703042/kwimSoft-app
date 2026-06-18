@@ -12,6 +12,18 @@
     "hr": "Ressources humaines",
     "reports": "Rapports",
     "settings": "Paramètres",
+    "operations": "Opérations",
+    "horaires": "Horaires",
+    "userManagement": "Gestion des utilisateurs",
+    "iamDashboard": "Tableau de bord",
+    "iamUsers": "Utilisateurs",
+    "iamFunctions": "Fonctions",
+    "iamPermissions": "Permissions",
+    "iamSessions": "Sessions",
+    "iamMfa": "MFA & Sécurité",
+    "iamAudit": "Journaux d'audit",
+    "iamAccessReviews": "Revues d'accès",
+    "iamPolicies": "Politiques",
     "users": "Utilisateurs"
   },
   "links": {

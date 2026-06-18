@@ -1,58 +1,26 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useFormik } from "formik";
 import { CalendarFold, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ReusableSelect from "@/component/utilitie/ReusableSelect";
+import ReusableSelect from "@/components/shared/ReusableSelect";
 import AddHoraire from "./AddHoraire";
-import HoraireComponent from "../../component/utilitie/HoraireComponent";
-import { API_ROUTE } from "../../../config";
+import HoraireComponent from "@/components/shared/HoraireComponent";
 import { setBreadCrumbItemsAction } from "@/store/actions/appActions";
 import { horaire_routes_items } from "@/routes/horaire/horaire_routes";
-import { JOURS } from "../../constants/constants"
-import MapHoraire from "../../component/utilitie/map/MapHoraire";
-import { useMutation } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import { useFormik } from "formik";
-import { Checkbox } from "../../components/ui/checkbox";
-import { Skeleton } from "@mui/material";
+import { JOURS } from "@/constants/constants";
+import MapHoraire from "@/components/map/MapHoraire";
+import { Skeleton } from "@/components/ui/skeleton";
+import ErrorState from "@/components/shared/ErrorState";
+import { notifyError, notifySuccess } from "@/lib/notify";
+import { schedulingApi } from "@/domains/scheduling/api";
+import { DEFAULT_STATION_COMPANY_ID } from "@/core/config/tenantContext";
 
-const fetchHoraire = async (dayWeek) => {
-  const url = dayWeek ? `${API_ROUTE}/timetables?dayOfWeek=${dayWeek}` : `${API_ROUTE}/timetables/company/67bc9002f682d26a7f7a9200`;
-  const { data } = await axios.get(url);
-  return data;
-};
-
-const fetchHoraires = async (trip) => {
-  try {
-    const { data } = await axios.get(`${API_ROUTE}/trips/${trip}`);
-    return data;
-  } catch (error) {
-    console.error("Erreur lors de la récupération des voyages :", error);
-    throw new Error("Impossible de récupérer les données du voyage.");
-  }
-};
-
-const fetchCountry = async (countryId) => {
-  try {
-    const { data } = await axios.get(`${API_ROUTE}/country/${countryId}`);
-    return data;
-  } catch (error) {
-    console.error("Erreur lors de la récupération du pays :", error);
-    throw new Error("Impossible de récupérer les données du pays.");
-  }
-};
-
-
-const createHoraire = async (values) => {
-  console.log("SENDER--------------->>>", values);
-  const response = await axios.post(
-    `${API_ROUTE}/timetables`,
-    values
-  );
-  return response.data;
-};
+const fetchHoraire = async (dayWeek: string) => schedulingApi.listTimetables(dayWeek || undefined);
+const fetchHoraires = async (trip: string) => schedulingApi.getTrip(trip);
+const fetchCountry = async (countryId: string) => schedulingApi.getCountry(countryId);
+const createHoraire = async (values: unknown) => schedulingApi.createTimetable(values);
 
 export default function Horaire() {
   const dispatch = useDispatch();
@@ -61,7 +29,7 @@ export default function Horaire() {
   const [dayWeek, setDayWeek] = useState("")
   const queryClient = useQueryClient();
 
-  const { data: responseData, isLoading, error } = useQuery({
+  const { data: responseData, isLoading, isError, refetch } = useQuery({
     queryKey: ["horaire", dayWeek],
     queryFn: () => fetchHoraire(dayWeek),
     enabled: true,
@@ -69,9 +37,6 @@ export default function Horaire() {
 
   const horaire = responseData?.data?.content || [];
   const totalPages = Math.ceil(horaire.length / itemsPerPage);
-
-  console.log("{{{{{{{{{{{{{{{{{{{{{{{{", horaire);
-
 
   // Obtenir les éléments de la page actuelle
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -88,33 +53,21 @@ export default function Horaire() {
   const mutation = useMutation({
     mutationFn: createHoraire,
     onSuccess: () => {
-      Swal.fire({
-        title: "Succès!",
-        text: "L'horaire a été enregistrée avec succès.",
-        icon: "success",
-        confirmButtonText: "OK",
-        customClass: { popup: "swal-custom" },
-      });
-      queryClient.invalidateQueries(["horaire"]);
+      notifySuccess("L'horaire a été enregistrée avec succès.");
+      queryClient.invalidateQueries({ queryKey: ["horaire"] });
     },
-    onError: (error) => {
+    onError: (error: { response?: { data?: { message?: string | string[] } } }) => {
       const backendMessage = error.response?.data?.message;
       const errorMessage = Array.isArray(backendMessage)
-        ? backendMessage.join(', ')
+        ? backendMessage.join(", ")
         : backendMessage || "Une erreur inconnue est survenue.";
-
-      Swal.fire({
-        title: "Erreur!",
-        text: errorMessage,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      notifyError(errorMessage);
     },
   });
 
   const formik = useFormik({
     initialValues: {
-      company: "67bc9002f682d26a7f7a9200",
+      company: DEFAULT_STATION_COMPANY_ID,
       trip: "",
       buses: [],
       departureDate: "",
@@ -169,8 +122,7 @@ export default function Horaire() {
     enabled: !!values.price.country, // Ne lance la requête que si country est défini
   });
 
-  const DataCarto = tripCarto?.data
-  console.log("country++++++++++++++++++++>>>>>>>>>>>>>>>>>>>>.", countryData);
+  const DataCarto = tripCarto?.data;
 
   useEffect(() => {
     if (countryData?.currencies) {
@@ -184,6 +136,15 @@ export default function Horaire() {
   }, [countryData]);
 
 
+
+  if (isError) {
+    return (
+      <ErrorState
+        title="Impossible de charger les horaires"
+        onRetry={() => refetch()}
+      />
+    );
+  }
 
   return (
     <div>

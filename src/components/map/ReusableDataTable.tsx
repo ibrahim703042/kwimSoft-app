@@ -1,4 +1,4 @@
-import { useMemo, useState, MouseEvent } from "react";
+import { useMemo, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -11,12 +11,29 @@ import {
   VisibilityState,
   RowSelectionState,
   ColumnFiltersState,
+  Row,
 } from "@tanstack/react-table";
 
 
 
-import { IconButton } from "@mui/material";
-import PacmanLoader from "react-spinners/PacmanLoader";
+import { Loader2, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 interface ReusableDataTableProps<T> {
   data: T[];
@@ -24,11 +41,52 @@ interface ReusableDataTableProps<T> {
   enablePagination?: boolean;
   enableRowSelection?: boolean;
   customActions?: (row: T) => JSX.Element;
-  ButtonIconsAdd?: JSX.Element;
   ComponentButtonAdd?: JSX.Element;
   titleDataTable?: string;
   isLoading?: boolean;
   pageSize?: number;
+}
+
+function renderTableRows<T extends object>(
+  isLoading: boolean,
+  rows: Row<T>[],
+  columnCount: number,
+  customActions?: (row: T) => JSX.Element
+) {
+  const colSpan = columnCount + (customActions ? 1 : 0);
+
+  if (isLoading) {
+    return (
+      <TableRow>
+        <TableCell colSpan={colSpan} className="h-24 text-center whitespace-nowrap">
+          <div className="flex w-full justify-center">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          </div>
+        </TableCell>
+      </TableRow>
+    );
+  }
+
+  if (rows.length === 0) {
+    return (
+      <TableRow>
+        <TableCell colSpan={colSpan} className="h-24 text-center whitespace-nowrap">
+          <p className="text-[0.8rem] text-red-500">Aucune donnée trouvée</p>
+        </TableCell>
+      </TableRow>
+    );
+  }
+
+  return rows.map((row) => (
+    <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+      {row.getVisibleCells().map((cell) => (
+        <TableCell key={cell.id}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </TableCell>
+      ))}
+      {customActions && <TableCell>{customActions(row.original)}</TableCell>}
+    </TableRow>
+  ));
 }
 
 export function ReusableDataTable<T extends object>({
@@ -41,18 +99,11 @@ export function ReusableDataTable<T extends object>({
   titleDataTable = "",
   isLoading = false,
   pageSize = 10,
-}: ReusableDataTableProps<T>) {
+}: Readonly<ReusableDataTableProps<T>>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const table = useReactTable<T>({
     data,
@@ -84,35 +135,18 @@ export function ReusableDataTable<T extends object>({
       {/* Title */}
       {titleDataTable && (
         <div className="flex items-center space-x-4 border-b">
-          <div className="p-4 pb-0 border-b-2 border-[#1D3686]">
-            <p className="text-[#1D3686] text-[0.9rem] font-medium inline-block pb-3">
+          <div className="border-b-2 border-primary p-4 pb-0">
+            <p className="inline-block pb-3 text-sm font-medium text-primary">
               {titleDataTable}
             </p>
           </div>
         </div>
       )}
 
-      {/* Actions */}
-      <div className="mt-3 px-3 flex items-center gap-3 justify-between mb-3">
-        <div className="flex items-center space-x-3">
-          <div className="border inline-block p-1 px-3 rounded-lg">
-            <FileDownloadSharpIcon
-              sx={{ color: "#707EAE", fontSize: "18px" }}
-            />
-          </div>
-          <Box
-            sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
-          >
-            <IconButton
-              onClick={handleClick}
-              size="small"
-              sx={{ ml: 2 }}
-              aria-controls={open ? "account-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-            />
-          </Box>
-        </div>
+      <div className="mb-3 mt-3 flex items-center justify-between gap-3 px-3">
+        <Button type="button" variant="outline" size="icon" aria-label="Exporter">
+          <Download className="h-4 w-4" />
+        </Button>
         <div className="flex items-center space-x-3">{ComponentButtonAdd}</div>
       </div>
 
@@ -137,48 +171,7 @@ export function ReusableDataTable<T extends object>({
             ))}
           </TableHeader>
           <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length + (customActions ? 1 : 0)}
-                  className="h-24 text-center whitespace-nowrap"
-                >
-                  <div className="w-full flex justify-center">
-                    <PacmanLoader size={10} color="#0F123F" />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : rows.length > 0 ? (
-              rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                  {customActions && (
-                    <TableCell>{customActions(row.original)}</TableCell>
-                  )}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length + (customActions ? 1 : 0)}
-                  className="h-24 text-center whitespace-nowrap"
-                >
-                  <p className="text-[0.8rem] text-red-500">
-                    Aucune donnée trouvée
-                  </p>
-                </TableCell>
-              </TableRow>
-            )}
+            {renderTableRows(isLoading, rows, columns.length, customActions)}
           </TableBody>
         </Table>
       </div>

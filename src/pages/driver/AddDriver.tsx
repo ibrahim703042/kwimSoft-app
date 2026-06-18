@@ -2,24 +2,15 @@ import * as Yup from "yup";
 import { Button } from "../../components/ui/button";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import ReusableDialogSteps from "../../component/utilitie/ReusableDialogSteps";
+import ReusableDialogSteps from "@/components/shared/DialogSteps";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue, SelectGroup } from "../../components/ui/select";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import { API_ROUTE, API_ROUTE_PASSWORD, API_ROUTE_UPLOAD } from "../../../config";
-import axios from "axios";
-import { SEXES } from "../../constants/constants"
-import ScaleLoader from "react-spinners/ScaleLoader";
-
-const createDriver = async (values) => {
-    const response = await axios.post(
-        `${API_ROUTE_PASSWORD}/drivers`,
-        values
-    );
-    return response.data;
-};
+import { notifyError } from "@/lib/notify";
+import { API_ROUTE_UPLOAD } from "../../../config";
+import { SEXES } from "@/constants/constants";
+import { Loader2 } from "lucide-react";
+import { useCreateDriver } from "@/domains/fleet/hooks";
 
 export default function AddDriver() {
 
@@ -37,7 +28,6 @@ export default function AddDriver() {
             const data = await response.json();
             if (data?.images?.length > 0) {
                 const imageUrl = `${API_ROUTE_UPLOAD}/images/${data.images[0].url.split('/').pop()}`;
-                console.log("URL GÉNÉRÉE :::::", imageUrl);
                 setFieldValue("image", imageUrl);
             }
         } catch (error) {
@@ -54,34 +44,7 @@ export default function AddDriver() {
         }
     };
 
-    const queryClient = useQueryClient();
-
-    const mutation = useMutation({
-        mutationFn: async (values) => {
-            console.log("Mutation en cours avec valeurs :", values);
-            return await createDriver(values);
-        },
-        onSuccess: () => {
-            console.log("Mutation terminée avec succès !");
-            Swal.fire({
-                title: "Succès!",
-                text: "Le chauffeur a été enregistré avec succès.",
-                icon: "success",
-                confirmButtonText: "OK",
-            });
-            queryClient.invalidateQueries(["drivers"]);
-            setOpenDialog(false);
-        },
-        onError: (error) => {
-            console.error("Erreur dans la mutation :", error);
-            Swal.fire({
-                title: "Erreur!",
-                text: "Une erreur est survenue. Veuillez réessayer.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-        },
-    });
+    const mutation = useCreateDriver();
 
 
     const validationSchema = Yup.object({
@@ -100,7 +63,7 @@ export default function AddDriver() {
         licenseNumber: Yup.string().matches(/^[A-Z0-9]+$/, "Doit contenir seulement des majuscules et chiffres").required("Numéro de permis est requis"),
         licenseDuration: Yup.number().positive("Doit être positif").integer("Doit être un nombre entier").required("Expiration du permis est requise"),
         phoneNumber: Yup.string()
-            .matches(/^\+?[0-9]{10,15}$/, "Numéro de téléphone invalide")
+            .matches(/^\+?\d{10,15}$/, "Numéro de téléphone invalide")
             .notRequired(),
         begginingAt: Yup.date().required("Date d'entrée en fonction est requise"),
     });
@@ -122,12 +85,11 @@ export default function AddDriver() {
         },
         validationSchema,
         onSubmit: async (values) => {
-            console.log("Submitted values:", values);
             try {
                 await mutation.mutateAsync(values);
-                console.log("Mutation réussie !");
-            } catch (error) {
-                console.error("Erreur lors de la soumission :", error);
+                setOpenDialog(false);
+            } catch {
+                notifyError("Une erreur est survenue. Veuillez réessayer.");
             }
         },
     });
@@ -306,7 +268,7 @@ export default function AddDriver() {
                             >
                                 {mutation.isPending ? (
                                     <div className="flex items-center space-x-2">
-                                        <ScaleLoader color="#ffffff" height={10} />
+                                        <Loader2 className="h-4 w-4 animate-spin" />
                                         <span>Encours...</span>
                                     </div>
                                 ) : (

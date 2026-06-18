@@ -1,8 +1,5 @@
-import axios from "axios";
-import { API_ROUTE } from "../../../config";
-import { useState } from "react";
 import { Label } from "@/components/ui/label";
-import { JOURS } from "../../constants/constants"
+import { JOURS, TimeTableStatus } from "@/constants/constants";
 import { Input } from "../../components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover";
@@ -10,59 +7,17 @@ import { Button } from "../../components/ui/button";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Textarea } from "../../components/ui/textarea";
 import { Plus } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { TimeTableStatus } from "../../constants/constants"
-import ScaleLoader from "react-spinners/ScaleLoader";
-
-const fetchBus = async () => {
-  const { data } = await axios.get(`${API_ROUTE}/buses`);
-  return data;
-};
-
-const fetchCompagnie = async () => {
-  const { data } = await axios.get(`${API_ROUTE}/companies`);
-  return data;
-};
-
-const fetchPays = async () => {
-  const { data } = await axios.get(`${API_ROUTE}/country/dropdown`);
-  return data;
-};
-
-const fetchTrip = async () => {
-  const { data } = await axios.get(`${API_ROUTE}/trips/non-pagination/67bc9002f682d26a7f7a9200`);
-  return data;
-};
-
+import LoadingState from "@/components/shared/LoadingState";
+import { useBuses, useCountryDropdown, useTrips } from "@/domains/scheduling/hooks";
 
 export default function AddHoraire({ formik, countryData, mutation }) {
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const { data: responseData, isLoading, error } = useQuery({
-    queryKey: ["buses"],
-    queryFn: fetchBus,
-  });
-
-  const { data: responseCountry, isLoading: isCountry, error: errorCountry } = useQuery({
-    queryKey: ["country"],
-    queryFn: fetchPays,
-  });
-
-  const { data: responseDataTrip, isLoading: isLoadingTrip, error: errorTrip } = useQuery({
-    queryKey: ["trip"],
-    queryFn: fetchTrip,
-  });
-
-  const { data: responseDataCompagnie, isLoading: isLoadingCompagnie, error: errorCompagnie } = useQuery({
-    queryKey: ["compagnies"],
-    queryFn: fetchCompagnie,
-  });
+  const { data: responseData } = useBuses();
+  const { data: responseCountry } = useCountryDropdown();
+  const { data: responseDataTrip } = useTrips();
 
   const bus = responseData?.data?.content || [];
   const trip = responseDataTrip?.data || [];
   const country = responseCountry?.data || [];
-
-  console.log("triptriptriptrip", trip);
   console.log("country????????", country);
 
 
@@ -123,16 +78,17 @@ export default function AddHoraire({ formik, countryData, mutation }) {
               </PopoverTrigger>
               <PopoverContent className="p-2 w-full">
                 {bus.map((option) => (
-                  <div
+                  <button
                     key={option._id}
-                    className="flex w-full  items-center gap-2 cursor-pointer px-2 hover:bg-gray-100 rounded"
+                    type="button"
+                    className="flex w-full items-center gap-2 cursor-pointer px-2 hover:bg-gray-100 rounded text-left"
                     onClick={() => toggleSelections(option._id)}
                   >
                     <Checkbox
                       checked={formik.values.buses.includes(option._id)}
                     />
                     {option.modele}
-                  </div>
+                  </button>
                 ))}
               </PopoverContent>
             </Popover>
@@ -322,14 +278,15 @@ export default function AddHoraire({ formik, countryData, mutation }) {
               </PopoverTrigger>
               <PopoverContent className="p-2 w-full">
                 {JOURS.map((option) => (
-                  <div
+                  <button
                     key={option.value}
-                    className="flex w-full items-center gap-2 cursor-pointer px-2 hover:bg-gray-100 rounded"
-                    onClick={() => toggleSelection(option.value)} // Changé ici
+                    type="button"
+                    className="flex w-full items-center gap-2 cursor-pointer px-2 hover:bg-gray-100 rounded text-left"
+                    onClick={() => toggleSelection(option.value)}
                   >
-                    <Checkbox checked={formik.values.recurringDays.includes(option.value)} /> {/* Changé ici */}
+                    <Checkbox checked={formik.values.recurringDays.includes(option.value)} />
                     {option.label}
-                  </div>
+                  </button>
                 ))}
               </PopoverContent>
             </Popover>
@@ -369,8 +326,8 @@ export default function AddHoraire({ formik, countryData, mutation }) {
             </div>
             <ul className="col-span-12">
               <div className="flex items-center gap-1">
-                {formik.values.exceptions.map((date, index) => (
-                  <li key={index} className="flex items-center justify-between p-2 border rounded mt-1 text-[0.7rem]">
+                {formik.values.exceptions.map((date) => (
+                  <li key={date} className="flex items-center justify-between p-2 border rounded mt-1 text-[0.7rem]">
                     {date}
                     <button
                       type="button"
@@ -410,7 +367,7 @@ export default function AddHoraire({ formik, countryData, mutation }) {
               <Button variant="outline" disabled={mutation.isPending}>
                 {mutation.isPending ? (
                   <div className="flex items-center space-x-2">
-                    <ScaleLoader color="#0F123F" height={10} />
+                    <LoadingState loading className="py-0" />
                   </div>
                 ) : (
                   <Plus />

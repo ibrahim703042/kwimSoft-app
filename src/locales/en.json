@@ -13,7 +13,19 @@
     "hr": "Human Resources",
     "reports": "Reports",
     "settings": "Settings",
-    "users": "users"
+    "operations": "Operations",
+    "horaires": "Schedules",
+    "userManagement": "User Management",
+    "iamDashboard": "Dashboard",
+    "iamUsers": "Users",
+    "iamFunctions": "Functions",
+    "iamPermissions": "Permissions",
+    "iamSessions": "Sessions",
+    "iamMfa": "MFA & Security",
+    "iamAudit": "Audit Logs",
+    "iamAccessReviews": "Access Reviews",
+    "iamPolicies": "Policies",
+    "users": "Users"
   },
   "links": {
     "products": "Products",

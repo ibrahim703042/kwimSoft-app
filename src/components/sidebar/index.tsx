@@ -4,18 +4,21 @@ import SidebarMenu from "./SidebarMenu";
 import SidebarFooter from "./SidebarFooter";
 import { useSidebarStore } from "../../store/selectors/useSidebarStore";
 import {
-  Speedometer,
-  Sliders2,
-  PersonLinesFill,
-  Boxes,
-  BagCheck,
-  People,
-  BoxSeam,
-  CashStack,
-  BarChart,
+  LayoutDashboard,
+  SlidersHorizontal,
+  Users,
+  Package,
+  UserRound,
+  Building2,
+  Clock,
+  KeyRound,
+  Monitor,
+  ShieldCheck,
+  ScrollText,
   ClipboardCheck,
-  CalendarEvent,
-} from "react-bootstrap-icons";
+  FileText,
+  Layers,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function Sidebar() {
@@ -23,32 +26,69 @@ export default function Sidebar() {
   const { t } = useTranslation();
 
   const menus = [
-    { title: t("sidebar.dashboard"), path: "/", icon: <Speedometer /> },
-    { title: t("sidebar.inventory"), path: "/inventory", icon: <Boxes /> },
-    { title: t("sidebar.orders"), path: "/orders", icon: <BagCheck /> },
-    { title: t("sidebar.customers"), path: "/customers", icon: <People /> },
-    { title: t("sidebar.products"), path: "/products", icon: <BoxSeam /> },
+    { title: t("sidebar.dashboard"), path: "/", icon: <LayoutDashboard className="h-4 w-4" /> },
+    { title: t("sidebar.inventory"), path: "/inventory", icon: <Package className="h-4 w-4" /> },
+    { title: t("sidebar.customers"), path: "/customers", icon: <UserRound className="h-4 w-4" /> },
+    { title: t("sidebar.operations"), path: "/operations", icon: <Building2 className="h-4 w-4" /> },
+    { title: t("sidebar.horaires"), path: "/horaires", icon: <Clock className="h-4 w-4" /> },
+    { title: t("sidebar.settings"), path: "/settings", icon: <SlidersHorizontal className="h-4 w-4" /> },
     {
-      title: t("sidebar.employees"),
-      path: "/employees",
-      icon: <ClipboardCheck />,
+      title: t("sidebar.userManagement"),
+      section: true,
+      gap: true,
     },
-    { title: t("sidebar.payroll"), path: "/payroll", icon: <CashStack /> },
-    { title: t("sidebar.hr"), path: "/hr", icon: <CalendarEvent /> },
-    { title: t("sidebar.reports"), path: "/reports", icon: <BarChart /> },
-    { title: t("sidebar.settings"), path: "/settings", icon: <Sliders2 /> },
     {
-      title: t("sidebar.users"),
-      path: "/user-management",
-      icon: <PersonLinesFill />,
+      title: t("sidebar.iamDashboard"),
+      path: "/user-management/dashboard",
+      icon: <LayoutDashboard className="h-4 w-4" />,
+    },
+    {
+      title: t("sidebar.iamUsers"),
+      path: "/user-management/users",
+      icon: <Users className="h-4 w-4" />,
+    },
+    {
+      title: t("sidebar.iamFunctions"),
+      path: "/user-management/functions",
+      icon: <Layers className="h-4 w-4" />,
+    },
+    {
+      title: t("sidebar.iamPermissions"),
+      path: "/user-management/permissions",
+      icon: <KeyRound className="h-4 w-4" />,
+    },
+    {
+      title: t("sidebar.iamSessions"),
+      path: "/user-management/sessions",
+      icon: <Monitor className="h-4 w-4" />,
+    },
+    {
+      title: t("sidebar.iamMfa"),
+      path: "/user-management/mfa",
+      icon: <ShieldCheck className="h-4 w-4" />,
+    },
+    {
+      title: t("sidebar.iamAudit"),
+      path: "/user-management/audit",
+      icon: <ScrollText className="h-4 w-4" />,
+    },
+    {
+      title: t("sidebar.iamAccessReviews"),
+      path: "/user-management/access-reviews",
+      icon: <ClipboardCheck className="h-4 w-4" />,
+    },
+    {
+      title: t("sidebar.iamPolicies"),
+      path: "/user-management/policies",
+      icon: <FileText className="h-4 w-4" />,
     },
   ];
 
   return (
     <div
-      className={`bg-[#0F123F] min-h-screen duration-500 sm:flex flex-col justify-between ${
+      className={`bg-sidebar min-h-screen duration-500 sm:flex flex-col justify-between ${
         isOpen ? "md:w-[17rem] w-16" : "w-16"
-      } text-gray-100 px-4`}
+      } text-sidebar-foreground px-4`}
     >
       <div>
         <SidebarHeader />

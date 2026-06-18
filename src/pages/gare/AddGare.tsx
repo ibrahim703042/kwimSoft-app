@@ -1,31 +1,19 @@
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import ReusableDialogSteps from "../../component/utilitie/ReusableDialogSteps";
-import { Label } from "../../components/ui/label";
-import { Input } from "../../components/ui/input";
-import { Button } from "../../components/ui/button";
-import mapboxgl from "mapbox-gl";
-import MapComponent from "../../component/cartoTrip/MapComponent";
+import ReusableDialogSteps from "@/components/shared/DialogSteps";
+import MapPicker from "@/components/map/MapPicker";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { API_ROUTE } from "../../../config";
+import { env } from "@/core/config/env";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Swal from "sweetalert2";
+import { notifyError, notifySuccess } from "@/lib/notify";
+import { networkApi } from "@/domains/network/api";
 import * as Yup from "yup";
-import ScaleLoader from "react-spinners/ScaleLoader";
+import LoadingState from "@/components/shared/LoadingState";
 
-// Clé d'API Mapbox
-mapboxgl.accessToken = "pk.eyJ1IjoibWFydGlubWJ4IiwiYSI6ImNrMDc0dnBzNzA3c3gzZmx2bnpqb2NwNXgifQ.D6Fm6UO9bWViernvxZFW_A";
-
-
-
-const createGare = async (values: any) => {
-    console.log("DATA SENDER >>>>>", values);
-    const response = await axios.post(
-        `${API_ROUTE}/stations`,
-        values
-    );
-    return response.data;
-};
+const createGare = async (values: unknown) => networkApi.createStation(values);
 
 
 
@@ -38,29 +26,16 @@ export default function AddGare() {
     const mutation = useMutation({
         mutationFn: createGare,
         onSuccess: () => {
-            Swal.fire({
-                title: "Succès!",
-                text: "Le bus a été enregistrée avec succès.",
-                icon: "success",
-                confirmButtonText: "OK",
-                customClass: { popup: "swal-custom" },
-            });
-            queryClient.invalidateQueries(["statations"]);
+            notifySuccess("La station a été enregistrée avec succès.");
+            queryClient.invalidateQueries({ queryKey: ["stations"] });
             setOpenDialog(false);
         },
-        onError: (error) => {
+        onError: (error: { response?: { data?: { message?: string | string[] } } }) => {
             const backendMessage = error.response?.data?.message;
             const errorMessage = Array.isArray(backendMessage)
-                ? backendMessage.join(', ')
+                ? backendMessage.join(", ")
                 : backendMessage || "Une erreur inconnue est survenue.";
-
-            Swal.fire({
-                title: "Erreur!",
-                text: errorMessage,
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-
+            notifyError(errorMessage);
             setOpenDialog(false);
         },
     });
@@ -90,7 +65,7 @@ export default function AddGare() {
             company: "67bc9002f682d26a7f7a9200",
             locations: {
                 type: "Point",
-                coordinates: [29.3640, -3.3792], // Coordonnées par défaut
+                coordinates: [29.364, -3.3792], // Coordonnées par défaut
             },
         },
         validationSchema: validationSchema,
@@ -107,7 +82,7 @@ export default function AddGare() {
     // État pour stocker la position sélectionnée sur la carte
     const [selectedLocation, setSelectedLocation] = useState({
         latitude: formik.values?.locations?.coordinates?.[1] ?? -3.3792,
-        longitude: formik.values?.locations?.coordinates?.[0] ?? 29.3640,
+        longitude: formik.values?.locations?.coordinates?.[0] ?? 29.364,
     });
 
     // 🔹 Récupérer la position actuelle du client au chargement
@@ -144,7 +119,7 @@ export default function AddGare() {
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json`,
                 {
                     params: {
-                        access_token: mapboxgl.accessToken,
+                        access_token: env.mapboxToken,
                         types: "place,region,country",
                         language: "fr",
                     },
@@ -154,7 +129,6 @@ export default function AddGare() {
 
             if (response.data.features.length > 0) {
                 let country = "";
-                let city = "";
                 let region = "";
                 let adresssse = "";
 
@@ -163,7 +137,6 @@ export default function AddGare() {
                         country = feature.text;
                     }
                     if (feature.place_type.includes("place")) {
-                        city = feature.text;
                         adresssse = feature.place_name;
                     }
                     if (feature.context) {
@@ -199,7 +172,7 @@ export default function AddGare() {
                 <form onSubmit={formik.handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-12 gap-4">
                         <div className="col-span-12">
-                            <MapComponent
+                            <MapPicker
                                 latitude={selectedLocation.latitude}
                                 longitude={selectedLocation.longitude}
                                 height="200px"
@@ -234,9 +207,6 @@ export default function AddGare() {
                                 readOnly
                                 disabled
                             />
-                            {/* {formik.touched.city && formik.errors.city && (
-                                <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.city}</p>
-                            )} */}
                         </div>
 
                         <div className="col-span-6">
@@ -250,7 +220,7 @@ export default function AddGare() {
                                 onClick={() => setOpenMapDialog(true)}
                                 disabled
                             />
-                            {formik.touched.locations?.coordinates && formik.errors.locations?.coordinates && formik.errors.locations.coordinates[0] && (
+                            {formik.touched.locations?.coordinates && formik.errors.locations?.coordinates?.[0] && (
                                 <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.locations.coordinates[0]}</p>
                             )}
                         </div>
@@ -266,7 +236,7 @@ export default function AddGare() {
                                 onClick={() => setOpenMapDialog(true)}
                                 disabled
                             />
-                            {formik.touched.locations?.coordinates && formik.errors.locations?.coordinates && formik.errors.locations.coordinates[1] && (
+                            {formik.touched.locations?.coordinates && formik.errors.locations?.coordinates?.[1] && (
                                 <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.locations.coordinates[1]}</p>
                             )}
                         </div>
@@ -317,7 +287,7 @@ export default function AddGare() {
                             <Button type="submit" disabled={mutation.isPending}>
                                 {mutation.isPending ? (
                                     <div className="flex items-center space-x-2">
-                                        <ScaleLoader color="#ffffff" height={10} />
+                                        <LoadingState loading className="py-0" />
                                         <span>Encours...</span>
                                     </div>
                                 ) : (

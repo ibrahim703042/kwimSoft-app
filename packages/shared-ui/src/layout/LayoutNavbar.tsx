@@ -107,7 +107,7 @@ export function LayoutNavbar({
   const computedBreadcrumbs = breadcrumbs || generateBreadcrumbsFromPath(currentPath || "");
 
   return (
-    <div className="flex flex-col gap-0 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+    <div className="flex flex-col gap-0 border-b border-border bg-card text-card-foreground">
       <div className="flex justify-between items-center h-14 px-4 sm:px-6 gap-4">
         <div className="flex items-center gap-4 min-w-0 flex-1">
           <NavBreadcrumbs
@@ -233,10 +233,10 @@ function NavSearch({ onSearch }: { onSearch?: (query: string) => void }) {
       <button
         type="button"
         onClick={() => setExpanded(true)}
-        className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-0"
+        className="p-1.5 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-0"
         aria-label="Search"
       >
-        <Search size={18} className="text-gray-600 dark:text-gray-300" />
+        <Search size={18} className="text-muted-foreground" />
       </button>
     );
   }
@@ -270,17 +270,17 @@ function NavThemeToggle() {
     <div className="relative group">
       <button
         type="button"
-        className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition focus:outline-none focus:ring-0"
+        className="p-1.5 rounded-md hover:bg-accent hover:text-accent-foreground transition focus:outline-none focus:ring-0"
         aria-label="Theme Menu"
       >
         {themes.find((t) => t.value === theme)?.icon}
       </button>
-      <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border rounded-md shadow-md opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-50">
+      <div className="absolute right-0 mt-2 w-32 bg-popover text-popover-foreground border rounded-md shadow-md opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-50">
         {themes.map((t) => (
           <button
             key={t.value}
             onClick={() => setTheme(t.value)}
-            className={`flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
+            className={`flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground ${
               theme === t.value ? "font-semibold" : ""
             }`}
           >
@@ -310,7 +310,7 @@ function NavLanguageSwitcher({ languages }: { languages?: Language[] }) {
       <button
         type="button"
         onClick={() => setShowMenu(!showMenu)}
-        className="p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-1 focus:outline-none focus:ring-0"
+        className="p-1.5 rounded-md hover:bg-accent hover:text-accent-foreground transition flex items-center gap-1 focus:outline-none focus:ring-0"
         aria-label="Language"
       >
         {currentLang?.flag ? (
@@ -320,7 +320,7 @@ function NavLanguageSwitcher({ languages }: { languages?: Language[] }) {
         )}
       </button>
       {showMenu && (
-        <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border rounded-md shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-32 bg-popover text-popover-foreground border rounded-md shadow-lg z-50">
           {availableLanguages.map((lang) => (
             <button
               key={lang.code}
@@ -328,8 +328,8 @@ function NavLanguageSwitcher({ languages }: { languages?: Language[] }) {
                 setLanguage(lang.code);
                 setShowMenu(false);
               }}
-              className={`flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                language === lang.code ? "bg-gray-50 dark:bg-gray-700" : ""
+              className={`flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground ${
+                language === lang.code ? "bg-muted" : ""
               }`}
             >
               {lang.flag ? (
@@ -389,10 +389,10 @@ function NavNotifications({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="relative p-1.5 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-0"
+          className="relative p-1.5 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-0"
           aria-label="Notifications"
         >
-          <Bell size={18} className="text-gray-600 dark:text-gray-300" />
+          <Bell size={18} className="text-muted-foreground" />
           {unreadCount > 0 && (
             <span className="absolute top-0 right-0 flex items-center justify-center min-w-[14px] h-[14px] px-0.5 text-[10px] font-bold text-white bg-red-500 rounded-full leading-none">
               {unreadCount > 9 ? "9+" : unreadCount}
@@ -552,7 +552,7 @@ function NavUserDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 p-1.5 pr-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none">
+        <button className="flex items-center gap-2 p-1.5 pr-3 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none">
           <div className="relative">
             {user?.avatar ? (
               <img
@@ -568,10 +568,10 @@ function NavUserDropdown({
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-gray-900" />
           </div>
           <div className="hidden sm:block text-left">
-            <p className="text-xs font-semibold text-gray-800 dark:text-gray-200 leading-tight">
+            <p className="text-xs font-semibold text-foreground leading-tight">
               {user?.fullName || "User"}
             </p>
-            <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
+            <p className="text-[10px] text-muted-foreground leading-tight">
               {user?.role || "Member"}
             </p>
           </div>

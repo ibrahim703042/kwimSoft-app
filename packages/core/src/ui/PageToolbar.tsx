@@ -14,12 +14,11 @@ interface PageToolbarProps {
  * Toolbar for search, filters, and additional actions
  */
 export function PageToolbar({ 
-  search, 
   onSearchChange, 
   filters, 
   actions,
   className 
-}: PageToolbarProps) {
+}: Readonly<PageToolbarProps>) {
   return (
     <div className={cn("flex items-center justify-between gap-4", className)}>
       <div className="flex items-center gap-2 flex-1">

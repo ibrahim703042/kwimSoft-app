@@ -85,7 +85,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 p-1.5 pr-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20">
+        <button className="flex items-center gap-2 p-1.5 pr-3 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20">
           <div className="relative">
             {user?.avatar ? (
               <img
@@ -101,10 +101,10 @@ const UserDropdown: React.FC<UserDropdownProps> = ({
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-gray-900" />
           </div>
           <div className="hidden sm:block text-left">
-            <p className="text-xs font-semibold text-gray-800 dark:text-gray-200 leading-tight">
+            <p className="text-xs font-semibold text-foreground leading-tight">
               {user?.fullName || "User"}
             </p>
-            <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
+            <p className="text-[10px] text-muted-foreground leading-tight">
               {user?.role || "Member"}
             </p>
           </div>

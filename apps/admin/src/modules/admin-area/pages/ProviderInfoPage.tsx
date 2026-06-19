@@ -8,7 +8,7 @@ export default function ProviderInfoPage() {
 
   return (
     <div className="p-4 space-y-6">
-      <div className="bg-white dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden">
+      <div className="bg-card dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden">
         <h2 className="px-4 py-3 text-sm font-semibold border-b border-border bg-muted/30">
           Enabled features
         </h2>
@@ -52,7 +52,7 @@ export default function ProviderInfoPage() {
           </table>
         </div>
       </div>
-      <div className="bg-white dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden">
+      <div className="bg-card dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden">
         <h2 className="px-4 py-3 text-sm font-semibold border-b border-border bg-muted/30">
           Disabled features
         </h2>

@@ -1,0 +1,114 @@
+/**
+ * KwimSoft design tokens — single source for shadcn/Tailwind semantic colors.
+ * Import once per app: @import "@kwim/shared-ui/styles/theme.css";
+ */
+@layer base {
+  :root {
+    --background: 210 20% 96%;
+    --foreground: 236 45% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 236 45% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 236 45% 12%;
+
+    /* Brand navy #0F123F */
+    --primary: 236 64% 15%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 93%;
+    --secondary-foreground: 236 45% 12%;
+
+    --muted: 220 14% 93%;
+    --muted-foreground: 220 9% 40%;
+
+    --accent: 229 65% 32%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 236 64% 15%;
+
+    --sidebar: 236 64% 15%;
+    --sidebar-foreground: 210 20% 96%;
+    --sidebar-accent: 236 50% 28%;
+    --sidebar-border: 236 40% 22%;
+    --sidebar-muted: 236 30% 22%;
+
+    --chart-1: 229 65% 32%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 224 76% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 224 76% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 224 76% 55%;
+
+    --sidebar: 222 47% 9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-border: 217 33% 20%;
+    --sidebar-muted: 217 33% 14%;
+
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer components {
+  .kwim-surface {
+    @apply bg-card text-card-foreground border border-border rounded-xl shadow-sm;
+  }
+
+  .kwim-surface-muted {
+    @apply bg-muted/50 text-muted-foreground border border-border/60 rounded-lg;
+  }
+
+  .kwim-sidebar-search {
+    @apply bg-sidebar-muted/40 border border-sidebar-border text-sidebar-foreground;
+  }
+}

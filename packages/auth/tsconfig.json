@@ -14,7 +14,12 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@kwim/api-client": ["../api-client/src/index.ts"],
+      "@kwim/config": ["../config/src/index.ts"],
+      "@kwim/utils": ["../utils/src/index.ts"]
+    }
   },
   "include": ["src"]
 }

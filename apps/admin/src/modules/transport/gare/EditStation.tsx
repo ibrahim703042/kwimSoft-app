@@ -6,8 +6,8 @@ import ReusableDialogStepsEdit from "@/components/utilitie/ReusableDialogStepsEd
 import { Button } from "@/components/ui/button";
 import { stationApi } from "@/modules/transport/api/transport.api";
 import {
-  DEFAULT_COORDINATES,
   STATION_COMPANY_ID,
+  normalizeCoordinates,
   type StationData,
   type StationFormValues,
 } from "./station.types";
@@ -31,7 +31,7 @@ function toFormValues(data: StationData): StationFormValues {
     company: STATION_COMPANY_ID,
     locations: {
       type: "Point",
-      coordinates: data.locations?.coordinates ?? [...DEFAULT_COORDINATES],
+      coordinates: normalizeCoordinates(data.locations?.coordinates),
     },
   };
 }

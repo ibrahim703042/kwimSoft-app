@@ -10,6 +10,7 @@ import { stationApi } from "@/modules/transport/api/transport.api";
 import {
   DEFAULT_COORDINATES,
   STATION_COMPANY_ID,
+  normalizeCoordinates,
   type StationFormValues,
 } from "./station.types";
 import { StationFormFields } from "./StationFormFields";
@@ -39,7 +40,7 @@ const initialValues: StationFormValues = {
   company: STATION_COMPANY_ID,
   locations: {
     type: "Point",
-    coordinates: [...DEFAULT_COORDINATES],
+    coordinates: normalizeCoordinates([...DEFAULT_COORDINATES]),
   },
 };
 

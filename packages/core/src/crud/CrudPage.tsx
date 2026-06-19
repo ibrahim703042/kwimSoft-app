@@ -168,10 +168,10 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
 
       {/* Filter card — PageFilters-style: card title + count, filter toggle, search + selects when expanded */}
       {showFilterCard && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 bg-white dark:bg-gray-800 p-4 rounded-xl py-5 gap-y-2 border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 kwim-surface p-4 py-5 gap-y-2">
           <div className="lg:col-span-6 sm:col-span-2 flex flex-col justify-center">
             <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-8 space-y-1 sm:space-y-0">
-              <p className="font-medium text-muted-foreground dark:text-[#191c21c8] text-[0.95rem]">
+              <p className="font-medium text-muted-foreground text-[0.95rem]">
                 {config.filterCardTitle ?? "Data"}
                 <span className="text-[0.7rem] font-normal ml-1">({data.length})</span>
               </p>
@@ -181,10 +181,10 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
             <button
               type="button"
               onClick={() => setFiltersVisible((prev) => !prev)}
-              className="bg-primary/20 dark:bg-[#707eae3a] rounded-full h-9 w-9 flex justify-center items-center hover:bg-primary/30 dark:hover:bg-[#707eae50] transition-colors"
+              className="bg-primary/15 rounded-full h-9 w-9 flex justify-center items-center hover:bg-primary/25 transition-colors"
               aria-label={filtersVisible ? "Hide filters" : "Show filters"}
             >
-              <Filter className="h-4 w-4 text-primary dark:text-[#707eae]" />
+              <Filter className="h-4 w-4 text-primary" />
             </button>
           </div>
           {filtersVisible && (
@@ -226,7 +226,7 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
       )}
 
       {/* Table card — inner content is CrudTable (or custom children) */}
-      <div className={cn("rounded-lg border min-w-0 overflow-hidden", "bg-white dark:bg-gray-800")}>
+      <div className={cn("rounded-lg border min-w-0 overflow-hidden bg-card text-card-foreground")}>
         {error ? (
           <ErrorState
             {...getCrudErrorState(error)}

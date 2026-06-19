@@ -35,7 +35,9 @@ export default function Gare() {
           queryKey: ["stations"],
           queryFn: stationApi.list,
           columns,
-          deleteFn: stationApi.delete,
+          deleteFn: async (id) => {
+            await stationApi.delete(id);
+          },
           permissions: {
             read: "station.read",
             create: "station.create",

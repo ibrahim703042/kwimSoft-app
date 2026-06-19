@@ -4,10 +4,12 @@ const GUEST_USER_ID = "guest-kwim";
 
 function base64UrlEncode(data: object): string {
   const json = JSON.stringify(data);
-  const base64 =
-    typeof btoa === "undefined"
-      ? Buffer.from(json).toString("base64")
-      : btoa(json);
+  const bytes = new TextEncoder().encode(json);
+  let binary = "";
+  for (const byte of bytes) {
+    binary += String.fromCodePoint(byte);
+  }
+  const base64 = btoa(binary);
   return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 

@@ -54,17 +54,17 @@ export interface AppLayoutConfig {
 }
 
 interface AppLayoutProps {
-  children: ReactNode;
-  config: AppLayoutConfig;
+  readonly children: ReactNode;
+  readonly config: AppLayoutConfig;
 }
 
-export function AppLayout({ children, config }: AppLayoutProps) {
+export function AppLayout({ children, config }: Readonly<AppLayoutProps>) {
   const { isOpen } = useSidebarStore();
 
   return (
-    <div className="flex h-screen bg-white text-gray-800 dark:bg-gray-950 dark:text-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-background text-foreground overflow-hidden">
       {/* Sidebar */}
-      <div className="border-r border-gray-200 dark:border-gray-800 flex-shrink-0">
+      <div className="border-r border-border flex-shrink-0">
         <LayoutSidebar
           appName={config.appName}
           logo={config.logo}
@@ -81,7 +81,7 @@ export function AppLayout({ children, config }: AppLayoutProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
+      <div className="flex-1 flex flex-col bg-muted/30 transition-colors duration-300 overflow-hidden">
         {/* Header/Navbar - Fixed */}
         <div className="flex-shrink-0">
           <LayoutNavbar

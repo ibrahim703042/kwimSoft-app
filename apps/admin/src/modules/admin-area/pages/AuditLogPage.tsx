@@ -52,7 +52,7 @@ export default function AuditLogPage() {
           Clear log
         </Button>
       </div>
-      <div className="bg-white dark:bg-[#1a1f3b] rounded-md shadow-sm border border-border overflow-hidden">
+      <div className="bg-card dark:bg-[#1a1f3b] rounded-md shadow-sm border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/20">

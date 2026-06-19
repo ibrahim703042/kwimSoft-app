@@ -1,41 +1,17 @@
 {
+  "extends": "../tsconfig.satellite.base.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "module": "ESNext",
-    "skipLibCheck": true,
     "baseUrl": "./src",
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@kwim/shared-ui": [
-        "../../packages/shared-ui/src/index.ts"
-      ],
-      "@kwim/shared-ui/*": [
-        "../../packages/shared-ui/src/*"
-      ]
+      "@/*": ["./*"],
+      "@kwim/auth": ["../../packages/auth/src/index.ts"],
+      "@kwim/api-client": ["../../packages/api-client/src/index.ts"],
+      "@kwim/config": ["../../packages/config/src/index.ts"],
+      "@kwim/core": ["../../packages/core/src/index.ts"],
+      "@kwim/shared-ui": ["../../packages/shared-ui/src/index.ts"],
+      "@kwim/shared-ui/*": ["../../packages/shared-ui/src/*"],
+      "@kwim/utils": ["../../packages/utils/src/index.ts"]
     }
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src"]
 }

@@ -1,0 +1,10 @@
+{
+  "@/*": ["./*"],
+  "@kwim/auth": ["../../packages/auth/src/index.ts"],
+  "@kwim/api-client": ["../../packages/api-client/src/index.ts"],
+  "@kwim/config": ["../../packages/config/src/index.ts"],
+  "@kwim/core": ["../../packages/core/src/index.ts"],
+  "@kwim/shared-ui": ["../../packages/shared-ui/src/index.ts"],
+  "@kwim/shared-ui/*": ["../../packages/shared-ui/src/*"],
+  "@kwim/utils": ["../../packages/utils/src/index.ts"]
+}

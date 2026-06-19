@@ -122,7 +122,7 @@ export default function PositionPage() {
 
   return (
     <div>
-      <div className="bg-white py-2 px-3 h-full border rounded-md">
+      <div className="bg-card py-2 px-3 h-full border rounded-md">
         <div><div className="bg-slate-100 p-1 rounded px-2 py-1"><p className="bg-[#0F123F] inline-block text-white px-3 py-1 rounded text-[0.7rem]">Postes</p></div></div>
         <div className="rounded-md my-4 p-2">
           <div className="flex justify-end mb-3">
@@ -135,8 +135,8 @@ export default function PositionPage() {
                   <DialogHeader><DialogTitle>{editing ? "Modifier le poste" : "Nouveau poste"}</DialogTitle></DialogHeader>
                   <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <div><Label>Titre</Label><Input name="title" value={formik.values.title} onChange={formik.handleChange} />{formik.touched.title && formik.errors.title && <p className="text-red-500 text-xs mt-1">{formik.errors.title}</p>}</div>
-                      <div><Label>Code</Label><Input name="code" value={formik.values.code} onChange={formik.handleChange} />{formik.touched.code && formik.errors.code && <p className="text-red-500 text-xs mt-1">{formik.errors.code}</p>}</div>
+                      <div><Label>Titre</Label><Input name="title" value={formik.values.title} onChange={formik.handleChange} />{formik.touched.title && formik.errors.title && <p className="text-destructive text-xs mt-1">{formik.errors.title}</p>}</div>
+                      <div><Label>Code</Label><Input name="code" value={formik.values.code} onChange={formik.handleChange} />{formik.touched.code && formik.errors.code && <p className="text-destructive text-xs mt-1">{formik.errors.code}</p>}</div>
                     </div>
                     <div>
                       <Label>Département</Label>

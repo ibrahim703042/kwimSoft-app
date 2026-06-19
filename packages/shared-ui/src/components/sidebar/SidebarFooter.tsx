@@ -68,7 +68,7 @@ export default function SidebarFooter({
 
   return (
     <div className="w-full">
-      <button className="w-full flex items-center justify-between gap-2 bg-[#0F123F] dark:bg-gray-900 hover:bg-[#151a4a] dark:hover:bg-gray-800 rounded-lg border border-[#90959e96] dark:border-gray-700 px-3 py-2.5 text-left focus:outline-none focus:ring-2 focus:ring-[#90959e60] dark:focus:ring-gray-600 transition-colors">
+      <button className="w-full flex items-center justify-between gap-2 bg-[#0F123F] dark:bg-gray-900 hover:bg-[#151a4a] dark:hover:bg-gray-800 rounded-lg border border-sidebar-border px-3 py-2.5 text-left focus:outline-none focus:ring-2 focus:ring-[#90959e60] dark:focus:ring-gray-600 transition-colors">
         <div className="flex items-center gap-3 min-w-0 flex-1">
           {avatar}
           <div className="min-w-0 flex-1">

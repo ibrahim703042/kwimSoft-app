@@ -342,7 +342,7 @@ importers:
         version: 10.4.24(postcss@8.5.6)
       eslint:
         specifier: ^9.13.0
-        version: 9.39.2(jiti@1.21.7)
+        version: 9.39.2(jiti@2.6.1)
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
@@ -406,7 +406,7 @@ importers:
         version: 10.4.24(postcss@8.5.6)
       eslint:
         specifier: ^9.13.0
-        version: 9.39.2(jiti@2.6.1)
+        version: 9.39.2(jiti@1.21.7)
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
@@ -1186,6 +1186,9 @@ importers:
 
   packages/auth:
     dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../api-client
       '@kwim/config':
         specifier: workspace:*
         version: link:../config
@@ -1208,6 +1211,12 @@ importers:
         specifier: ^5.0.3
         version: 5.0.11(@types/react@18.3.28)(immer@11.1.4)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
     devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
       typescript:
         specifier: ^5.7.3
         version: 5.9.3
@@ -1232,6 +1241,9 @@ importers:
       '@tanstack/react-table':
         specifier: ^8.20.5
         version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      axios:
+        specifier: ^1.7.9
+        version: 1.13.5
       clsx:
         specifier: ^2.1.1
         version: 2.1.1

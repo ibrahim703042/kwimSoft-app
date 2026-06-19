@@ -149,7 +149,7 @@ export default function ExpensePage() {
 
   return (
     <div>
-      <div className="bg-white py-2 px-3 h-full border rounded-md">
+      <div className="bg-card py-2 px-3 h-full border rounded-md">
         <div><div className="bg-slate-100 p-1 rounded px-2 py-1"><p className="bg-[#0F123F] inline-block text-white px-3 py-1 rounded text-[0.7rem]">Notes de frais</p></div></div>
         <div className="rounded-md my-4 p-2">
           <div className="flex justify-end mb-3">
@@ -163,7 +163,7 @@ export default function ExpensePage() {
                   <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div><Label>Référence</Label><Input name="reference" value={formik.values.reference} onChange={formik.handleChange} /></div>
-                      <div><Label>Date</Label><Input name="date" type="date" value={formik.values.date} onChange={formik.handleChange} />{formik.touched.date && formik.errors.date && <p className="text-red-500 text-xs mt-1">{formik.errors.date}</p>}</div>
+                      <div><Label>Date</Label><Input name="date" type="date" value={formik.values.date} onChange={formik.handleChange} />{formik.touched.date && formik.errors.date && <p className="text-destructive text-xs mt-1">{formik.errors.date}</p>}</div>
                     </div>
                     <div>
                       <Label>Employé</Label>
@@ -189,7 +189,7 @@ export default function ExpensePage() {
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                      <div><Label>Montant</Label><Input name="amount" type="number" value={formik.values.amount} onChange={formik.handleChange} />{formik.touched.amount && formik.errors.amount && <p className="text-red-500 text-xs mt-1">{formik.errors.amount}</p>}</div>
+                      <div><Label>Montant</Label><Input name="amount" type="number" value={formik.values.amount} onChange={formik.handleChange} />{formik.touched.amount && formik.errors.amount && <p className="text-destructive text-xs mt-1">{formik.errors.amount}</p>}</div>
                       <div>
                         <Label>Devise</Label>
                         <Select value={formik.values.currency} onValueChange={(v) => formik.setFieldValue("currency", v)}>

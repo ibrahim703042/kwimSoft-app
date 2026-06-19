@@ -7,16 +7,13 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": "./src",
-
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-
-    /* Path Aliases */
+    "types": ["vite/client"],
     "paths": {
       "@/*": ["./*"],
       "@/app/*": ["app/*"],
@@ -28,10 +25,14 @@
       "@/assets/*": ["assets/*"],
       "@/store/*": ["store/*"],
       "@/styles/*": ["styles/*"],
-      "@/config": ["config/index.ts"]
+      "@/config": ["config/index.ts"],
+      "@kwim/auth": ["../../packages/auth/src/index.ts"],
+      "@kwim/api-client": ["../../packages/api-client/src/index.ts"],
+      "@kwim/config": ["../../packages/config/src/index.ts"],
+      "@kwim/shared-ui": ["../../packages/shared-ui/src/index.ts"],
+      "@kwim/shared-ui/*": ["../../packages/shared-ui/src/*"],
+      "@kwim/utils": ["../../packages/utils/src/index.ts"]
     },
-
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

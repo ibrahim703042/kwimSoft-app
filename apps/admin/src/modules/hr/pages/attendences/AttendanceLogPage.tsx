@@ -116,7 +116,7 @@ export default function AttendanceLogPage() {
       </div>
 
       {/* ATTENDANCE LOG FILTER */}
-      <div className="bg-white dark:bg-[#1a1f3b] rounded-xl border border-border/40 p-4 shadow-sm">
+      <div className="bg-card dark:bg-[#1a1f3b] rounded-xl border border-border/40 p-4 shadow-sm">
         <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
           Attendance Log Filter
         </h3>
@@ -175,7 +175,7 @@ export default function AttendanceLogPage() {
       </div>
 
       {/* ATTENDANCE LOGS */}
-      <div className="bg-white dark:bg-[#1a1f3b] rounded-xl border border-border/40 shadow-sm overflow-hidden">
+      <div className="bg-card dark:bg-[#1a1f3b] rounded-xl border border-border/40 shadow-sm overflow-hidden">
         <h3 className="px-4 pt-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Attendance Logs
         </h3>

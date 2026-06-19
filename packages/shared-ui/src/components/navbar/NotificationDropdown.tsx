@@ -91,8 +91,8 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20">
-          <Bell size={18} className="text-gray-600 dark:text-gray-300" />
+        <button className="relative p-2 rounded-lg hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20">
+          <Bell size={18} className="text-muted-foreground" />
           {unreadCount > 0 && (
             <span className="absolute top-0 right-0 flex items-center justify-center min-w-[16px] h-[16px] px-1 text-[10px] font-bold text-white bg-red-500 rounded-full shadow-sm">
               {unreadCount > 9 ? "9+" : unreadCount}

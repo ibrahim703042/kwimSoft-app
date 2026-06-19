@@ -34,7 +34,7 @@ export default function WelcomePage() {
 
   return (
     <div className="p-4 space-y-6 text-gray-800 dark:text-gray-100">
-      <div className="bg-white dark:bg-[#1a1f3b] rounded-md p-5 shadow-sm transition-colors">
+      <div className="bg-card dark:bg-[#1a1f3b] rounded-md p-5 shadow-sm transition-colors">
         <h2 className="text-lg font-semibold text-foreground mb-1">
           Welcome to the {APP_CONFIG.name} administration console
         </h2>
@@ -75,7 +75,7 @@ export default function WelcomePage() {
           <Sparkles className="h-4 w-4 text-primary" />
           New functionality
         </h3>
-        <div className="bg-white dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden border border-border">
+        <div className="bg-card dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden border border-border">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

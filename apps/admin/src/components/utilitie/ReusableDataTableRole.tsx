@@ -106,7 +106,7 @@ export function ReusableDataTableRole<T>({
     return (
       <TableRow>
         <TableCell colSpan={columns.length} className="h-24 text-center whitespace-nowrap">
-          <p className="text-[0.8rem] text-red-500">Aucune donnée trouvée</p>
+          <p className="text-[0.8rem] text-destructive">Aucune donnée trouvée</p>
         </TableCell>
       </TableRow>
     );

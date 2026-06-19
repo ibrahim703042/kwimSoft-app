@@ -9,7 +9,8 @@ import { CrudPage } from "./CrudPage";
 import { CrudForm } from "./CrudForm";
 import { DynamicFormFields } from "./DynamicFormFields";
 import { createEntityApi, ServiceName } from "./createModule";
-import type { FieldConfig, CrudConfig } from "./types";
+import type { FieldConfig } from "./DynamicFormFields";
+import type { CrudConfig } from "./types";
 import Swal from "sweetalert2";
 
 export interface FullEntityPageConfig {
@@ -80,27 +81,6 @@ export function createFullEntityPage(config: FullEntityPageConfig) {
         Swal.fire({
           title: "Succès!",
           text: `${config.singular} mis à jour avec succès.`,
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-      },
-      onError: (error: any) => {
-        Swal.fire({
-          title: "Erreur!",
-          text: error.message || "Une erreur est survenue.",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-      },
-    });
-
-    const deleteMutation = useMutation({
-      mutationFn: (id: string) => api.delete(id),
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [config.key] });
-        Swal.fire({
-          title: "Succès!",
-          text: `${config.singular} supprimé avec succès.`,
           icon: "success",
           confirmButtonText: "OK",
         });

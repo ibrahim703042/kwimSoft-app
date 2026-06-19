@@ -61,13 +61,13 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         )}
       </div>
       {showMenu && (
-        <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border rounded-md shadow-lg z-50">
+        <div className="absolute right-0 mt-2 w-32 bg-popover text-popover-foreground border rounded-md shadow-lg z-50">
           {languages.map((lang) => (
             <div
               key={lang.code}
               onClick={() => handleLanguageChange(lang.code)}
-              className={`flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer ${
-                language === lang.code ? "bg-gray-50 dark:bg-gray-700" : ""
+              className={`flex items-center gap-2 px-3 py-2 hover:bg-accent hover:text-accent-foreground cursor-pointer ${
+                language === lang.code ? "bg-muted" : ""
               }`}
             >
               {lang.flag ? (

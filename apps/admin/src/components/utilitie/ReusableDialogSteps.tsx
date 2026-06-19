@@ -5,16 +5,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 interface ReusableDialogStepsProps {
-  dialogTitle: string;
-  children: React.ReactNode;
-  openDialog: boolean;
-  setOpenDialog: (open: boolean) => void;
-  handleModalOpen?: () => void;
-  step?: number; 
-  setStep?: (step: number) => void; 
+  readonly dialogTitle: string;
+  readonly children: React.ReactNode;
+  readonly openDialog: boolean;
+  readonly setOpenDialog: (open: boolean) => void;
+  readonly handleModalOpen?: () => void;
 }
 
 export default function ReusableDialogSteps({
@@ -25,26 +24,24 @@ export default function ReusableDialogSteps({
   handleModalOpen,
 }: ReusableDialogStepsProps) {
   return (
-    <div>
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogTrigger asChild>
-          <div>
-            <div
-              className="bg-[#191C21] py-[10px] px-[10px] rounded-md cursor-pointer"
-              onClick={handleModalOpen}
-            >
-              <Plus className="text-white" size="17" />
-            </div>
-          </div>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[700px]">
-          <DialogHeader>
-            <DialogTitle className="font-medium">{dialogTitle}</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-0">{children}</div>
-
-        </DialogContent>
-      </Dialog>
-    </div>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          size="icon"
+          className="h-9 w-9"
+          onClick={handleModalOpen}
+          aria-label={dialogTitle}
+        >
+          <Plus className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[700px]">
+        <DialogHeader>
+          <DialogTitle className="font-medium">{dialogTitle}</DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-4 py-0">{children}</div>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -120,17 +120,17 @@ export function ReusableDataTable<T>({
     return (
       <TableRow>
         <TableCell colSpan={columns.length} className="h-24 text-center whitespace-nowrap">
-          <p className="text-[0.8rem] text-red-500">Aucune donnée trouvée</p>
+          <p className="text-sm text-destructive">Aucune donnée trouvée</p>
         </TableCell>
       </TableRow>
     );
   };
 
   return (
-    <div className="w-full">
-      <div className="flex items-center space-x-4 border-b">
-        <div className="p-4 pb-0 border-b-2 border-[#1D3686]">
-          <p className="text-[#1D3686] text-[0.9rem] font-medium inline-block pb-3">
+    <div className="w-full kwim-surface overflow-hidden">
+      <div className="flex items-center space-x-4 border-b border-border">
+        <div className="p-4 pb-0 border-b-2 border-primary">
+          <p className="text-primary text-sm font-medium inline-block pb-3">
             {titleDataTable}
           </p>
         </div>
@@ -138,8 +138,8 @@ export function ReusableDataTable<T>({
 
       <div className="mt-3 px-3 flex items-center gap-3 justify-between mb-3">
         <div className="flex items-center space-x-3">
-          <div className="border inline-block p-1 px-3 rounded-lg">
-            <FileDownloadSharpIcon sx={{ color: "#707EAE", fontSize: "18px" }} />
+          <div className="border border-border inline-block p-1 px-3 rounded-lg text-muted-foreground">
+            <FileDownloadSharpIcon sx={{ fontSize: "18px" }} className="text-muted-foreground" />
           </div>
           <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
             <IconButton
@@ -155,7 +155,7 @@ export function ReusableDataTable<T>({
         <div className="flex items-center space-x-3">{ComponentButtonAdd}</div>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border border-border bg-card">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

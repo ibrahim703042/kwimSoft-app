@@ -2,7 +2,7 @@
  * NoticePage - Notice/Announcement management with full CRUD
  */
 import { useEffect, useState } from "react";
-import { Plus, Pencil, Trash2, Eye, Pin } from "lucide-react";
+import { Plus, Pencil, Trash2, Pin } from "lucide-react";
 import {
   Button,
   Dialog,
@@ -113,6 +113,66 @@ const priorityColors: Record<string, string> = {
   urgent: "bg-red-100 text-red-800",
 };
 
+function NoticeTitleCell({ notice }: Readonly<{ notice: NoticeItem }>) {
+  return (
+    <div className="flex items-center gap-2">
+      {notice.isPinned && <Pin className="h-3 w-3 text-primary" />}
+      <span>{notice.title}</span>
+    </div>
+  );
+}
+
+function NoticeTypeCell({ type }: Readonly<{ type: string }>) {
+  return noticeTypes.find((t) => t.value === type)?.label || type;
+}
+
+function NoticePriorityCell({ priority }: Readonly<{ priority: string }>) {
+  return (
+    <span
+      className={`px-2 py-1 rounded-full text-xs ${
+        priorityColors[priority] || "bg-gray-100"
+      }`}
+    >
+      {priorities.find((p) => p.value === priority)?.label || priority}
+    </span>
+  );
+}
+
+function NoticeStatusCell({ status }: Readonly<{ status: string }>) {
+  return (
+    <span
+      className={`px-2 py-1 rounded-full text-xs ${
+        statusColors[status] || "bg-gray-100"
+      }`}
+    >
+      {status}
+    </span>
+  );
+}
+
+function NoticeDateCell({ createdAt }: Readonly<{ createdAt: string }>) {
+  return new Date(createdAt).toLocaleDateString("fr-FR");
+}
+
+interface NoticeActionsCellProps {
+  readonly notice: NoticeItem;
+  readonly onEdit: (notice: NoticeItem) => void;
+  readonly onDelete: (id: string) => void;
+}
+
+function NoticeActionsCell({ notice, onEdit, onDelete }: NoticeActionsCellProps) {
+  return (
+    <div className="flex gap-1">
+      <Button size="sm" variant="outline" onClick={() => onEdit(notice)}>
+        <Pencil className="h-4 w-4" />
+      </Button>
+      <Button size="sm" variant="destructive" onClick={() => onDelete(notice._id)}>
+        <Trash2 className="h-4 w-4" />
+      </Button>
+    </div>
+  );
+}
+
 export default function NoticePage() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<NoticeItem | null>(null);
@@ -205,74 +265,50 @@ export default function NoticePage() {
     {
       accessorKey: "title",
       header: "Titre",
-      cell: ({ row }: any) => (
-        <div className="flex items-center gap-2">
-          {row.original.isPinned && <Pin className="h-3 w-3 text-primary" />}
-          <span>{row.original.title}</span>
-        </div>
+      cell: ({ row }: { row: { original: NoticeItem } }) => (
+        <NoticeTitleCell notice={row.original} />
       ),
     },
     {
       accessorKey: "type",
       header: "Type",
-      cell: ({ row }: any) =>
-        noticeTypes.find((t) => t.value === row.original.type)?.label || row.original.type,
+      cell: ({ row }: { row: { original: NoticeItem } }) => (
+        <NoticeTypeCell type={row.original.type} />
+      ),
     },
     {
       accessorKey: "priority",
       header: "Priorité",
-      cell: ({ row }: any) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs ${
-            priorityColors[row.original.priority] || "bg-gray-100"
-          }`}
-        >
-          {priorities.find((p) => p.value === row.original.priority)?.label || row.original.priority}
-        </span>
+      cell: ({ row }: { row: { original: NoticeItem } }) => (
+        <NoticePriorityCell priority={row.original.priority} />
       ),
     },
     {
       accessorKey: "status",
       header: "Statut",
-      cell: ({ row }: any) => (
-        <span
-          className={`px-2 py-1 rounded-full text-xs ${
-            statusColors[row.original.status] || "bg-gray-100"
-          }`}
-        >
-          {row.original.status}
-        </span>
+      cell: ({ row }: { row: { original: NoticeItem } }) => (
+        <NoticeStatusCell status={row.original.status} />
       ),
     },
     {
       accessorKey: "createdAt",
       header: "Créé le",
-      cell: ({ row }: any) =>
-        new Date(row.original.createdAt).toLocaleDateString("fr-FR"),
+      cell: ({ row }: { row: { original: NoticeItem } }) => (
+        <NoticeDateCell createdAt={row.original.createdAt} />
+      ),
     },
     {
       id: "actions",
       header: "Actions",
-      cell: ({ row }: any) => (
-        <div className="flex gap-1">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => {
-              setEditing(row.original);
-              setOpen(true);
-            }}
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={() => handleDelete(row.original._id)}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
+      cell: ({ row }: { row: { original: NoticeItem } }) => (
+        <NoticeActionsCell
+          notice={row.original}
+          onEdit={(notice) => {
+            setEditing(notice);
+            setOpen(true);
+          }}
+          onDelete={handleDelete}
+        />
       ),
     },
   ];

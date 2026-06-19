@@ -81,7 +81,7 @@ export function createEntityApi<T = any>(service: ServiceName, endpoint: string)
   };
 }
 
-export function createListPage<T>(_config: {
+export function createListPage(_config: {
   title: string;
   endpoint: string;
   service: ServiceName;

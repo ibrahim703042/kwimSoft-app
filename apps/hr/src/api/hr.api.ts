@@ -12,9 +12,9 @@ function crudApi(endpoint: string) {
     getAll: (params?: { page?: number; limit?: number; search?: string }) =>
       apiClient.get(`${BASE}${endpoint}`, { params }),
     getById: (id: string) => apiClient.get(`${BASE}${endpoint}/${id}`),
-    create: (data: Record<string, unknown>) =>
+    create: (data: object) =>
       apiClient.post(`${BASE}${endpoint}`, data),
-    update: (id: string, data: Record<string, unknown>) =>
+    update: (id: string, data: object) =>
       apiClient.patch(`${BASE}${endpoint}/${id}`, data),
     delete: (id: string) => apiClient.delete(`${BASE}${endpoint}/${id}`),
   };

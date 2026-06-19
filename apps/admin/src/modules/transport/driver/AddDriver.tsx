@@ -162,7 +162,7 @@ export default function AddDriver() {
                 <form onSubmit={formik.handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-12 gap-4">
                         <div className="col-span-6">
-                            <Label htmlFor="terms" className="font-normal">Nom complet <span className="text-red-500">*</span></Label>
+                            <Label htmlFor="terms" className="font-normal">Nom complet <span className="text-destructive">*</span></Label>
                             <Input
                                 type="text"
                                 name="fullName"
@@ -171,12 +171,12 @@ export default function AddDriver() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
-                            {formik.touched.fullName && formik.errors.fullName && <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.fullName}</p>}
+                            {formik.touched.fullName && formik.errors.fullName && <p className="text-destructive text-[0.7rem] mt-1">{formik.errors.fullName}</p>}
                         </div>
 
                         <div className="col-span-6">
                             <Label htmlFor="terms" className="font-normal">
-                                Email <span className="text-red-500">*</span>
+                                Email <span className="text-destructive">*</span>
                             </Label>
                             <Input
                                 type="email"
@@ -192,7 +192,7 @@ export default function AddDriver() {
                             <div className="col-span-12">
                                 <div className="mt-0">
                                     <Label htmlFor="terms" className="font-normal">
-                                        Sexe <span className="text-red-500">*</span>
+                                        Sexe <span className="text-destructive">*</span>
                                     </Label>
                                 </div>
                                 <Select onValueChange={(value) => formik.setFieldValue("sexe", value)}>
@@ -209,12 +209,12 @@ export default function AddDriver() {
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
-                                {formik.touched.sexe && formik.errors.sexe && <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.sexe}</p>}
+                                {formik.touched.sexe && formik.errors.sexe && <p className="text-destructive text-[0.7rem] mt-1">{formik.errors.sexe}</p>}
                             </div>
                         </div>
 
                         <div className="col-span-4">
-                            <Label htmlFor="terms" className="font-normal">Nationalité <span className="text-red-500">*</span></Label>
+                            <Label htmlFor="terms" className="font-normal">Nationalité <span className="text-destructive">*</span></Label>
                             <Input
                                 type="text"
                                 name="nationality"
@@ -223,11 +223,11 @@ export default function AddDriver() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
-                            {formik.touched.nationality && formik.errors.nationality && <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.nationality}</p>}
+                            {formik.touched.nationality && formik.errors.nationality && <p className="text-destructive text-[0.7rem] mt-1">{formik.errors.nationality}</p>}
 
                         </div>
                         <div className="col-span-4">
-                            <Label htmlFor="terms" className="font-normal">Adresse complet <span className="text-red-500">*</span></Label>
+                            <Label htmlFor="terms" className="font-normal">Adresse complet <span className="text-destructive">*</span></Label>
                             <Input
                                 type="text"
                                 name="adresse"
@@ -239,7 +239,7 @@ export default function AddDriver() {
                         </div>
 
                         <div className="col-span-6">
-                            <Label htmlFor="terms" className="font-normal">Date de naissance <span className="text-red-500">*</span></Label>
+                            <Label htmlFor="terms" className="font-normal">Date de naissance <span className="text-destructive">*</span></Label>
                             <Input
                                 type="date"
                                 name="birthDate"
@@ -251,7 +251,7 @@ export default function AddDriver() {
                             />
                         </div>
                         <div className="col-span-6">
-                            <Label htmlFor="terms" className="font-normal">Numéro de permis  <span className="text-red-500">*</span></Label>
+                            <Label htmlFor="terms" className="font-normal">Numéro de permis  <span className="text-destructive">*</span></Label>
                             <Input
                                 type="text"
                                 name="licenseNumber"
@@ -262,7 +262,7 @@ export default function AddDriver() {
                             />
                         </div>
                         <div className="col-span-6">
-                            <Label htmlFor="terms" className="font-normal">Expiration du permis (ans) <span className="text-red-500">*</span></Label>
+                            <Label htmlFor="terms" className="font-normal">Expiration du permis (ans) <span className="text-destructive">*</span></Label>
                             <Input
                                 type="number"
                                 name="licenseDuration"
@@ -283,11 +283,11 @@ export default function AddDriver() {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
-                            {formik.touched.phoneNumber && formik.errors.phoneNumber && <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.phoneNumber}</p>}
+                            {formik.touched.phoneNumber && formik.errors.phoneNumber && <p className="text-destructive text-[0.7rem] mt-1">{formik.errors.phoneNumber}</p>}
                         </div>
 
                         <div className="col-span-6">
-                            <Label>Entré en fonction le <span className="text-red-500">*</span></Label>
+                            <Label>Entré en fonction le <span className="text-destructive">*</span></Label>
                             <Input
                                 type="date"
                                 name="begginingAt"

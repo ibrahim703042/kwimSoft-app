@@ -12,22 +12,53 @@ import {
 } from "../components/ui/dropdown-menu";
 
 interface LayoutSidebarProps {
-  appName: string;
-  logo?: ReactNode;
-  menus: MenuItem[];
-  user?: {
-    fullName?: string;
-    email?: string;
-    role?: string;
-    avatar?: string;
+  readonly appName: string;
+  readonly logo?: ReactNode;
+  readonly menus: readonly MenuItem[];
+  readonly user?: {
+    readonly fullName?: string;
+    readonly email?: string;
+    readonly role?: string;
+    readonly avatar?: string;
   };
-  onLogout?: () => void;
-  onProfile?: () => void;
-  onSettings?: () => void;
-  onSearch?: (query: string) => void;
-  showSearch?: boolean;
-  isOpen: boolean;
-  LinkComponent?: React.ComponentType<{ to: string; className?: string; children: ReactNode }>;
+  readonly onLogout?: () => void;
+  readonly onProfile?: () => void;
+  readonly onSettings?: () => void;
+  readonly onSearch?: (query: string) => void;
+  readonly showSearch?: boolean;
+  readonly isOpen: boolean;
+  readonly LinkComponent?: React.ComponentType<{ to: string; className?: string; children: ReactNode }>;
+}
+
+interface SidebarHeaderProps {
+  readonly appName: string;
+  readonly logo?: ReactNode;
+  readonly isOpen: boolean;
+  readonly onToggle: () => void;
+}
+
+interface SidebarSearchProps {
+  readonly isOpen: boolean;
+  readonly onSearch?: (query: string) => void;
+}
+
+interface SidebarMenuItemProps {
+  readonly item: MenuItem;
+  readonly isOpen: boolean;
+  readonly index: number;
+  readonly LinkComponent?: React.ComponentType<{ to: string; className?: string; children: ReactNode }>;
+}
+
+interface SidebarFooterProps {
+  readonly user?: {
+    readonly fullName?: string;
+    readonly email?: string;
+    readonly avatar?: string;
+  };
+  readonly isOpen: boolean;
+  readonly onLogout?: () => void;
+  readonly onProfile?: () => void;
+  readonly onSettings?: () => void;
 }
 
 export function LayoutSidebar({
@@ -38,16 +69,17 @@ export function LayoutSidebar({
   onLogout,
   onProfile,
   onSettings,
+  onSearch,
   showSearch = true,
   isOpen,
   LinkComponent,
-}: LayoutSidebarProps) {
+}: Readonly<LayoutSidebarProps>) {
   const { toggleSidebar } = useSidebarStore();
 
   return (
     <div
-      className={`bg-[#0F123F] dark:bg-gray-900 h-screen duration-500 flex flex-col ${isOpen ? "md:w-[17rem] w-16" : "w-16"
-        } text-gray-100 dark:text-gray-200 px-4 overflow-hidden`}
+      className={`bg-sidebar h-screen duration-500 flex flex-col ${isOpen ? "md:w-[17rem] w-16" : "w-16"
+        } text-sidebar-foreground px-4 overflow-hidden`}
     >
       {/* Header */}
       <div className="shrink-0">
@@ -57,7 +89,7 @@ export function LayoutSidebar({
           isOpen={isOpen}
           onToggle={toggleSidebar}
         />
-        {showSearch && <SidebarSearch isOpen={isOpen} />}
+        {showSearch && <SidebarSearch isOpen={isOpen} onSearch={onSearch} />}
       </div>
 
       {/* Menu */}
@@ -94,12 +126,7 @@ function SidebarHeader({
   logo,
   isOpen,
   onToggle,
-}: {
-  appName: string;
-  logo?: ReactNode;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
+}: Readonly<SidebarHeaderProps>) {
   return (
     <div
       className={`pt-0 flex items-center mb-5 ${isOpen ? "justify-between" : "flex flex-col-reverse pt-1"
@@ -109,7 +136,7 @@ function SidebarHeader({
         <div className="text-white font-medium text-sm px-2">
           <div className="flex items-center space-x-3">
             {logo || (
-              <div className="bg-[#b5bbc516] dark:bg-gray-800 h-10 w-14 rounded-lg border-[#90959e96] dark:border-gray-700 border flex items-center justify-center">
+              <div className="bg-sidebar-muted/40 h-10 w-14 rounded-lg border-sidebar-border border flex items-center justify-center">
                 <span className="text-2xl font-bold">K</span>
               </div>
             )}
@@ -133,24 +160,34 @@ function SidebarHeader({
   );
 }
 
-function SidebarSearch({ isOpen }: { isOpen: boolean }) {
-  return isOpen ? (
-    <div className="flex items-center space-x-2 mx-2 bg-[#b5bbc516] dark:bg-gray-800 px-3 py-[5px] rounded-md border-[#90959e96] dark:border-gray-700 border">
-      <svg className="size-5" fill="#b5bbc5" viewBox="0 0 24 24">
+function SidebarSearch({ isOpen, onSearch }: Readonly<SidebarSearchProps>) {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch?.(event.target.value);
+  };
+
+  if (isOpen) {
+    return (
+    <div className="flex items-center space-x-2 mx-2 bg-sidebar-muted/40 px-3 py-[5px] rounded-md border-sidebar-border border">
+      <svg className="size-5" fill="#b5bbc5" viewBox="0 0 24 24" aria-hidden="true">
         <path
           fill="#b5bbc5"
           d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
         />
       </svg>
       <input
-        type="text"
+        type="search"
         placeholder="Search"
+        onChange={handleChange}
         className="bg-transparent outline-none text-[#b5bbc5] text-[0.8rem] w-full"
+        aria-label="Search menu"
       />
     </div>
-  ) : (
-    <div className="bg-[#b5bbc516] dark:bg-gray-800 border-[#90959e96] dark:border-gray-700 border flex justify-center items-center px-2 py-1 rounded-md">
-      <svg className="size-6" fill="#b5bbc5" viewBox="0 0 24 24">
+    );
+  }
+
+  return (
+    <div className="bg-sidebar-muted/40 border-sidebar-border border flex justify-center items-center px-2 py-1 rounded-md">
+      <svg className="size-6" fill="#b5bbc5" viewBox="0 0 24 24" aria-hidden="true">
         <path
           fill="#b5bbc5"
           d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
@@ -165,12 +202,7 @@ function SidebarMenuItem({
   isOpen,
   index,
   LinkComponent,
-}: {
-  item: MenuItem;
-  isOpen: boolean;
-  index: number;
-  LinkComponent?: React.ComponentType<{ to: string; className?: string; children: ReactNode }>;
-}) {
+}: Readonly<SidebarMenuItemProps>) {
   const Icon = item.icon;
   const hasChildren = item.children && item.children.length > 0;
   const [expanded, setExpanded] = useState(false);
@@ -185,7 +217,7 @@ function SidebarMenuItem({
         <button
           onClick={() => setExpanded(!expanded)}
           className={`w-full ${baseClasses} ${hoverClasses}`}
-          title={!isOpen ? item.label : undefined}
+          title={isOpen ? undefined : item.label}
         >
           <div>{Icon && <Icon size={18} />}</div>
           <span
@@ -196,7 +228,7 @@ function SidebarMenuItem({
             {item.label}
           </span>
           {isOpen && (
-            <span className="text-gray-400 dark:text-gray-500">
+            <span className="text-muted-foreground">
               {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
             </span>
           )}
@@ -211,7 +243,7 @@ function SidebarMenuItem({
                   {child.label}
                 </>
               );
-              const childClasses = "flex items-center text-xs gap-2 py-1.5 px-2 rounded-md transition-colors text-gray-400 dark:text-gray-500 hover:text-white dark:hover:text-gray-200 hover:bg-[rgba(32,61,148,0.3)] dark:hover:bg-gray-800";
+              const childClasses = "flex items-center text-xs gap-2 py-1.5 px-2 rounded-md transition-colors text-muted-foreground hover:text-white dark:hover:text-gray-200 hover:bg-[rgba(32,61,148,0.3)] dark:hover:bg-gray-800";
 
               if (LinkComponent) {
                 return (
@@ -255,7 +287,7 @@ function SidebarMenuItem({
           {menuContent}
         </LinkComponent>
       ) : (
-        <a href={item.path || "#"} className={className} title={!isOpen ? item.label : undefined}>
+        <a href={item.path || "#"} className={className} title={isOpen ? undefined : item.label}>
           {menuContent}
         </a>
       )}
@@ -270,13 +302,7 @@ function SidebarFooter({
   onLogout,
   onProfile,
   onSettings,
-}: {
-  user?: { fullName?: string; email?: string; avatar?: string };
-  isOpen: boolean;
-  onLogout?: () => void;
-  onProfile?: () => void;
-  onSettings?: () => void;
-}) {
+}: Readonly<SidebarFooterProps>) {
   const displayName = user?.fullName || "User";
   const email = user?.email || "";
   const avatar = user?.avatar ? (
@@ -295,7 +321,7 @@ function SidebarFooter({
     <>
       <DropdownMenuLabel className="text-gray-300 dark:text-gray-400 font-normal">
         <p className="font-medium text-white dark:text-gray-200 truncate">{displayName}</p>
-        <p className="text-xs text-gray-400 dark:text-gray-500 truncate">{email}</p>
+        <p className="text-xs text-muted-foreground truncate">{email}</p>
       </DropdownMenuLabel>
       <DropdownMenuSeparator className="bg-[#90959e40] dark:bg-gray-700" />
       <DropdownMenuItem
@@ -332,7 +358,7 @@ function SidebarFooter({
               {avatar}
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" side="right" className="w-56 bg-[#0F123F] dark:bg-gray-900 border-[#90959e60] dark:border-gray-700 text-gray-100 dark:text-gray-200">
+          <DropdownMenuContent align="start" side="right" className="w-56 bg-sidebar border-[#90959e60] dark:border-gray-700 text-sidebar-foreground">
             {menuContent}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -343,7 +369,7 @@ function SidebarFooter({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="w-full flex items-center justify-between gap-2 bg-[#0F123F] dark:bg-gray-900 hover:bg-[#151a4a] dark:hover:bg-gray-800 rounded-lg border border-[#90959e60] dark:border-gray-700 px-3 py-2.5 text-left focus:outline-none focus:ring-2 focus:ring-[#90959e60] dark:focus:ring-gray-600 transition-colors">
+        <button className="w-full flex items-center justify-between gap-2 bg-sidebar hover:bg-[#151a4a] dark:hover:bg-gray-800 rounded-lg border border-[#90959e60] dark:border-gray-700 px-3 py-2.5 text-left focus:outline-none focus:ring-2 focus:ring-[#90959e60] dark:focus:ring-gray-600 transition-colors">
           <div className="flex items-center gap-3 min-w-0 flex-1">
             {avatar}
             <div className="min-w-0 flex-1">
@@ -354,7 +380,7 @@ function SidebarFooter({
           <ChevronDown className="h-4 w-4 text-[#b5bbc5] shrink-0" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" side="top" className="w-56 bg-[#0F123F] dark:bg-gray-900 border-[#90959e60] dark:border-gray-700 text-gray-100 dark:text-gray-200">
+      <DropdownMenuContent align="start" side="top" className="w-56 bg-sidebar border-[#90959e60] dark:border-gray-700 text-sidebar-foreground">
         {menuContent}
       </DropdownMenuContent>
     </DropdownMenu>

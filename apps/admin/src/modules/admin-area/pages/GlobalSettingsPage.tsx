@@ -57,7 +57,7 @@ export default function GlobalSettingsPage() {
         <span>Application config and feature flags. Toggle overrides are saved and logged.</span>
       </div>
 
-      <div className="bg-white dark:bg-[#1a1f3b] rounded-md shadow-sm border border-border overflow-hidden">
+      <div className="bg-card dark:bg-[#1a1f3b] rounded-md shadow-sm border border-border overflow-hidden">
         <h3 className="px-4 py-3 text-sm font-semibold border-b border-border bg-muted/30">
           Application
         </h3>
@@ -89,7 +89,7 @@ export default function GlobalSettingsPage() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#1a1f3b] rounded-md shadow-sm border border-border overflow-hidden">
+      <div className="bg-card dark:bg-[#1a1f3b] rounded-md shadow-sm border border-border overflow-hidden">
         <div className="px-4 py-3 text-sm font-semibold border-b border-border bg-muted/30 flex items-center justify-between">
           <span>Feature flags</span>
           <Button variant="outline" size="sm" onClick={handleReset}>

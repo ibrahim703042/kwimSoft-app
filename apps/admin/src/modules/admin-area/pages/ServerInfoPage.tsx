@@ -7,7 +7,7 @@ export default function ServerInfoPage() {
   return (
     <div className="p-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden">
+        <div className="bg-card dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden">
           <h2 className="px-4 py-3 text-sm font-semibold border-b border-border bg-muted/30">
             Server info
           </h2>
@@ -29,7 +29,7 @@ export default function ServerInfoPage() {
             </table>
           </div>
         </div>
-        <div className="bg-white dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden">
+        <div className="bg-card dark:bg-[#1a1f3b] rounded-md shadow-sm transition-colors overflow-hidden">
           <h2 className="px-4 py-3 text-sm font-semibold border-b border-border bg-muted/30">
             Profile
           </h2>

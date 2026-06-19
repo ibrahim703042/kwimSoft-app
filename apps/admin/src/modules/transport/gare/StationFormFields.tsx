@@ -43,7 +43,7 @@ export function StationFormFields({
 
       <div className="col-span-6">
         <Label>
-          Pays <span className="text-red-500 text-[0.7rem]">*</span>
+          Pays <span className="text-destructive text-[0.7rem]">*</span>
         </Label>
         <Input
           type="text"
@@ -55,13 +55,13 @@ export function StationFormFields({
           disabled
         />
         {formik.touched.country && formik.errors.country && (
-          <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.country}</p>
+          <p className="text-destructive text-[0.7rem] mt-1">{formik.errors.country}</p>
         )}
       </div>
 
       <div className="col-span-6">
         <Label>
-          Région <span className="text-red-500 text-[0.7rem]">*</span>
+          Région <span className="text-destructive text-[0.7rem]">*</span>
         </Label>
         <Input
           type="text"
@@ -76,7 +76,7 @@ export function StationFormFields({
 
       <div className="col-span-6">
         <Label>
-          Longitude <span className="text-red-500 text-[0.7rem]">*</span>
+          Longitude <span className="text-destructive text-[0.7rem]">*</span>
         </Label>
         <Input
           type="number"
@@ -87,13 +87,13 @@ export function StationFormFields({
           disabled
         />
         {coordinatesTouched && longitudeError && (
-          <p className="text-red-500 text-[0.7rem] mt-1">{longitudeError}</p>
+          <p className="text-destructive text-[0.7rem] mt-1">{longitudeError}</p>
         )}
       </div>
 
       <div className="col-span-6">
         <Label>
-          Latitude <span className="text-red-500 text-[0.7rem]">*</span>
+          Latitude <span className="text-destructive text-[0.7rem]">*</span>
         </Label>
         <Input
           type="number"
@@ -104,13 +104,13 @@ export function StationFormFields({
           disabled
         />
         {coordinatesTouched && latitudeError && (
-          <p className="text-red-500 text-[0.7rem] mt-1">{latitudeError}</p>
+          <p className="text-destructive text-[0.7rem] mt-1">{latitudeError}</p>
         )}
       </div>
 
       <div className="col-span-4">
         <Label>
-          Gare <span className="text-red-500 text-[0.7rem]">*</span>
+          Gare <span className="text-destructive text-[0.7rem]">*</span>
         </Label>
         <Input
           type="text"
@@ -120,13 +120,13 @@ export function StationFormFields({
           onChange={formik.handleChange}
         />
         {formik.touched.name && formik.errors.name && (
-          <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.name}</p>
+          <p className="text-destructive text-[0.7rem] mt-1">{formik.errors.name}</p>
         )}
       </div>
 
       <div className="col-span-4">
         <Label>
-          Station <span className="text-red-500 text-[0.7rem]">*</span>
+          Station <span className="text-destructive text-[0.7rem]">*</span>
         </Label>
         <Input
           type="text"
@@ -136,13 +136,13 @@ export function StationFormFields({
           onChange={formik.handleChange}
         />
         {formik.touched.state && formik.errors.state && (
-          <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.state}</p>
+          <p className="text-destructive text-[0.7rem] mt-1">{formik.errors.state}</p>
         )}
       </div>
 
       <div className="col-span-4">
         <Label>
-          Code Trajet <span className="text-red-500 text-[0.7rem]">*</span>
+          Code Trajet <span className="text-destructive text-[0.7rem]">*</span>
         </Label>
         <Input
           type="text"
@@ -152,7 +152,7 @@ export function StationFormFields({
           onChange={formik.handleChange}
         />
         {formik.touched.postalCode && formik.errors.postalCode && (
-          <p className="text-red-500 text-[0.7rem] mt-1">{formik.errors.postalCode}</p>
+          <p className="text-destructive text-[0.7rem] mt-1">{formik.errors.postalCode}</p>
         )}
       </div>
     </div>

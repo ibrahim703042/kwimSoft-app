@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { attendanceApi, employeeApi, departmentApi } from "../../api/hr.api";
+import { attendanceApi, employeeApi, departmentApi } from "@kwim/modules-hr";
 import { cn } from "@/lib/utils";
 
 function extractList(res: any): any[] {

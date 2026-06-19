@@ -33,7 +33,7 @@ import {
   leaveApi,
   attendanceApi,
   payrollApi,
-} from "../../api/hr.api";
+} from "@kwim/modules-hr";
 
 const STATUS_LABELS: Record<string, string> = {
   active: "Actif",

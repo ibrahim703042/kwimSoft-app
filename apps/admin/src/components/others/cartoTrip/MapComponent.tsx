@@ -7,9 +7,9 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import GeocoderControl from "./GeocoderControl";
+import { MAP_KEYS } from "@kwim/config";
 
-const TOKEN =
-    "pk.eyJ1IjoibWFydGlubWJ4IiwiYSI6ImNrMDc0dnBzNzA3c3gzZmx2bnpqb2NwNXgifQ.D6Fm6UO9bWViernvxZFW_A";
+const TOKEN = MAP_KEYS.mapbox;
 
 export default function MapComponent({ latitude, longitude, onClick, height = '200px' }) {
     return (

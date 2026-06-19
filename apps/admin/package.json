@@ -18,6 +18,7 @@
     "@kwim/auth": "workspace:*",
     "@kwim/config": "workspace:*",
     "@kwim/core": "workspace:*",
+    "@kwim/modules-hr": "workspace:*",
     "@kwim/shared-ui": "workspace:*",
     "@kwim/ui": "workspace:*",
     "@kwim/utils": "workspace:*",

@@ -5,9 +5,9 @@ const GUEST_USER_ID = "guest-kwim";
 function base64UrlEncode(data: object): string {
   const json = JSON.stringify(data);
   const base64 =
-    typeof btoa !== "undefined"
-      ? btoa(json)
-      : Buffer.from(json).toString("base64");
+    typeof btoa === "undefined"
+      ? Buffer.from(json).toString("base64")
+      : btoa(json);
   return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
@@ -39,7 +39,7 @@ export function createGuestUser(): User {
     firstName: "Kwim",
     lastName: "Guest",
     roles: [GUEST_CREDENTIALS.role],
-    permissions: ["*"],
+    permissions: [],
     isEmailVerified: true,
     status: "active_returning",
     accessToken,

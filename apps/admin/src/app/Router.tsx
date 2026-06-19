@@ -42,8 +42,10 @@ export function AppRouter() {
         {/* Public landing page — always shown as home */}
         <Route path="/" element={<LandingPage />} />
 
-        {/* Diagnostic page to check auth status */}
-        <Route path="/diagnostic" element={<DiagnosticPage />} />
+        {/* Diagnostic page — development only */}
+        {import.meta.env.DEV && (
+          <Route path="/diagnostic" element={<DiagnosticPage />} />
+        )}
 
         {/* Public trial page with module selection */}
         <Route
@@ -109,7 +111,7 @@ export function AppRouter() {
 
         {/* Protected dynamic routes from modules */}
         {routes
-          .filter((route) => route && route.path)
+          .filter((route) => route?.path)
           .map((route) => {
             const element = route.permission ? (
               <Can permission={route.permission}>{route.element}</Can>

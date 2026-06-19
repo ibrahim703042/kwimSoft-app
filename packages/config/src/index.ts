@@ -55,6 +55,7 @@ export const API_CONFIG = {
     baseUrl: URLS.userManagement,
     endpoints: {
       auth: "/auth",
+      me: "/me",
       users: "/users",
       groups: "/group",
       roles: "/role",
@@ -269,5 +270,11 @@ export const FEATURES = {
   enableBusManagement: true,
   enableFlightManagement: true,
 };
+
+/** Third-party map API keys — set via VITE_* env vars (never hardcode in source) */
+export const MAP_KEYS = {
+  mapbox: (import.meta.env.VITE_MAPBOX_TOKEN ?? "").toString().trim(),
+  googleMaps: (import.meta.env.VITE_GOOGLE_MAPS_KEY ?? "").toString().trim(),
+} as const;
 
 export default API_CONFIG;

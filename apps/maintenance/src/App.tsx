@@ -1,4 +1,5 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, maintenanceMenuItems, maintenanceModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { maintenanceModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
 import { Wrench, ClipboardCheck, Calendar, AlertTriangle, Settings } from "lucide-react";
@@ -20,15 +21,12 @@ const items: ShellNavItem[] = maintenanceMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Maintenance",
     menus: maintenanceModuleConfig.menu,
-    user: {
-      fullName: "Maintenance User",
-      email: "maintenance@kwimsoft.com",
-      role: "Maintenance Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: Wrench,
@@ -72,10 +70,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

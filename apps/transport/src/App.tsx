@@ -1,7 +1,8 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, transportMenuItems, transportModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { transportModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
-import { Truck, Route, MapPin, Users, Ticket, Calendar } from "lucide-react";
+import { Route, MapPin, Users, Ticket, Calendar } from "lucide-react";
 import { Dashboard, createPlaceholderPage } from "./pages";
 
 const DriversPage = createPlaceholderPage("Conducteurs", "Gérer les conducteurs");
@@ -32,15 +33,12 @@ const items: ShellNavItem[] = transportMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Transport",
     menus: transportModuleConfig.menu,
-    user: {
-      fullName: "Transport User",
-      email: "transport@kwimsoft.com",
-      role: "Transport Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: Route,
@@ -84,10 +82,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

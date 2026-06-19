@@ -1,4 +1,5 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, salesMenuItems, salesModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { salesModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Users, FileText, Tag, UserCog } from "lucide-react";
@@ -26,15 +27,12 @@ const items: ShellNavItem[] = salesMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Sales",
     menus: salesModuleConfig.menu,
-    user: {
-      fullName: "Sales User",
-      email: "sales@kwimsoft.com",
-      role: "Sales Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: ShoppingCart,
@@ -78,10 +76,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

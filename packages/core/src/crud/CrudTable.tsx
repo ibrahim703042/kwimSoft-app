@@ -11,9 +11,10 @@ import {
   VisibilityState,
   RowSelectionState,
   ColumnFiltersState,
+  type Table as ReactTable,
+  type Row,
 } from "@tanstack/react-table";
 import { CrudPermissions } from "./types";
-import PacmanLoader from "react-spinners/PacmanLoader";
 import { Pencil, Trash2, Eye } from "lucide-react";
 import {
   TooltipProvider,
@@ -28,26 +29,48 @@ import {
   TableBody,
   TableCell,
   Checkbox,
+  EmptyState,
+  TableSkeleton,
 } from "@kwim/shared-ui";
 
+function SelectAllCheckboxHeader<T>({ table }: { readonly table: ReactTable<T> }) {
+  return (
+    <Checkbox
+      checked={
+        table.getIsAllPageRowsSelected() ||
+        (table.getIsSomePageRowsSelected() && "indeterminate")
+      }
+      onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      aria-label="Select all"
+    />
+  );
+}
+
+function SelectRowCheckbox<T>({ row }: { readonly row: Row<T> }) {
+  return (
+    <Checkbox
+      checked={row.getIsSelected()}
+      onCheckedChange={(value) => row.toggleSelected(!!value)}
+      aria-label="Select row"
+    />
+  );
+}
+
 interface CrudTableProps<T> {
-  data: T[];
-  columns: ColumnDef<T>[];
-  isLoading?: boolean;
-  enablePagination?: boolean;
-  pageSize?: number;
-  permissions?: CrudPermissions;
-  checkPermission?: (permission?: string) => boolean;
-  onEdit?: (row: T) => void;
-  onDelete?: (row: T) => void;
-  onView?: (row: T) => void;
-  customActions?: (row: T) => React.ReactNode;
-  /** Enable row selection with checkboxes and optional bulk delete */
-  enableRowSelection?: boolean;
-  /** Return unique id for each row (required for selection when data has an id field) */
-  getRowId?: (row: T) => string;
-  /** Called when user triggers bulk delete; receives selected rows */
-  onBulkDelete?: (rows: T[]) => void;
+  readonly data: T[];
+  readonly columns: ColumnDef<T>[];
+  readonly isLoading?: boolean;
+  readonly enablePagination?: boolean;
+  readonly pageSize?: number;
+  readonly permissions?: CrudPermissions;
+  readonly checkPermission?: (permission?: string) => boolean;
+  readonly onEdit?: (row: T) => void;
+  readonly onDelete?: (row: T) => void;
+  readonly onView?: (row: T) => void;
+  readonly customActions?: (row: T) => React.ReactNode;
+  readonly enableRowSelection?: boolean;
+  readonly getRowId?: (row: T) => string;
+  readonly onBulkDelete?: (rows: T[]) => void;
 }
 
 export function CrudTable<T>({
@@ -65,7 +88,7 @@ export function CrudTable<T>({
   enableRowSelection = false,
   getRowId,
   onBulkDelete,
-}: CrudTableProps<T>) {
+}: Readonly<CrudTableProps<T>>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -75,23 +98,8 @@ export function CrudTable<T>({
     if (!enableRowSelection) return columns;
     const selectColumn: ColumnDef<T> = {
       id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
+      header: SelectAllCheckboxHeader,
+      cell: SelectRowCheckbox,
       enableSorting: false,
       enableHiding: false,
     };
@@ -191,6 +199,40 @@ export function CrudTable<T>({
     }
   };
 
+  const hasActions = !!(onEdit || onDelete || onView || customActions);
+  const colSpan = columnsWithSelection.length + (hasActions ? 1 : 0);
+
+  const renderTableBody = () => {
+    if (isLoading) {
+      return (
+        <TableRow>
+          <TableCell colSpan={colSpan} className="p-0">
+            <TableSkeleton rows={5} cols={Math.min(columnsWithSelection.length, 5)} />
+          </TableCell>
+        </TableRow>
+      );
+    }
+    if (table.getRowModel().rows.length > 0) {
+      return table.getRowModel().rows.map((row) => (
+        <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+          {row.getVisibleCells().map((cell) => (
+            <TableCell key={cell.id}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </TableCell>
+          ))}
+          {hasActions && <TableCell>{renderActions(row.original)}</TableCell>}
+        </TableRow>
+      ));
+    }
+    return (
+      <TableRow>
+        <TableCell colSpan={colSpan} className="p-0">
+          <EmptyState title="Aucune donnée" description="Aucun élément trouvé." />
+        </TableCell>
+      </TableRow>
+    );
+  };
+
   return (
     <div className="w-full min-w-0">
       {hasSelection && (
@@ -236,42 +278,7 @@ export function CrudTable<T>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell
-                  colSpan={columnsWithSelection.length + ((onEdit || onDelete || onView || customActions) ? 1 : 0)}
-                  className="h-24 text-center whitespace-nowrap"
-                >
-                  <div className="w-full flex justify-center">
-                    <PacmanLoader size={10} color="#0F123F" />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : table.getRowModel().rows.length > 0 ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                  {(onEdit || onDelete || onView || customActions) && (
-                    <TableCell>{renderActions(row.original)}</TableCell>
-                  )}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columnsWithSelection.length + ((onEdit || onDelete || onView || customActions) ? 1 : 0)}
-                  className="h-24 text-center whitespace-nowrap"
-                >
-                  <p className="text-[0.8rem] text-red-500">No data found</p>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          <TableBody>{renderTableBody()}</TableBody>
         </Table>
         </div>
       </div>

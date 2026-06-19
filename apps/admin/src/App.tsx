@@ -3,7 +3,7 @@ import { useAuthStore } from "./core/auth";
 import { AppShell } from "./app/AppShell";
 import { useThemeStore } from "@kwim/shared-ui";
 import { setApiClient } from "@/core/crud";
-import { apiClient } from "@/core/api";
+import { apiClient } from "@kwim/api-client";
 
 setApiClient(apiClient);
 
@@ -24,14 +24,14 @@ const App: React.FC = () => {
     const html = document.documentElement;
 
     if (theme === "system") {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDark = globalThis.matchMedia("(prefers-color-scheme: dark)").matches;
       html.classList.toggle("dark", prefersDark);
     } else {
       html.classList.toggle("dark", theme === "dark");
     }
 
     // Optional: respond to system theme changes if user selected "system"
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const media = globalThis.matchMedia("(prefers-color-scheme: dark)");
     const listener = (e: MediaQueryListEvent) => {
       if (theme === "system") {
         html.classList.toggle("dark", e.matches);

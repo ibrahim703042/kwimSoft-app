@@ -5,7 +5,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { leaveApi, employeeApi } from "../../api/hr.api";
+import { leaveApi, employeeApi } from "@kwim/modules-hr";
 import EnhancedTable from "@/modules/user/pages/EnhancedTable";
 import { CrudForm, TabbedForm } from "@/core/crud";
 import { leaveSchema, defaultValues, type LeaveFormValues } from "./leave.schema";

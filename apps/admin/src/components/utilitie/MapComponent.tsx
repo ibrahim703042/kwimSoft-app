@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GoogleMap, LoadScript, Autocomplete, Marker } from "@react-google-maps/api";
+import { MAP_KEYS } from "@kwim/config";
 import pointerImg from "../../assets/img/img/pointer.png";
 
 interface StationLocation {
@@ -12,7 +13,7 @@ interface StationItem {
 }
 
 interface MapComponentProps {
-  Station?: StationItem[];
+  readonly Station?: StationItem[];
 }
 
 const containerStyle: React.CSSProperties = {
@@ -25,7 +26,7 @@ const center = {
   lng: 29.9189,
 };
 
-function MapComponent({ Station }: MapComponentProps) {
+function MapComponent({ Station }: Readonly<MapComponentProps>) {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [searchBox, setSearchBox] = useState<google.maps.places.Autocomplete | null>(null);
 
@@ -45,7 +46,7 @@ function MapComponent({ Station }: MapComponentProps) {
   };
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyAsdwuTDFzqEddFBkP6q5Wj0aGY2cyUakI" libraries={["places"]}>
+    <LoadScript googleMapsApiKey={MAP_KEYS.googleMaps} libraries={["places"]}>
       <div style={{ position: "relative" }}>
         {/* Barre de recherche */}
         <div style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", zIndex: 1000 }}>
@@ -77,19 +78,19 @@ function MapComponent({ Station }: MapComponentProps) {
           {/* Affichage des marqueurs pour chaque station */}
           {Station?.map((station: StationItem, index: number) =>
             station.locations?.coordinates?.length === 2 &&
-            !isNaN(station.locations.coordinates[0]) &&
-            !isNaN(station.locations.coordinates[1]) ? (
+            !Number.isNaN(station.locations.coordinates[0]) &&
+            !Number.isNaN(station.locations.coordinates[1]) ? (
               <Marker
-                key={index}
+                key={station.name ?? `station-marker-${index}`}
                 position={{
                   lat: station.locations.coordinates[1],
                   lng: station.locations.coordinates[0],
                 }}
                 icon={
-                  typeof window !== "undefined" && window.google?.maps
+                  globalThis.window?.google?.maps
                     ? {
                         url: pointerImg,
-                        scaledSize: new window.google.maps.Size(40, 30),
+                        scaledSize: new globalThis.window.google.maps.Size(40, 30),
                       }
                     : undefined
                 }

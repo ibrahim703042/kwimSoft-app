@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { API_CONFIG } from '@kwim/config';
 import { getSubdomainInfo } from './subdomain';
 
 /**
@@ -32,7 +33,7 @@ export function createApiClient(baseURL?: string): AxiosInstance {
       return config;
     },
     (error) => {
-      return Promise.reject(error);
+      throw error;
     }
   );
 
@@ -50,10 +51,8 @@ export function createApiClient(baseURL?: string): AxiosInstance {
           // Try to refresh token
           const refreshToken = localStorage.getItem('refresh_token');
           if (refreshToken) {
-            const response = await axios.post(
-              `${import.meta.env.VITE_API_HOST}/api/auth/refresh`,
-              { refreshToken }
-            );
+            const refreshUrl = `${API_CONFIG.userManagement.baseUrl}${API_CONFIG.userManagement.endpoints.auth}/refresh`;
+            const response = await axios.post(refreshUrl, { refreshToken });
 
             const { accessToken } = response.data;
             localStorage.setItem('access_token', accessToken);
@@ -67,12 +66,12 @@ export function createApiClient(baseURL?: string): AxiosInstance {
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
           localStorage.removeItem('user');
-          window.location.href = '/login';
-          return Promise.reject(refreshError);
+          globalThis.location.href = '/login';
+          throw refreshError;
         }
       }
 
-      return Promise.reject(error);
+      throw error;
     }
   );
 

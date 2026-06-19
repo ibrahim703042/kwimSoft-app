@@ -1,20 +1,18 @@
 import { AppLayout, type AppLayoutConfig } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { inventoryModuleConfig } from "@/config/module.config";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { Warehouse, Package, ClipboardList, Truck, BarChart3 } from "lucide-react";
+import { Package, ClipboardList, Truck, BarChart3 } from "lucide-react";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Inventory",
     menus: inventoryModuleConfig.menu,
-    user: {
-      fullName: "Inventory User",
-      email: "inventory@kwimsoft.com",
-      role: "Inventory Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: Package,
@@ -52,10 +50,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

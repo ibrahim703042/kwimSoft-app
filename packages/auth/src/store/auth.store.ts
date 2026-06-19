@@ -1,8 +1,11 @@
 import { create } from "zustand";
 import { AuthStore, User } from "../types";
+import { setTokens, clearTokens } from "../session";
 
 /** Roles (lower-cased) that grant wildcard (*) permission automatically */
-const SUPER_ROLES = ["superadmin", "super_admin", "admin", "super admin", "superadministrator", "super administrator"];
+const SUPER_ROLES = new Set([
+  "superadmin", "super_admin", "admin", "super admin", "superadministrator", "super administrator",
+]);
 
 /**
  * Normalise a role value to a string.
@@ -27,7 +30,7 @@ function normalizeRole(role: any): string {
 function buildPermissions(user: User | null): string[] {
   if (!user) return [];
   const perms = [...(user.permissions || [])];
-  const isSuperAdmin = user.roles?.some((r: any) => SUPER_ROLES.includes(normalizeRole(r)));
+  const isSuperAdmin = user.roles?.some((r: any) => SUPER_ROLES.has(normalizeRole(r)));
   if (isSuperAdmin && !perms.includes("*")) {
     perms.push("*");
   }
@@ -42,8 +45,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   setUser: (user: User) => {
     localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("access_token", user.accessToken);
-    localStorage.setItem("refresh_token", user.refreshToken);
+    setTokens(user.accessToken, user.refreshToken);
     const permissions = buildPermissions(user);
     set({
       user,
@@ -55,8 +57,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   logout: () => {
     localStorage.removeItem("user");
     localStorage.removeItem("permissions");
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    clearTokens();
     set({
       user: null,
       isAuthenticated: false,

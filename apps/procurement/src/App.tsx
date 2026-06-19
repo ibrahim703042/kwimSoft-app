@@ -1,4 +1,5 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, procurementMenuItems, procurementModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { procurementModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
 import { Package, Truck, FileText, ClipboardList, Building } from "lucide-react";
@@ -26,15 +27,12 @@ const items: ShellNavItem[] = procurementMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Procurement",
     menus: procurementModuleConfig.menu,
-    user: {
-      fullName: "Procurement User",
-      email: "procurement@kwimsoft.com",
-      role: "Procurement Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: FileText,
@@ -78,10 +76,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

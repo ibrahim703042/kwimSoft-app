@@ -10,21 +10,49 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  ErrorState,
 } from "@kwim/shared-ui";
-import { Plus, AlertCircle, RefreshCw, Filter, Search } from "lucide-react";
+import { Plus, Filter, Search } from "lucide-react";
 import { CrudConfig } from "./types";
 import Swal from "sweetalert2";
 import { useDebounce } from "../hooks";
 import { cn } from "../lib/utils";
 
-type CrudPageProps<T> = {
+type CrudPageProps<T> = Readonly<{
   config: CrudConfig<T>;
   addButton?: React.ReactNode;
   onEdit?: (row: T) => void;
   onView?: (row: T) => void;
   children?: React.ReactNode;
   canCreate?: boolean;
-};
+}>;
+
+function getCrudErrorState(error: unknown): {
+  message: string;
+  details: string;
+  variant: "error" | "network" | "not-found";
+} {
+  const err = error as { response?: { status?: number; data?: { message?: string } }; message?: string };
+  if (err?.response?.status === 404) {
+    return {
+      message: "Ce service n'est pas encore disponible.",
+      details: err?.response?.data?.message || err?.message || "Veuillez réessayer.",
+      variant: "not-found",
+    };
+  }
+  if (err?.message === "Network Error") {
+    return {
+      message: "Erreur réseau. Vérifiez votre connexion.",
+      details: err?.message || "Veuillez réessayer.",
+      variant: "network",
+    };
+  }
+  return {
+    message: "Erreur lors du chargement des données.",
+    details: err?.response?.data?.message || err?.message || "Veuillez réessayer.",
+    variant: "error",
+  };
+}
 
 /**
  * Generic CRUD page component.
@@ -65,8 +93,6 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
   });
 
   const data = responseData?.data?.content || responseData?.data || [];
-  const _total = responseData?.data?.total || data.length;
-  void _total;
 
   const { mutate: deleteMutate, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => {
@@ -202,25 +228,10 @@ export function CrudPage<T extends { _id?: string; id?: string }>({
       {/* Table card — inner content is CrudTable (or custom children) */}
       <div className={cn("rounded-lg border min-w-0 overflow-hidden", "bg-white dark:bg-gray-800")}>
         {error ? (
-          <div className="flex flex-col items-center justify-center py-16 text-muted-foreground gap-3">
-            <AlertCircle className="h-10 w-10 text-destructive" />
-            <p className="text-sm font-medium">
-              {(error as any)?.response?.status === 404
-                ? "Ce service n'est pas encore disponible."
-                : (error as any)?.message === "Network Error"
-                  ? "Erreur réseau. Vérifiez votre connexion."
-                  : "Erreur lors du chargement des données."}
-            </p>
-            <p className="text-xs max-w-md text-center">
-              {(error as any)?.response?.data?.message ||
-                (error as any)?.message ||
-                "Veuillez réessayer."}
-            </p>
-            <Button variant="outline" size="sm" onClick={() => refetch()} className="mt-2">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Réessayer
-            </Button>
-          </div>
+          <ErrorState
+            {...getCrudErrorState(error)}
+            onRetry={() => refetch()}
+          />
         ) : (
           children ?? (
             <CrudTable

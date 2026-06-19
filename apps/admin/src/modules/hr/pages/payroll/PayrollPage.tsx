@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { payrollApi, employeeApi } from "../../api/hr.api";
+import { payrollApi, employeeApi } from "@kwim/modules-hr";
 import EnhancedTable from "@/modules/user/pages/EnhancedTable";
 import { CrudForm, TabbedForm } from "@/core/crud";
 import { payrollSchema, defaultValues, type PayrollFormValues } from "./payroll.schema";

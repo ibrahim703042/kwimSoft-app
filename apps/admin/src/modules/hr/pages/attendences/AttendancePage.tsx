@@ -5,7 +5,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { attendanceApi, employeeApi } from "../../api/hr.api";
+import { attendanceApi, employeeApi } from "@kwim/modules-hr";
 import EnhancedTable from "@/modules/user/pages/EnhancedTable";
 import { CrudForm, TabbedForm } from "@/core/crud";
 import { attendanceSchema, defaultValues, type AttendanceFormValues } from "./attendance.schema";

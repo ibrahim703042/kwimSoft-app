@@ -1,4 +1,5 @@
 import { AppLayout, type AppLayoutConfig } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { hrModuleConfig } from "./config/module.config";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
@@ -19,15 +20,12 @@ import LeavePage from "./pages/leave/LeavePage";
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft HR",
     menus: hrModuleConfig.menu,
-    user: {
-      fullName: "HR User",
-      email: "hr@kwimsoft.com",
-      role: "HR Manager",
-    },
+    user: toAppLayoutUser(user),
     // quickActions: [
     //   {
     //     icon: UserPlus,
@@ -79,10 +77,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

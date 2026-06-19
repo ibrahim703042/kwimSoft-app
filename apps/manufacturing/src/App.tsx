@@ -1,4 +1,5 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, manufacturingMenuItems, manufacturingModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { manufacturingModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
 import { Factory, ClipboardList, Wrench, Settings, CheckCircle } from "lucide-react";
@@ -26,15 +27,12 @@ const items: ShellNavItem[] = manufacturingMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Manufacturing",
     menus: manufacturingModuleConfig.menu,
-    user: {
-      fullName: "Manufacturing User",
-      email: "manufacturing@kwimsoft.com",
-      role: "Production Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: ClipboardList,
@@ -78,10 +76,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

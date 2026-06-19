@@ -1,7 +1,8 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, crmMenuItems, crmModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { crmModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
-import { Users, UserPlus, Target, Mail, Activity } from "lucide-react";
+import { UserPlus, Target, Mail, Activity } from "lucide-react";
 import { Dashboard, createPlaceholderPage } from "./pages";
 
 const ContactsPage = createPlaceholderPage("Contacts", "Gérer les contacts");
@@ -26,15 +27,12 @@ const items: ShellNavItem[] = crmMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft CRM",
     menus: crmModuleConfig.menu,
-    user: {
-      fullName: "CRM User",
-      email: "crm@kwimsoft.com",
-      role: "Sales Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: UserPlus,
@@ -72,10 +70,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

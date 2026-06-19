@@ -9,12 +9,15 @@ export default function DiagnosticPage() {
   const [localStorageData, setLocalStorageData] = useState<any>({});
 
   useEffect(() => {
-    // Read all localStorage data
-    const data: any = {};
+    const data: Record<string, string> = {};
+    const sensitiveKeys = new Set(["access_token", "refresh_token", "user"]);
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key) {
-        data[key] = localStorage.getItem(key);
+        const value = localStorage.getItem(key) ?? "";
+        data[key] = sensitiveKeys.has(key)
+          ? `[REDACTED — ${value.length} chars]`
+          : value;
       }
     }
     setLocalStorageData(data);
@@ -22,7 +25,7 @@ export default function DiagnosticPage() {
 
   const clearAllData = () => {
     localStorage.clear();
-    window.location.href = "/";
+    globalThis.location.href = "/";
   };
 
   return (

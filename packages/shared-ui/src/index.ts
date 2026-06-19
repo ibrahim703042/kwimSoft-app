@@ -5,6 +5,7 @@ export * from "./components/sidebar";
 export * from "./configs";
 export * from "./components/ui";
 export * from "./components/utility";
+export * from "./components/feedback";
 export * from "./hooks";
 export * from "./stores";
 export { cn } from "./lib/utils";

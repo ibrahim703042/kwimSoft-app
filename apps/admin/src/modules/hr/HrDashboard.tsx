@@ -29,7 +29,7 @@ import {
   recruitmentApi,
   trainingApi,
   expenseApi,
-} from "./api/hr.api";
+} from "@kwim/modules-hr";
 
 type ResData = (res: any) => any[];
 

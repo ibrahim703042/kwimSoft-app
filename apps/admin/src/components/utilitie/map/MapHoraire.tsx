@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { GoogleMap, LoadScript, Marker, DirectionsRenderer, Polyline } from "@react-google-maps/api";
+import { MAP_KEYS } from "@kwim/config";
 import departedImg from "../../../assets/img/img/departed.png";
 import arrivalImg from "../../../assets/img/img/arrival.png";
 import stopImg from "../../../assets/img/img/stop.png";
@@ -23,7 +24,7 @@ interface DataCartoType {
 }
 
 interface MapHoraireProps {
-  DataCarto?: DataCartoType;
+  readonly DataCarto?: DataCartoType;
 }
 
 const containerStyle: React.CSSProperties = {
@@ -36,7 +37,7 @@ const center = {
   lng: 29.9189,
 };
 
-function MapHoraire({ DataCarto }: MapHoraireProps) {
+function MapHoraire({ DataCarto }: Readonly<MapHoraireProps>) {
   const [directionsResponse, setDirectionsResponse] = useState<google.maps.DirectionsResult | null>(null);
   const [polylinePath, setPolylinePath] = useState<{ lat: number; lng: number }[]>([]);
 
@@ -54,13 +55,14 @@ function MapHoraire({ DataCarto }: MapHoraireProps) {
     };
 
     const waypoints =
-      DataCarto.routes?.map((route: RoutePoint) => ({
-        location: {
-          lat: route.station.locations!.coordinates![1],
-          lng: route.station.locations!.coordinates![0],
-        },
-        stopover: false,
-      })) ?? [];
+      DataCarto.routes?.flatMap((route: RoutePoint) => {
+        const coords = route.station?.locations?.coordinates;
+        if (!coords || coords.length < 2) return [];
+        return [{
+          location: { lat: coords[1], lng: coords[0] },
+          stopover: false,
+        }];
+      }) ?? [];
 
     const directionsService = new google.maps.DirectionsService();
     directionsService.route(
@@ -89,43 +91,43 @@ function MapHoraire({ DataCarto }: MapHoraireProps) {
   }, [DataCarto]);
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyAsdwuTDFzqEddFBkP6q5Wj0aGY2cyUakI">
+    <LoadScript googleMapsApiKey={MAP_KEYS.googleMaps}>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={8}>
         {/* Marqueur départ */}
-        {DataCarto?.departureStation?.locations?.coordinates?.length === 2 && (
+        {(() => {
+          const coords = DataCarto?.departureStation?.locations?.coordinates;
+          if (!coords || coords.length < 2) return null;
+          return (
           <Marker
-            position={{
-              lat: DataCarto.departureStation.locations!.coordinates![1],
-              lng: DataCarto.departureStation.locations!.coordinates![0],
-            }}
+            position={{ lat: coords[1], lng: coords[0] }}
             icon={{
               url: departedImg,
               scaledSize: new google.maps.Size(40, 32),
             }}
           />
-        )}
+          );
+        })()}
 
-        {/* Marqueur arrivée */}
-        {DataCarto?.arrivalStation?.locations?.coordinates?.length === 2 && (
+        {(() => {
+          const coords = DataCarto?.arrivalStation?.locations?.coordinates;
+          if (!coords || coords.length < 2) return null;
+          return (
           <Marker
-            position={{
-              lat: DataCarto.arrivalStation.locations!.coordinates![1],
-              lng: DataCarto.arrivalStation.locations!.coordinates![0],
-            }}
+            position={{ lat: coords[1], lng: coords[0] }}
             icon={{
               url: arrivalImg,
               scaledSize: new google.maps.Size(40, 32),
             }}
           />
-        )}
+          );
+        })()}
 
-        {/* Marqueurs pour les stations intermédiaires */}
         {DataCarto?.routes?.map((route: RoutePoint, index: number) => {
           const coords = route.station?.locations?.coordinates;
           if (!coords?.length) return null;
           return (
           <Marker
-            key={index}
+            key={`horaire-stop-${coords[0]}-${coords[1]}-${index}`}
             position={{ lat: coords[1], lng: coords[0] }}
             icon={{
               url: stopImg,

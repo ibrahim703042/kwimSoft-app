@@ -1,3 +1,6 @@
+/**
+ * @deprecated Use CrudTable from @kwim/core instead. This legacy MUI-based table will be removed.
+ */
 import { useState, MouseEvent } from "react";
 import {
   flexRender,
@@ -36,16 +39,14 @@ import { IconButton } from "@mui/material";
 import PacmanLoader from "react-spinners/PacmanLoader";
 
 interface ReusableDataTableProps<T> {
-  data: T[];
-  columns: ColumnDef<T>[];
-  enablePagination?: boolean;
-  enableRowSelection?: boolean;
-  customActions?: (row: T) => React.ReactNode;
-  ButtonIconsAdd?: React.ReactNode;
-  ComponentButtonAdd?: React.ReactNode;
-  titleDataTable?: string;
-  isLoading?: boolean;
-  pageSize?: number;
+  readonly data: T[];
+  readonly columns: ColumnDef<T>[];
+  readonly enablePagination?: boolean;
+  readonly customActions?: (row: T) => React.ReactNode;
+  readonly ComponentButtonAdd?: React.ReactNode;
+  readonly titleDataTable?: string;
+  readonly isLoading?: boolean;
+  readonly pageSize?: number;
 }
 
 
@@ -58,7 +59,7 @@ export function ReusableDataTable<T>({
   titleDataTable,
   isLoading = false,
   pageSize = 10,
-}: ReusableDataTableProps<T>) {
+}: Readonly<ReusableDataTableProps<T>>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -91,6 +92,39 @@ export function ReusableDataTable<T>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
+
+  const renderTableBody = () => {
+    if (isLoading) {
+      return (
+        <TableRow>
+          <TableCell colSpan={columns.length} className="h-24 text-center whitespace-nowrap">
+            <div className="w-full flex justify-center">
+              <PacmanLoader size={10} color="#0F123F" />
+            </div>
+          </TableCell>
+        </TableRow>
+      );
+    }
+    if (table.getRowModel().rows.length > 0) {
+      return table.getRowModel().rows.map((row) => (
+        <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+          {row.getVisibleCells().map((cell) => (
+            <TableCell key={cell.id}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </TableCell>
+          ))}
+          {customActions && <TableCell>{customActions(row.original)}</TableCell>}
+        </TableRow>
+      ));
+    }
+    return (
+      <TableRow>
+        <TableCell colSpan={columns.length} className="h-24 text-center whitespace-nowrap">
+          <p className="text-[0.8rem] text-red-500">Aucune donnée trouvée</p>
+        </TableCell>
+      </TableRow>
+    );
+  };
 
   return (
     <div className="w-full">
@@ -136,34 +170,7 @@ export function ReusableDataTable<T>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center whitespace-nowrap">
-                  <div className="w-full flex justify-center">
-                    <PacmanLoader size={10} color="#0F123F" />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : table.getRowModel().rows.length > 0 ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                  {customActions && <TableCell>{customActions(row.original)}</TableCell>}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center whitespace-nowrap">
-                  <p className="text-[0.8rem] text-red-500">Aucune donnée trouvée</p>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          <TableBody>{renderTableBody()}</TableBody>
         </Table>
       </div>
 

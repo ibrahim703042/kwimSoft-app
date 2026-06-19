@@ -19,6 +19,8 @@ export interface ShellNavItem {
 
 export interface ModuleShellProps {
   title: string;
+  /** Breadcrumb path (e.g. "/administration") */
+  breadcrumbPath?: string;
   items: ShellNavItem[];
   bottomItems?: ShellNavItem[];
   enableSearch?: boolean;
@@ -26,6 +28,8 @@ export interface ModuleShellProps {
   children?: ReactNode;
   defaultSelected?: string;
   onTabChange?: (key: string, label: string) => void;
+  /** Called when breadcrumb context should update (mount/update/unmount) */
+  onBreadcrumbChange?: (items: Array<{ path: string; name: string }> | null) => void;
 }
 
 /**
@@ -34,6 +38,7 @@ export interface ModuleShellProps {
  */
 export function ModuleShell({
   title,
+  breadcrumbPath,
   items,
   bottomItems = [],
   enableSearch = false,
@@ -41,7 +46,8 @@ export function ModuleShell({
   children,
   defaultSelected,
   onTabChange,
-}: ModuleShellProps) {
+  onBreadcrumbChange,
+}: Readonly<ModuleShellProps>) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [collapsed, setCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,17 +60,17 @@ export function ModuleShell({
       ? urlTab
       : defaultSelected || items[0]?.key || "";
 
-  const [selectedKey, setSelectedKeyState] = useState(initialKey);
+  const [selectedKey, setSelectedKey] = useState(initialKey);
 
-  const setSelectedKey = useCallback(
+  const selectTab = useCallback(
     (key: string) => {
-      setSelectedKeyState(key);
+      setSelectedKey(key);
       setSearchParams((prev) => {
         const newParams = new URLSearchParams(prev);
         newParams.set("tab", key);
         return newParams;
       }, { replace: true });
-      
+
       const item = allItems.find(i => i.key === key);
       if (item && onTabChange) {
         onTabChange(key, item.label);
@@ -75,9 +81,19 @@ export function ModuleShell({
 
   useEffect(() => {
     if (urlTab && validKeys.includes(urlTab) && urlTab !== selectedKey) {
-      setSelectedKeyState(urlTab);
+      setSelectedKey(urlTab);
     }
   }, [urlTab, validKeys, selectedKey]);
+
+  useEffect(() => {
+    if (!onBreadcrumbChange) return;
+    if (breadcrumbPath) {
+      onBreadcrumbChange([{ path: breadcrumbPath, name: title }]);
+    }
+    return () => {
+      onBreadcrumbChange(null);
+    };
+  }, [breadcrumbPath, title, onBreadcrumbChange]);
 
   const toggle = () => setCollapsed((p) => !p);
 
@@ -109,12 +125,14 @@ export function ModuleShell({
 
       <div className="flex gap-3 overflow-hidden">
         <div className={cn("absolute mt-0", collapsed ? "block" : "hidden")}>
-          <div
+          <button
+            type="button"
             className="border mx-3 bg-background p-1 rotate-180 rounded-b-lg rounded-l-lg cursor-pointer hover:bg-muted transition-colors"
             onClick={toggle}
+            aria-label="Afficher le menu"
           >
             <PanelLeftClose size={18} />
-          </div>
+          </button>
         </div>
 
         <div className="sm:block hidden">
@@ -166,7 +184,7 @@ export function ModuleShell({
                     return (
                       <li key={item.key}>
                         <button
-                          onClick={() => setSelectedKey(item.key)}
+                          onClick={() => selectTab(item.key)}
                           className={cn(
                             "w-full group relative flex items-center gap-2.5 rounded-lg py-2 px-3 text-[0.85rem] font-medium transition-all duration-150",
                             isActive
@@ -229,7 +247,7 @@ export function ModuleShell({
                           <button
                             onClick={() =>
                               isTabMode
-                                ? setSelectedKey(item.key)
+                                ? selectTab(item.key)
                                 : undefined
                             }
                             className={cn(

@@ -35,8 +35,8 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: {
-      username: "kwim274651",
-      password: "KwimSoft@2026",
+      username: "",
+      password: "",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Le nom d'utilisateur est requis"),
@@ -123,9 +123,9 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(3)].map((_, i) => (
+        {Array.from({ length: 3 }, (_, i) => (
           <motion.div
-            key={i}
+            key={`bg-blob-${i}`}
             className="absolute rounded-full opacity-10 blur-3xl"
             style={{
               width: `${400 + i * 100}px`,
@@ -191,7 +191,7 @@ export default function Login() {
                 "Analyses et rapports avancés",
               ].map((feature, i) => (
                 <motion.div
-                  key={i}
+                  key={feature}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.3 + i * 0.1 }}
@@ -338,16 +338,18 @@ export default function Login() {
                 )}
               </button>
 
-              {/* Guest Login */}
-              <button
-                type="button"
-                onClick={handleGuestLogin}
-                disabled={loading}
-                className="w-full py-3 border-2 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 text-gray-700 font-medium rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <UserRound className="w-5 h-5 text-indigo-600" />
-                Continuer en tant qu'invité
-              </button>
+              {/* Guest Login — development only */}
+              {import.meta.env.DEV && (
+                <button
+                  type="button"
+                  onClick={handleGuestLogin}
+                  disabled={loading}
+                  className="w-full py-3 border-2 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 text-gray-700 font-medium rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  <UserRound className="w-5 h-5 text-indigo-600" />
+                  Continuer en tant qu'invité
+                </button>
+              )}
             </form>
 
             {/* Divider */}

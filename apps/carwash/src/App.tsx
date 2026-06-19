@@ -1,4 +1,5 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, carwashMenuItems, carwashModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { carwashModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
 import { Car, ClipboardList, DollarSign, Users } from "lucide-react";
@@ -22,15 +23,12 @@ const items: ShellNavItem[] = carwashMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Carwash",
     menus: carwashModuleConfig.menu,
-    user: {
-      fullName: "Carwash User",
-      email: "carwash@kwimsoft.com",
-      role: "Carwash Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: Car,
@@ -68,10 +66,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

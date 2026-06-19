@@ -1,7 +1,8 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, financeMenuItems, financeModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { financeModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
-import { DollarSign, FileText, CreditCard, PiggyBank, BookOpen, Calculator } from "lucide-react";
+import { FileText, CreditCard, PiggyBank, BookOpen, Calculator } from "lucide-react";
 import { Dashboard, createPlaceholderPage } from "./pages";
 
 const AccountsPage = createPlaceholderPage("Comptes", "Gérer les comptes financiers");
@@ -28,15 +29,12 @@ const items: ShellNavItem[] = financeMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Finance",
     menus: financeModuleConfig.menu,
-    user: {
-      fullName: "Finance User",
-      email: "finance@kwimsoft.com",
-      role: "Accountant",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: FileText,
@@ -80,10 +78,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

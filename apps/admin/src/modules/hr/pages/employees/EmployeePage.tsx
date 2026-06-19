@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { FormField, FormItem, FormControl } from "@/components/ui/form";
 import Swal from "sweetalert2";
 
-import { employeeApi, departmentApi, positionApi } from "../../api/hr.api";
+import { employeeApi, departmentApi, positionApi } from "@kwim/modules-hr";
 import { employeeSchema, defaultValues, type EmployeeFormValues } from "./employee.schema";
 import { employeeColumns } from "./employee.columns";
 import { useEmployeeTabs } from "./useEmployeeTabs";

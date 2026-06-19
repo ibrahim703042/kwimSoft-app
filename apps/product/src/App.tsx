@@ -1,7 +1,8 @@
 import { AppLayout, type AppLayoutConfig, ModuleShell, productMenuItems, productModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { productModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
-import { Package, FolderTree, Tag, Layers, Bookmark, DollarSign } from "lucide-react";
+import { Package, FolderTree, Tag, Layers, DollarSign } from "lucide-react";
 import { Dashboard, createPlaceholderPage } from "./pages";
 
 const CategoriesPage = createPlaceholderPage("Catégories", "Gérer les catégories");
@@ -34,15 +35,12 @@ const items: ShellNavItem[] = productMenuItems.map((item) => ({
 
 function App() {
   const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
   const config: AppLayoutConfig = {
     appName: "KwimSoft Products",
     menus: productModuleConfig.menu,
-    user: {
-      fullName: "Product User",
-      email: "product@kwimsoft.com",
-      role: "Product Manager",
-    },
+    user: toAppLayoutUser(user),
     quickActions: [
       {
         icon: Package,
@@ -86,10 +84,7 @@ function App() {
         read: false,
       },
     ],
-    onLogout: () => {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-    },
+    onLogout: createAuthLogoutHandler(logout),
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
   };

@@ -28,7 +28,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { idCardTemplateApi } from "../../api/hr.api";
+import { idCardTemplateApi } from "@kwim/modules-hr";
 import Swal from "sweetalert2";
 
 const ORIENTATION_OPTIONS = [

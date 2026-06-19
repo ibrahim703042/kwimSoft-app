@@ -1,2 +1,2 @@
-export { default as apiClient } from "./apiClient";
+export { apiClient, default } from "@kwim/api-client";
 export * from "./userManagementApi";

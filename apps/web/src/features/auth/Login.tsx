@@ -3,14 +3,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../auth.store";
+import { useAuthStore, applyGuestLogin } from "@kwim/auth";
 import { API_CONFIG } from "@/config/index";
 import { jwtDecode } from "jwt-decode";
 import { showErrorAlert } from "@/components/utilitie/AlertPopup";
 import { motion } from "framer-motion";
 import { 
   Mail, Lock, Eye, EyeOff, ArrowRight, 
-  Building2, Sparkles, AlertCircle, Loader2 
+  Building2, Sparkles, AlertCircle, Loader2, UserRound
 } from "lucide-react";
 
 export default function Login() {
@@ -19,6 +19,19 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
+
+  const handleGuestLogin = () => {
+    setLoading(true);
+    setError("");
+    try {
+      applyGuestLogin(setUser);
+      navigate("/dashboard");
+    } catch {
+      setError("Impossible de se connecter en tant qu'invité.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -323,6 +336,17 @@ export default function Login() {
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
+              </button>
+
+              {/* Guest Login */}
+              <button
+                type="button"
+                onClick={handleGuestLogin}
+                disabled={loading}
+                className="w-full py-3 border-2 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 text-gray-700 font-medium rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <UserRound className="w-5 h-5 text-indigo-600" />
+                Continuer en tant qu'invité
               </button>
             </form>
 

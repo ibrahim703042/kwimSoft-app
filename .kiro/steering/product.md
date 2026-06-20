@@ -1,33 +1,30 @@
-# Product Overview
+# KWIM ERP - Multi-Tenant Business Management Platform
 
-This is a multi-tenant ERP/business management platform built with a modular architecture inspired by Odoo. The system supports multiple business domains through independent modules.
+KWIM is a modular, multi-tenant ERP (Enterprise Resource Planning) platform built with React and TypeScript. The system follows an Odoo-inspired architecture where business domains are organized as independent, self-contained modules.
 
-## Core Capabilities
+## Core Modules
 
-- Multi-tenant architecture with subdomain-based tenant isolation
-- Role-based access control (RBAC) with permission-based feature access
-- Modular plugin system where each business domain is a self-contained module
-- Multi-language support (English/French via i18next)
-- Theme support (light/dark mode)
+The platform includes specialized modules for different business domains:
 
-## Business Modules
+- **Admin** - Central administration and dashboard
+- **Transport** - Fleet and logistics management
+- **HR** - Human resources and employee management
+- **Finance** - Financial management and accounting
+- **CRM** - Customer relationship management
+- **Product** - Product catalog and management
+- **Sales** - Sales operations and orders
+- **Procurement** - Purchase orders and supplier management
+- **Manufacturing** - Production planning and execution
+- **Inventory** - Stock and warehouse management
+- **Maintenance** - Asset maintenance tracking
+- **Carwash** - Car wash service management
 
-The platform includes modules for:
-- Transport management (vehicles, drivers, trips, stations, reservations)
-- HR management (employees, payroll, attendance, leave, recruitment)
-- Product management (catalog, categories, pricing, inventory)
-- Sales & CRM (customers, leads, opportunities, orders)
-- Finance (accounts, invoices, payments, budgets)
-- Procurement (suppliers, purchase orders, RFQs)
-- Manufacturing (BOMs, work orders, quality checks)
-- Inventory & warehouse management
-- Maintenance management
-- Car wash operations
+## Key Features
 
-## User Experience
-
-- Landing page for trial signups and module selection
-- Protected dashboard with module-based navigation
-- Sidebar navigation with collapsible menu items
-- Global search and language/theme switching
-- Permission-based UI rendering (users only see what they can access)
+- **Multi-tenant architecture** - Isolated data per tenant with automatic tenant context management
+- **Modular design** - Each business domain is an independent application
+- **Role-based access control (RBAC)** - Permission-based UI and actions
+- **Shared component library** - Consistent UI across all modules
+- **Generic CRUD system** - Reduces boilerplate by 70% for standard list/form operations
+- **Type-safe API integration** - Automatic API client generation from OpenAPI specs
+- **Internationalization** - Multi-language support (English, French)

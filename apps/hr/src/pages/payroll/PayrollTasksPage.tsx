@@ -18,7 +18,7 @@ export default function PayrollTasksPage() {
       </div>
 
       <div className="grid gap-4 max-w-lg">
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-4 flex items-center justify-between">
+        <div className="rounded-lg border bg-card p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-primary/10 rounded-lg">
               <Play className="h-5 w-5 text-primary" />
@@ -30,7 +30,7 @@ export default function PayrollTasksPage() {
           </div>
           <Button size="sm" variant="outline">Lancer</Button>
         </div>
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-4 flex items-center justify-between">
+        <div className="rounded-lg border bg-card p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-muted rounded-lg">
               <Calendar className="h-5 w-5 text-muted-foreground" />

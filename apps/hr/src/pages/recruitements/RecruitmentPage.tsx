@@ -392,7 +392,7 @@ export default function RecruitmentPage() {
         </Dialog>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800">
+      <div className="rounded-lg border bg-card">
         <CrudTable
           data={recruits}
           columns={columns}

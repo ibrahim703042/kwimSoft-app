@@ -251,7 +251,7 @@ export default function ContractPage() {
         </Button>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800">
+      <div className="rounded-lg border bg-card">
         <CrudTable
           data={contracts}
           columns={columns}

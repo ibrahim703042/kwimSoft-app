@@ -4,8 +4,9 @@ import { productModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
 import { Package, FolderTree, Tag, Layers, DollarSign } from "lucide-react";
 import { Dashboard, createPlaceholderPage } from "./pages";
+import CategoriesPage from "./pages/categories/CategoriesPage";
 
-const CategoriesPage = createPlaceholderPage("Catégories", "Gérer les catégories");
+const CategoriesPageRoute = CategoriesPage;
 const SubCategoriesPage = createPlaceholderPage("Sous-catégories", "Gérer les sous-catégories");
 const BrandsPage = createPlaceholderPage("Marques", "Gérer les marques");
 const ProductsPage = createPlaceholderPage("Produits", "Gérer les produits");
@@ -17,7 +18,7 @@ const ReviewsPage = createPlaceholderPage("Avis", "Gérer les avis clients");
 
 const pageComponents: Record<string, React.ComponentType> = {
   "dashboard": Dashboard,
-  "categories": CategoriesPage,
+  "categories": CategoriesPageRoute,
   "sub-categories": SubCategoriesPage,
   "brands": BrandsPage,
   "products": ProductsPage,

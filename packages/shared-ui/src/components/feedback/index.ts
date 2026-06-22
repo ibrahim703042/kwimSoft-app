@@ -5,3 +5,7 @@ export { ErrorState, ErrorBanner } from "./ErrorState";
 export type { ErrorStateProps } from "./ErrorState";
 export { QueryState } from "./QueryState";
 export type { QueryStateProps } from "./QueryState";
+export { ModulePlaceholderPage, createPlaceholderPage } from "./ModulePlaceholderPage";
+export type { ModulePlaceholderPageProps } from "./ModulePlaceholderPage";
+export { ModuleDashboard } from "./ModuleDashboard";
+export type { ModuleDashboardProps, ModuleDashboardStat } from "./ModuleDashboard";

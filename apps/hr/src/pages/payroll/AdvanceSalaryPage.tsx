@@ -85,7 +85,7 @@ export default function AdvanceSalaryPage() {
         </Dialog>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+      <div className="rounded-lg border bg-card p-6">
         <p className="text-sm text-muted-foreground text-center py-8">
           Aucune demande d'avance. Les demandes apparaîtront ici après configuration de l'API avances.
         </p>

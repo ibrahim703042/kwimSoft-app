@@ -188,7 +188,7 @@ export default function LoanPaymentsPage() {
 
       {/* Summary Cards */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-4">
+        <div className="rounded-lg border bg-card p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 rounded-lg">
               <Banknote className="h-5 w-5 text-blue-600" />
@@ -199,7 +199,7 @@ export default function LoanPaymentsPage() {
             </div>
           </div>
         </div>
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-4">
+        <div className="rounded-lg border bg-card p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-green-100 rounded-lg">
               <CheckCircle className="h-5 w-5 text-green-600" />
@@ -210,7 +210,7 @@ export default function LoanPaymentsPage() {
             </div>
           </div>
         </div>
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-4">
+        <div className="rounded-lg border bg-card p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-orange-100 rounded-lg">
               <Clock className="h-5 w-5 text-orange-600" />
@@ -221,7 +221,7 @@ export default function LoanPaymentsPage() {
             </div>
           </div>
         </div>
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-4">
+        <div className="rounded-lg border bg-card p-4">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-lg ${overdueCount > 0 ? "bg-red-100" : "bg-gray-100"}`}>
               <AlertTriangle className={`h-5 w-5 ${overdueCount > 0 ? "text-red-600" : "text-gray-600"}`} />
@@ -235,7 +235,7 @@ export default function LoanPaymentsPage() {
       </div>
 
       {/* Progress Bar */}
-      <div className="rounded-lg border bg-white dark:bg-gray-800 p-4">
+      <div className="rounded-lg border bg-card p-4">
         <div className="flex justify-between text-sm mb-2">
           <span className="font-medium">Progression du remboursement</span>
           <span className="font-bold">{progressPercent.toFixed(1)}%</span>
@@ -253,7 +253,7 @@ export default function LoanPaymentsPage() {
       </div>
 
       {/* Payment Schedule */}
-      <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+      <div className="rounded-lg border bg-card p-6">
         <h3 className="flex items-center gap-2 text-lg font-semibold mb-4">
           <Receipt className="h-5 w-5" /> Échéancier des paiements
         </h3>

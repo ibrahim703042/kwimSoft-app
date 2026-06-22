@@ -4,10 +4,10 @@ import { transportModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
 import { Route, MapPin, Users, Ticket, Calendar } from "lucide-react";
 import { Dashboard, createPlaceholderPage } from "./pages";
+import StationsPage from "./pages/stations/StationsPage";
 
 const DriversPage = createPlaceholderPage("Conducteurs", "Gérer les conducteurs");
 const VehiclesPage = createPlaceholderPage("Véhicules", "Gérer les véhicules");
-const StationsPage = createPlaceholderPage("Gares", "Gérer les gares");
 const SchedulesPage = createPlaceholderPage("Horaires", "Gérer les horaires");
 const TripsPage = createPlaceholderPage("Voyages", "Gérer les voyages");
 const SeatsPage = createPlaceholderPage("Sièges", "Gérer les sièges");

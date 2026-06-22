@@ -380,7 +380,7 @@ export default function LoanListPage() {
         </Dialog>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800">
+      <div className="rounded-lg border bg-card">
         <CrudTable
           data={loans}
           columns={columns}

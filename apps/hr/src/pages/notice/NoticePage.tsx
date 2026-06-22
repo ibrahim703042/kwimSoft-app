@@ -466,7 +466,7 @@ export default function NoticePage() {
         </Dialog>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800">
+      <div className="rounded-lg border bg-card">
         <CrudTable
           data={notices}
           columns={columns}

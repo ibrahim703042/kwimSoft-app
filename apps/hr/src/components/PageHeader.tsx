@@ -20,7 +20,12 @@ export interface PageHeaderProps {
   actions?: PageHeaderAction[];
 }
 
-export function PageHeader({ title, description, icon: Icon, actions = [] }: PageHeaderProps) {
+export function PageHeader({
+  title,
+  description,
+  icon: Icon,
+  actions = [],
+}: Readonly<PageHeaderProps>) {
   const visibleActions = actions.filter((a) => a.show !== false);
 
   return (
@@ -36,14 +41,14 @@ export function PageHeader({ title, description, icon: Icon, actions = [] }: Pag
       </div>
       {visibleActions.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
-          {visibleActions.map((action, index) => {
+          {visibleActions.map((action) => {
             const ActionIcon = action.icon;
             return (
               <Button
-                key={index}
+                key={action.label}
                 variant={action.variant ?? "outline"}
                 size="sm"
-                className={action.variant === "default" ? "bg-[#0F123F] " + (action.className ?? "") : action.className}
+                className={action.variant === "default" ? "bg-primary " + (action.className ?? "") : action.className}
                 onClick={action.onClick}
               >
                 {ActionIcon && <ActionIcon className="h-4 w-4 mr-2" />}

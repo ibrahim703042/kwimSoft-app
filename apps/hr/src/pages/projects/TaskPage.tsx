@@ -439,7 +439,7 @@ export default function TaskPage() {
         </Dialog>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800">
+      <div className="rounded-lg border bg-card">
         <CrudTable
           data={tasks}
           columns={columns}

@@ -1,6 +1,6 @@
 File Tree: apps
-Generated on: 6/20/2026, 6:20:07 AM
-Root path: d:\software\app\kwim-app\apps
+Generated on: 6/22/2026, 11:14:39 AM
+Root path: d:\app\kwim-app\apps
 
 ────────────────────────────────────────────────────────────────────────────────
 
@@ -255,6 +255,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │   │   ├── FinanceShell.tsx
 │   │   │   │   └── index.tsx
 │   │   │   ├── hr/
+│   │   │   │   ├── api/
 │   │   │   │   ├── pages/
 │   │   │   │   │   ├── attendences/
 │   │   │   │   │   │   ├── tabs/
@@ -577,6 +578,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -609,6 +611,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -641,6 +644,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -796,6 +800,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -828,6 +833,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -860,6 +866,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -892,6 +899,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -924,6 +932,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -957,6 +966,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -989,6 +999,7 @@ Root path: d:\software\app\kwim-app\apps
 │   │   │           ├── fontDash.jpg
 │   │   │           ├── pattern.png
 │   │   │           └── usersIcon.png
+│   │   ├── components/
 │   │   ├── config/
 │   │   │   └── module.config.ts
 │   │   ├── pages/
@@ -1030,6 +1041,7 @@ Root path: d:\software\app\kwim-app\apps
 │   ├── tsconfig.json
 │   ├── tsconfig.node.json
 │   └── vite.config.ts
+├── app.module.md
 ├── tsconfig.satellite.base.json
 ├── tsconfig.satellite.paths.json
 ├── tsconfig.satellite.template.json

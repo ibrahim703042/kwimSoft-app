@@ -16,9 +16,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Label,
+  cn,
 } from "@kwim/shared-ui";
 import { attendanceApi, employeeApi, departmentApi } from "../../api/hr.api";
-import { cn } from "@kwim/shared-ui";
 
 function extractList(res: any): any[] {
   const data = res?.data;
@@ -73,7 +74,7 @@ export default function AttendanceLogPage() {
   const departments = extractList(deptData);
 
   const filteredLogs = useMemo(() => {
-    let list = allLogs as any[];
+    let list = allLogs;
     if (employeeId) {
       list = list.filter((r) => (r.employee?._id || r.employee) === employeeId);
     }
@@ -107,6 +108,57 @@ export default function AttendanceLogPage() {
   };
 
 
+  const renderTableRows = () => {
+    if (isLoading) {
+      return (
+        <TableRow>
+          <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+            Chargement...
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (filteredLogs.length === 0) {
+      return (
+        <TableRow>
+          <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+            Aucun enregistrement
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    return filteredLogs.map((row: any, index: number) => (
+      <TableRow key={row._id || `attendance-log-${index}`}>
+        <TableCell className="font-medium">{index + 1}</TableCell>
+        <TableCell>{empName(row)}</TableCell>
+        <TableCell>
+          {ATTENDANCE_TYPE_LABELS[row.attendanceType] || row.attendanceType || "manuel"}
+        </TableCell>
+        <TableCell className="font-mono text-xs">{row.identifier || "N/A"}</TableCell>
+        <TableCell className="whitespace-nowrap">
+          {row.date
+            ? new Date(row.date).toLocaleString("fr-FR", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              })
+            : "—"}
+        </TableCell>
+        <TableCell>{row.checkInTime || "—"}</TableCell>
+        <TableCell>{row.checkOutTime || "—"}</TableCell>
+        <TableCell>{STATUS_LABELS[row.status] || row.status || "—"}</TableCell>
+        <TableCell className="max-w-[180px] truncate" title={row.notes || ""}>
+          {row.notes || "—"}
+        </TableCell>
+      </TableRow>
+    ));
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -116,15 +168,17 @@ export default function AttendanceLogPage() {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl border p-4 shadow-sm">
+      <div className="bg-card rounded-xl border p-4 shadow-sm">
         <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
           Filtrer les pointages
         </h3>
         <div className="flex flex-wrap gap-3 items-end">
           <div className="min-w-[180px]">
-            <label className="text-xs text-muted-foreground block mb-1">Agence</label>
+            <Label htmlFor="attendance-branch-filter" className="text-xs text-muted-foreground block mb-1">
+              Agence
+            </Label>
             <Select value={toSelectValue(branch)} onValueChange={(v) => setBranch(fromSelectValue(v))}>
-              <SelectTrigger>
+              <SelectTrigger id="attendance-branch-filter">
                 <SelectValue placeholder="Sélectionner agence" />
               </SelectTrigger>
               <SelectContent>
@@ -134,9 +188,11 @@ export default function AttendanceLogPage() {
             </Select>
           </div>
           <div className="min-w-[180px]">
-            <label className="text-xs text-muted-foreground block mb-1">Département</label>
+            <Label htmlFor="attendance-department-filter" className="text-xs text-muted-foreground block mb-1">
+              Département
+            </Label>
             <Select value={toSelectValue(department)} onValueChange={(v) => setDepartment(fromSelectValue(v))}>
-              <SelectTrigger>
+              <SelectTrigger id="attendance-department-filter">
                 <SelectValue placeholder="Sélectionner département" />
               </SelectTrigger>
               <SelectContent>
@@ -150,9 +206,11 @@ export default function AttendanceLogPage() {
             </Select>
           </div>
           <div className="min-w-[200px]">
-            <label className="text-xs text-muted-foreground block mb-1">Employé</label>
+            <Label htmlFor="attendance-employee-filter" className="text-xs text-muted-foreground block mb-1">
+              Employé
+            </Label>
             <Select value={toSelectValue(employeeId)} onValueChange={(v) => setEmployeeId(fromSelectValue(v))}>
-              <SelectTrigger>
+              <SelectTrigger id="attendance-employee-filter">
                 <SelectValue placeholder="Sélectionner employé" />
               </SelectTrigger>
               <SelectContent>
@@ -172,7 +230,7 @@ export default function AttendanceLogPage() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl border shadow-sm overflow-hidden">
         <h3 className="px-4 pt-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           Journal des pointages
         </h3>
@@ -218,50 +276,7 @@ export default function AttendanceLogPage() {
                 <TableHead className="max-w-[180px]">Notes</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
-                    Chargement...
-                  </TableCell>
-                </TableRow>
-              ) : filteredLogs.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
-                    Aucun enregistrement
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredLogs.map((row: any, index: number) => (
-                  <TableRow key={row._id || index}>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>{empName(row)}</TableCell>
-                    <TableCell>
-                      {ATTENDANCE_TYPE_LABELS[row.attendanceType] || row.attendanceType || "manuel"}
-                    </TableCell>
-                    <TableCell className="font-mono text-xs">{row.identifier || "N/A"}</TableCell>
-                    <TableCell className="whitespace-nowrap">
-                      {row.date
-                        ? new Date(row.date).toLocaleString("fr-FR", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          second: "2-digit",
-                        })
-                        : "—"}
-                    </TableCell>
-                    <TableCell>{row.checkInTime || "—"}</TableCell>
-                    <TableCell>{row.checkOutTime || "—"}</TableCell>
-                    <TableCell>{STATUS_LABELS[row.status] || row.status || "—"}</TableCell>
-                    <TableCell className="max-w-[180px] truncate" title={row.notes || ""}>
-                      {row.notes || "—"}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
+            <TableBody>{renderTableRows()}</TableBody>
           </Table>
         </div>
       </div>

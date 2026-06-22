@@ -27,7 +27,7 @@ interface StatCardProps {
 function StatCard({ label, value, icon: Icon, color, href }: StatCardProps) {
   const content = (
     <div
-      className="bg-white dark:bg-[#1a1f3b] rounded-xl border border-border/40 p-4 shadow-sm hover:shadow-md transition-shadow"
+      className="bg-card rounded-xl border border-border/40 p-4 shadow-sm hover:shadow-md transition-shadow"
       style={{ borderLeftColor: color, borderLeftWidth: 4 }}
     >
       <div className="flex items-center justify-between">
@@ -90,7 +90,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-[#1a1f3b] rounded-xl border border-border/40 p-6 shadow-sm">
+        <div className="bg-card rounded-xl border border-border/40 p-6 shadow-sm">
           <h3 className="text-sm font-semibold mb-4">Actions rapides</h3>
           <div className="grid grid-cols-2 gap-3">
             <Link
@@ -124,7 +124,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#1a1f3b] rounded-xl border border-border/40 p-6 shadow-sm">
+        <div className="bg-card rounded-xl border border-border/40 p-6 shadow-sm">
           <h3 className="text-sm font-semibold mb-4">Activité récente</h3>
           <div className="text-sm text-muted-foreground text-center py-8">
             Aucune activité récente à afficher

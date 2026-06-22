@@ -22,7 +22,7 @@ export default function TaxReportPage() {
         </Button>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800 p-6 max-w-md">
+      <div className="rounded-lg border bg-card p-6 max-w-md">
         <h3 className="font-medium mb-4">Période</h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -37,7 +37,7 @@ export default function TaxReportPage() {
         <Button className="mt-4">Générer le rapport</Button>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+      <div className="rounded-lg border bg-card p-6">
         <p className="text-sm text-muted-foreground text-center py-8">
           Sélectionnez une période et générez le rapport pour voir les totaux d'impôts retenus.
         </p>

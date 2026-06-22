@@ -212,7 +212,7 @@ export default function SettingsPage() {
       </div>
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <div className="mb-4">
             <h3 className="flex items-center gap-2 text-lg font-semibold">
               <Clock className="h-5 w-5" />
@@ -284,7 +284,7 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <div className="mb-4">
             <h3 className="flex items-center gap-2 text-lg font-semibold">
               <Calendar className="h-5 w-5" />
@@ -339,7 +339,7 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <div className="mb-4">
             <h3 className="flex items-center gap-2 text-lg font-semibold">
               <Wallet className="h-5 w-5" />
@@ -395,7 +395,7 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <div className="mb-4">
             <h3 className="flex items-center gap-2 text-lg font-semibold">
               <UserCheck className="h-5 w-5" />
@@ -443,7 +443,7 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Notifications</h3>
             <p className="text-sm text-muted-foreground">

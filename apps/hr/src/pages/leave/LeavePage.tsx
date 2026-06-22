@@ -222,7 +222,7 @@ export default function LeavePage() {
         </Button>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800">
+      <div className="rounded-lg border bg-card">
         <CrudTable
           data={leaves}
           columns={columns}

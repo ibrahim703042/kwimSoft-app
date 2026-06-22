@@ -342,7 +342,7 @@ importers:
         version: 10.4.24(postcss@8.5.6)
       eslint:
         specifier: ^9.13.0
-        version: 9.39.2(jiti@2.6.1)
+        version: 9.39.2(jiti@1.21.7)
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
@@ -406,7 +406,7 @@ importers:
         version: 10.4.24(postcss@8.5.6)
       eslint:
         specifier: ^9.13.0
-        version: 9.39.2(jiti@1.21.7)
+        version: 9.39.2(jiti@2.6.1)
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
@@ -911,12 +911,24 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
       '@kwim/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      formik:
+        specifier: ^2.4.6
+        version: 2.4.9(@types/react@18.3.28)(react@18.3.1)
       lucide-react:
         specifier: ^0.469.0
         version: 0.469.0(react@18.3.1)
@@ -929,6 +941,12 @@ importers:
       react-router-dom:
         specifier: ^6.28.0
         version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sweetalert2:
+        specifier: ^11.14.5
+        version: 11.26.18
+      yup:
+        specifier: ^1.6.1
+        version: 1.7.1
       zustand:
         specifier: ^5.0.3
         version: 5.0.11(@types/react@18.3.28)(immer@11.1.4)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
@@ -1039,12 +1057,24 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
       '@kwim/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      formik:
+        specifier: ^2.4.6
+        version: 2.4.9(@types/react@18.3.28)(react@18.3.1)
       lucide-react:
         specifier: ^0.469.0
         version: 0.469.0(react@18.3.1)
@@ -1057,6 +1087,15 @@ importers:
       react-router-dom:
         specifier: ^6.28.0
         version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-spinners:
+        specifier: ^0.15.0
+        version: 0.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sweetalert2:
+        specifier: ^11.14.5
+        version: 11.26.18
+      yup:
+        specifier: ^1.6.1
+        version: 1.7.1
       zustand:
         specifier: ^5.0.3
         version: 5.0.11(@types/react@18.3.28)(immer@11.1.4)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))

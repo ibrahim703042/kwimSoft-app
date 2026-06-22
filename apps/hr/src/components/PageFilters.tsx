@@ -51,7 +51,7 @@ export function PageFilters({
   cardTitle,
   cardCount,
   filtersExpandedDefault = false,
-}: PageFiltersProps) {
+}: Readonly<PageFiltersProps>) {
   const [filtersVisible, setFiltersVisible] = useState(filtersExpandedDefault);
 
   const toggleFilters = () => {
@@ -61,12 +61,12 @@ export function PageFilters({
 
   return (
     <div className="mb-3">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 bg-white dark:bg-gray-800 p-4 rounded-xl py-5 gap-y-2 border">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 bg-card p-4 rounded-xl py-5 gap-y-2 border border-border">
         {/* Left: optional card title + count (CardDataTable-style) */}
         <div className="lg:col-span-6 sm:col-span-2 flex flex-col justify-center">
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-8 space-y-1 sm:space-y-0">
             {cardTitle != null && (
-              <p className="font-medium text-muted-foreground dark:text-[#191c21c8] text-[0.95rem]">
+              <p className="font-medium text-muted-foreground text-[0.95rem]">
                 {cardTitle}
                 {cardCount != null && (
                   <span className="text-[0.7rem] font-normal ml-1">({cardCount})</span>
@@ -81,10 +81,10 @@ export function PageFilters({
           <button
             type="button"
             onClick={toggleFilters}
-            className="bg-primary/20 dark:bg-[#707eae3a] rounded-full h-9 w-9 flex justify-center items-center hover:bg-primary/30 dark:hover:bg-[#707eae50] transition-colors"
+            className="bg-primary/20 rounded-full h-9 w-9 flex justify-center items-center hover:bg-primary/30 transition-colors"
             aria-label={filtersVisible ? "Hide filters" : "Show filters"}
           >
-            <Filter className="h-4 w-4 text-primary dark:text-[#707eae]" />
+            <Filter className="h-4 w-4 text-primary" />
           </button>
         </div>
 
@@ -100,9 +100,9 @@ export function PageFilters({
                 className="pl-9"
               />
             </div>
-            {selects.map((sel, index) => (
+            {selects.map((sel) => (
               <Select
-                key={index}
+                key={sel.placeholder}
                 value={sel.value}
                 onValueChange={sel.onValueChange}
               >

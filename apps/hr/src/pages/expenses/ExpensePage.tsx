@@ -440,7 +440,7 @@ export default function ExpensePage() {
         </Dialog>
       </div>
 
-      <div className="rounded-lg border bg-white dark:bg-gray-800">
+      <div className="rounded-lg border bg-card">
         <CrudTable
           data={expenses}
           columns={columns}

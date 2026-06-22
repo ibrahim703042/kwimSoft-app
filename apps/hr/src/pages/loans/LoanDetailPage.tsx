@@ -211,7 +211,7 @@ export default function LoanDetailPage() {
 
       {/* Action Buttons */}
       {(loan.status === "pending" || loan.status === "approved") && (
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <h3 className="text-lg font-semibold mb-4">Actions</h3>
           <div>
             <div className="flex flex-wrap gap-3">
@@ -275,7 +275,7 @@ export default function LoanDetailPage() {
       {/* Loan Details Grid */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Financial Details */}
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <h3 className="flex items-center gap-2 text-lg font-semibold mb-4">
             <Banknote className="h-5 w-5" /> Détails financiers
           </h3>
@@ -330,7 +330,7 @@ export default function LoanDetailPage() {
         </div>
 
         {/* Employee & Dates */}
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <h3 className="flex items-center gap-2 text-lg font-semibold mb-4">
             <User className="h-5 w-5" /> Informations
           </h3>
@@ -386,7 +386,7 @@ export default function LoanDetailPage() {
 
       {/* Purpose & Remarks */}
       {(loan.purpose || loan.remarks) && (
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <h3 className="flex items-center gap-2 text-lg font-semibold mb-4">
             <FileText className="h-5 w-5" /> Détails supplémentaires
           </h3>
@@ -409,7 +409,7 @@ export default function LoanDetailPage() {
 
       {/* Payment Schedule */}
       {loan.repayments && loan.repayments.length > 0 && (
-        <div className="rounded-lg border bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-lg border bg-card p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="flex items-center gap-2 text-lg font-semibold">
               <Calendar className="h-5 w-5" /> Échéancier de remboursement

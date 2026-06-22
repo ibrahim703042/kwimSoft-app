@@ -12,14 +12,21 @@
   },
   "dependencies": {
     "@kwim/shared-ui": "workspace:*",
+    "@kwim/core": "workspace:*",
     "@kwim/auth": "workspace:*",
     "@kwim/config": "workspace:*",
     "@kwim/api-client": "workspace:*",
     "@kwim/utils": "workspace:*",
+    "@tanstack/react-query": "^5.64.1",
+    "@tanstack/react-table": "^8.20.5",
+    "formik": "^2.4.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
+    "react-spinners": "^0.15.0",
     "lucide-react": "^0.469.0",
+    "sweetalert2": "^11.14.5",
+    "yup": "^1.6.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

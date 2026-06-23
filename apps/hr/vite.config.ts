@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import path from "path";
+import path from "node:path";
 
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
@@ -12,6 +12,8 @@ export default defineConfig({
       "@kwim/auth": path.resolve(__dirname, "../../packages/auth/src"),
       "@kwim/config": path.resolve(__dirname, "../../packages/config/src"),
       "@kwim/api-client": path.resolve(__dirname, "../../packages/api-client/src"),
+      "@kwim/core": path.resolve(__dirname, "../../packages/core/src"),
+      "@kwim/modules-hr": path.resolve(__dirname, "../../packages/modules/hr/src"),
       "@kwim/utils": path.resolve(__dirname, "../../packages/utils/src"),
     },
     extensions: [".js", ".ts", ".jsx", ".tsx", ".json"],

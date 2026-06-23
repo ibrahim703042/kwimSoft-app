@@ -13,6 +13,7 @@ export default defineConfig({
       "@kwim/config": path.resolve(__dirname, "../../packages/config/src"),
       "@kwim/api-client": path.resolve(__dirname, "../../packages/api-client/src"),
       "@kwim/core": path.resolve(__dirname, "../../packages/core/src"),
+      "@kwim/modules-product": path.resolve(__dirname, "../../packages/modules/product/src"),
       "@kwim/utils": path.resolve(__dirname, "../../packages/utils/src"),
     },
     extensions: [".js", ".ts", ".jsx", ".tsx", ".json"],

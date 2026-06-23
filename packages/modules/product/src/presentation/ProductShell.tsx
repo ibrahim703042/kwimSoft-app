@@ -1,0 +1,42 @@
+import {
+  LayoutDashboard, FolderTree, Layers, Award, Box,
+  SlidersHorizontal, Tag, PackagePlus, BadgeDollarSign, Star,
+} from "lucide-react";
+import { ModuleShell, ShellNavItem } from "@kwim/shared-ui";
+
+import {
+  ProductDashboard,
+  CategoryPage,
+  SubCategoryPage,
+  BrandPage,
+  ProductListPage,
+  AttributePage,
+  TagPage,
+  BundlePage,
+  PricingPage,
+  ReviewPage,
+} from "./pages";
+
+const items: ShellNavItem[] = [
+  { key: "dashboard",       label: "Tableau de bord",  icon: LayoutDashboard,   component: ProductDashboard },
+  { key: "categories",      label: "Catégories",       icon: FolderTree,        component: CategoryPage },
+  { key: "sub-categories",  label: "Sous-catégories",  icon: Layers,            component: SubCategoryPage },
+  { key: "brands",          label: "Marques",          icon: Award,             component: BrandPage },
+  { key: "products",        label: "Produits",         icon: Box,               component: ProductListPage },
+  { key: "attributes",      label: "Attributs",        icon: SlidersHorizontal, component: AttributePage },
+  { key: "tags",            label: "Étiquettes",       icon: Tag,               component: TagPage },
+  { key: "bundles",         label: "Lots",             icon: PackagePlus,       component: BundlePage },
+  { key: "pricing",         label: "Tarification",     icon: BadgeDollarSign,   component: PricingPage },
+  { key: "reviews",         label: "Avis",             icon: Star,              component: ReviewPage },
+];
+
+export default function ProductShell({ breadcrumbPath = "/products" }: { breadcrumbPath?: string }) {
+  return (
+    <ModuleShell
+      title="Produits"
+      breadcrumbPath={breadcrumbPath}
+      items={items}
+      enableSearch
+    />
+  );
+}

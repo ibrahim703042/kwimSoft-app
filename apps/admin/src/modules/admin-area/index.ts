@@ -1,26 +1,16 @@
-/**
- * Admin area module — same structure as user module
- * - AdminAreaShell: shell with single "Admin" item (TabbedView)
- * - AdminAreaTabbedView: tabs Welcome | Server info | Provider info
- * - pages: WelcomePage, ServerInfoPage, ProviderInfoPage
- */
-import { FrontModule } from "@/app/ModuleRegistry";
-import { routes } from "./routes";
-import { menu } from "./menu";
+import { createAdminAreaModule } from "@kwim/modules-admin-area";
+import PageTitle from "@/components/utilitie/PageTitle";
+import { getModules } from "@/app/registerModules";
 
-export const adminAreaModule: FrontModule = {
-  name: "admin-area",
-  routes,
-  menu,
-};
+export const adminAreaModule = createAdminAreaModule({ PageTitle, getModules });
 
-export { default as AdminAreaShell } from "./AdminAreaShell";
-export { default as AdminAreaTabbedView } from "./AdminAreaTabbedView";
 export {
+  AdminAreaShell,
+  AdminAreaTabbedView,
   WelcomePage,
   ServerInfoPage,
   ProviderInfoPage,
   AuditLogPage,
   SystemStatusPage,
   GlobalSettingsPage,
-} from "./pages";
+} from "@kwim/modules-admin-area";

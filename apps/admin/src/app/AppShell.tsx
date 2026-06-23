@@ -1,9 +1,24 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import type { ReactNode } from "react";
 import { AppLayout, type AppLayoutConfig } from "@kwim/shared-ui";
 import { useAuthStore } from "@/core/auth";
 import { AppRouter } from "./Router";
 import { getAllMenus } from "./registerModules";
 import { isLandingPage } from "@/utils/subdomain";
+
+type AppLinkProps = Readonly<{
+  to: string;
+  children: ReactNode;
+  className?: string;
+}>;
+
+function AppLink({ to, children, ...props }: AppLinkProps) {
+  return (
+    <Link to={to} {...props}>
+      {children}
+    </Link>
+  );
+}
 
 /**
  * Main application shell using shared-ui AppLayout.
@@ -15,9 +30,7 @@ export function AppShell() {
   const menus = getAllMenus();
   const showLanding = isLandingPage();
 
-  const isSpecialPage =
-    location.pathname.startsWith("/trajet") ||
-    location.pathname.startsWith("/administration/map-detail");
+  const isSpecialPage = location.pathname.startsWith("/trajet");
 
   const isPublicRoute = ["/", "/diagnostic", "/trial", "/register", "/thanks/trial", "/odoo-enterprise/invite-users", "/create-enterprise", "/login", "/forgot-password", "/update-password"].includes(location.pathname);
   const isWelcomePage = location.pathname === "/welcome";
@@ -42,16 +55,12 @@ export function AppShell() {
     currentPath: location.pathname,
     onLogout: () => {
       logout();
-      window.location.href = "/login";
+      globalThis.location.href = "/login";
     },
     onProfile: () => navigate("/profile"),
     onSettings: () => navigate("/settings"),
     onNavigate: (path) => navigate(path),
-    LinkComponent: ({ to, children, ...props }) => (
-      <Link to={to} {...props}>
-        {children}
-      </Link>
-    ),
+    LinkComponent: AppLink,
     showSearch: true,
     showQuickActions: false,
     showNotifications: true,

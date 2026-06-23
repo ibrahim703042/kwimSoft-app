@@ -1,0 +1,43 @@
+{
+  "name": "@kwim/modules-user",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./api": "./src/application/user.api.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@kwim/api-client": "workspace:*",
+    "@kwim/auth": "workspace:*",
+    "@kwim/config": "workspace:*",
+    "@kwim/core": "workspace:*",
+    "@kwim/shared-ui": "workspace:*",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.7",
+    "@mui/utils": "^6.1.7",
+    "@tanstack/react-query": "^5.64.1",
+    "@tanstack/react-table": "^8.20.5",
+    "axios": "^1.7.9",
+    "formik": "^2.4.6",
+    "lucide-react": "^0.469.0",
+    "sweetalert2": "^11.14.5",
+    "date-fns": "^3.6.0",
+    "yup": "^1.6.1"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.18",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.10"
+  }
+}

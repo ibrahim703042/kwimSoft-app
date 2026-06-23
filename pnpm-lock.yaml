@@ -41,9 +41,51 @@ importers:
       '@kwim/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@kwim/modules-account':
+        specifier: workspace:*
+        version: link:../../packages/modules/account
+      '@kwim/modules-admin-area':
+        specifier: workspace:*
+        version: link:../../packages/modules/admin-area
+      '@kwim/modules-carwash':
+        specifier: workspace:*
+        version: link:../../packages/modules/carwash
+      '@kwim/modules-crm':
+        specifier: workspace:*
+        version: link:../../packages/modules/crm
+      '@kwim/modules-finance':
+        specifier: workspace:*
+        version: link:../../packages/modules/finance
       '@kwim/modules-hr':
         specifier: workspace:*
-        version: link:../../packages/modules-hr
+        version: link:../../packages/modules/hr
+      '@kwim/modules-inventory':
+        specifier: workspace:*
+        version: link:../../packages/modules/inventory
+      '@kwim/modules-maintenance':
+        specifier: workspace:*
+        version: link:../../packages/modules/maintenance
+      '@kwim/modules-manufacturing':
+        specifier: workspace:*
+        version: link:../../packages/modules/manufacturing
+      '@kwim/modules-procurement':
+        specifier: workspace:*
+        version: link:../../packages/modules/procurement
+      '@kwim/modules-product':
+        specifier: workspace:*
+        version: link:../../packages/modules/product
+      '@kwim/modules-report':
+        specifier: workspace:*
+        version: link:../../packages/modules/report
+      '@kwim/modules-sales':
+        specifier: workspace:*
+        version: link:../../packages/modules/sales
+      '@kwim/modules-transport':
+        specifier: workspace:*
+        version: link:../../packages/modules/transport
+      '@kwim/modules-user':
+        specifier: workspace:*
+        version: link:../../packages/modules/user
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -260,16 +302,16 @@ importers:
         version: 10.4.24(postcss@8.5.6)
       eslint:
         specifier: ^9.13.0
-        version: 9.39.2(jiti@2.6.1)
+        version: 9.39.2(jiti@1.21.7)
       eslint-plugin-react:
         specifier: ^7.37.2
-        version: 7.37.5(eslint@9.39.2(jiti@2.6.1))
+        version: 7.37.5(eslint@9.39.2(jiti@1.21.7))
       eslint-plugin-react-hooks:
         specifier: ^5.0.0
-        version: 5.2.0(eslint@9.39.2(jiti@2.6.1))
+        version: 5.2.0(eslint@9.39.2(jiti@1.21.7))
       eslint-plugin-react-refresh:
         specifier: ^0.4.14
-        version: 0.4.26(eslint@9.39.2(jiti@2.6.1))
+        version: 0.4.26(eslint@9.39.2(jiti@1.21.7))
       globals:
         specifier: ^15.11.0
         version: 15.15.0
@@ -306,6 +348,12 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@kwim/modules-carwash':
+        specifier: workspace:*
+        version: link:../../packages/modules/carwash
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -342,7 +390,7 @@ importers:
         version: 10.4.24(postcss@8.5.6)
       eslint:
         specifier: ^9.13.0
-        version: 9.39.2(jiti@1.21.7)
+        version: 9.39.2(jiti@2.6.1)
       postcss:
         specifier: ^8.4.47
         version: 8.5.6
@@ -370,6 +418,12 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@kwim/modules-crm':
+        specifier: workspace:*
+        version: link:../../packages/modules/crm
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -434,6 +488,12 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@kwim/modules-finance':
+        specifier: workspace:*
+        version: link:../../packages/modules/finance
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -510,6 +570,9 @@ importers:
       '@kwim/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@kwim/modules-hr':
+        specifier: workspace:*
+        version: link:../../packages/modules/hr
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -655,6 +718,12 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@kwim/modules-inventory':
+        specifier: workspace:*
+        version: link:../../packages/modules/inventory
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -719,6 +788,12 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@kwim/modules-maintenance':
+        specifier: workspace:*
+        version: link:../../packages/modules/maintenance
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -783,6 +858,12 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@kwim/modules-manufacturing':
+        specifier: workspace:*
+        version: link:../../packages/modules/manufacturing
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -847,6 +928,12 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@kwim/modules-procurement':
+        specifier: workspace:*
+        version: link:../../packages/modules/procurement
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -914,6 +1001,9 @@ importers:
       '@kwim/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@kwim/modules-product':
+        specifier: workspace:*
+        version: link:../../packages/modules/product
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -993,6 +1083,12 @@ importers:
       '@kwim/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@kwim/modules-sales':
+        specifier: workspace:*
+        version: link:../../packages/modules/sales
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -1060,6 +1156,9 @@ importers:
       '@kwim/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@kwim/modules-transport':
+        specifier: workspace:*
+        version: link:../../packages/modules/transport
       '@kwim/shared-ui':
         specifier: workspace:*
         version: link:../../packages/shared-ui
@@ -1327,30 +1426,767 @@ importers:
         specifier: ^5.7.3
         version: 5.9.3
 
-  packages/modules-hr:
+  packages/modules/account:
+    dependencies:
+      '@kwim/auth':
+        specifier: workspace:*
+        version: link:../../auth
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/admin-area:
     dependencies:
       '@kwim/api-client':
         specifier: workspace:*
-        version: link:../api-client
+        version: link:../../api-client
+      '@kwim/auth':
+        specifier: workspace:*
+        version: link:../../auth
       '@kwim/config':
         specifier: workspace:*
-        version: link:../config
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
       '@kwim/shared-ui':
         specifier: workspace:*
-        version: link:../shared-ui
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/carwash:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/crm:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/finance:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/hr:
+    dependencies:
+      '@emotion/react':
+        specifier: ^11.13.3
+        version: 11.14.0(@types/react@18.3.28)(react@18.3.1)
+      '@emotion/styled':
+        specifier: ^11.13.0
+        version: 11.14.1(@emotion/react@11.14.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1)
+      '@hookform/resolvers':
+        specifier: ^3.9.1
+        version: 3.10.0(react-hook-form@7.71.1(react@18.3.1))
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@mui/material':
+        specifier: ^6.1.7
+        version: 6.5.0(@emotion/react@11.14.0(@types/react@18.3.28)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/utils':
+        specifier: ^6.1.7
+        version: 6.4.9(@types/react@18.3.28)(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      formik:
+        specifier: ^2.4.6
+        version: 2.4.9(@types/react@18.3.28)(react@18.3.1)
       lucide-react:
         specifier: ^0.263.1
         version: 0.263.1(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-hook-form:
+        specifier: ^7.54.2
+        version: 7.71.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sweetalert2:
+        specifier: ^11.14.5
+        version: 11.26.18
+      yup:
+        specifier: ^1.6.1
+        version: 1.7.1
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
     devDependencies:
       '@types/react':
-        specifier: ^18.3.1
+        specifier: ^18.3.18
         version: 18.3.28
       typescript:
         specifier: ^5.7.3
         version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/inventory:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/maintenance:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/manufacturing:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/procurement:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/product:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/report:
+    dependencies:
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/sales:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.25.76
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/transport:
+    dependencies:
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@react-google-maps/api':
+        specifier: ^2.20.6
+        version: 2.20.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      axios:
+        specifier: ^1.7.9
+        version: 1.13.5
+      formik:
+        specifier: ^2.4.6
+        version: 2.4.9(@types/react@18.3.28)(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      mapbox-gl:
+        specifier: ^3.8.0
+        version: 3.18.1
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-spinners:
+        specifier: ^0.15.0
+        version: 0.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sweetalert2:
+        specifier: ^11.14.5
+        version: 11.26.18
+      yup:
+        specifier: ^1.6.1
+        version: 1.7.1
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      '@types/react-dom':
+        specifier: ^18.3.5
+        version: 18.3.7(@types/react@18.3.28)
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
+
+  packages/modules/user:
+    dependencies:
+      '@emotion/react':
+        specifier: ^11.13.3
+        version: 11.14.0(@types/react@18.3.28)(react@18.3.1)
+      '@emotion/styled':
+        specifier: ^11.13.0
+        version: 11.14.1(@emotion/react@11.14.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1)
+      '@kwim/api-client':
+        specifier: workspace:*
+        version: link:../../api-client
+      '@kwim/auth':
+        specifier: workspace:*
+        version: link:../../auth
+      '@kwim/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@kwim/core':
+        specifier: workspace:*
+        version: link:../../core
+      '@kwim/shared-ui':
+        specifier: workspace:*
+        version: link:../../shared-ui
+      '@mui/material':
+        specifier: ^6.1.7
+        version: 6.5.0(@emotion/react@11.14.0(@types/react@18.3.28)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/utils':
+        specifier: ^6.1.7
+        version: 6.4.9(@types/react@18.3.28)(react@18.3.1)
+      '@tanstack/react-query':
+        specifier: ^5.64.1
+        version: 5.90.21(react@18.3.1)
+      '@tanstack/react-table':
+        specifier: ^8.20.5
+        version: 8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      axios:
+        specifier: ^1.7.9
+        version: 1.13.5
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
+      formik:
+        specifier: ^2.4.6
+        version: 2.4.9(@types/react@18.3.28)(react@18.3.1)
+      lucide-react:
+        specifier: ^0.469.0
+        version: 0.469.0(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.28.0
+        version: 6.30.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sweetalert2:
+        specifier: ^11.14.5
+        version: 11.26.18
+      yup:
+        specifier: ^1.6.1
+        version: 1.7.1
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.18
+        version: 18.3.28
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.10
+        version: 5.4.21(@types/node@22.19.11)
 
   packages/shared-ui:
     dependencies:
@@ -8565,13 +9401,43 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
+  eslint-plugin-react-hooks@5.2.0(eslint@9.39.2(jiti@1.21.7)):
+    dependencies:
+      eslint: 9.39.2(jiti@1.21.7)
+
   eslint-plugin-react-hooks@5.2.0(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       eslint: 9.39.2(jiti@2.6.1)
 
+  eslint-plugin-react-refresh@0.4.26(eslint@9.39.2(jiti@1.21.7)):
+    dependencies:
+      eslint: 9.39.2(jiti@1.21.7)
+
   eslint-plugin-react-refresh@0.4.26(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
       eslint: 9.39.2(jiti@2.6.1)
+
+  eslint-plugin-react@7.37.5(eslint@9.39.2(jiti@1.21.7)):
+    dependencies:
+      array-includes: 3.1.9
+      array.prototype.findlast: 1.2.5
+      array.prototype.flatmap: 1.3.3
+      array.prototype.tosorted: 1.1.4
+      doctrine: 2.1.0
+      es-iterator-helpers: 1.2.2
+      eslint: 9.39.2(jiti@1.21.7)
+      estraverse: 5.3.0
+      hasown: 2.0.2
+      jsx-ast-utils: 3.3.5
+      minimatch: 3.1.2
+      object.entries: 1.1.9
+      object.fromentries: 2.0.8
+      object.values: 1.2.1
+      prop-types: 15.8.1
+      resolve: 2.0.0-next.6
+      semver: 6.3.1
+      string.prototype.matchall: 4.0.12
+      string.prototype.repeat: 1.0.0
 
   eslint-plugin-react@7.37.5(eslint@9.39.2(jiti@2.6.1)):
     dependencies:

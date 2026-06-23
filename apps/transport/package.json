@@ -17,6 +17,7 @@
     "@kwim/config": "workspace:*",
     "@kwim/api-client": "workspace:*",
     "@kwim/utils": "workspace:*",
+    "@kwim/modules-transport": "workspace:*",
     "@tanstack/react-query": "^5.64.1",
     "@tanstack/react-table": "^8.20.5",
     "formik": "^2.4.6",

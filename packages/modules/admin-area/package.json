@@ -1,0 +1,32 @@
+{
+  "name": "@kwim/modules-admin-area",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@kwim/api-client": "workspace:*",
+    "@kwim/auth": "workspace:*",
+    "@kwim/config": "workspace:*",
+    "@kwim/core": "workspace:*",
+    "@kwim/shared-ui": "workspace:*",
+    "@tanstack/react-query": "^5.64.1",
+    "lucide-react": "^0.469.0"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.18",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.10"
+  }
+}

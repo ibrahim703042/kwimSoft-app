@@ -1,35 +1,9 @@
-import { AppLayout, type AppLayoutConfig, ModuleShell, transportMenuItems, transportModuleInfo, ShellNavItem } from "@kwim/shared-ui";
+import { AppLayout, type AppLayoutConfig } from "@kwim/shared-ui";
+import { TransportShell } from "@kwim/modules-transport";
 import { useAuthStore, toAppLayoutUser, createAuthLogoutHandler } from "@kwim/auth";
 import { transportModuleConfig } from "./config/module.config";
 import { useNavigate } from "react-router-dom";
 import { Route, MapPin, Users, Ticket, Calendar } from "lucide-react";
-import { Dashboard, createPlaceholderPage } from "./pages";
-import StationsPage from "./pages/stations/StationsPage";
-
-const DriversPage = createPlaceholderPage("Conducteurs", "Gérer les conducteurs");
-const VehiclesPage = createPlaceholderPage("Véhicules", "Gérer les véhicules");
-const SchedulesPage = createPlaceholderPage("Horaires", "Gérer les horaires");
-const TripsPage = createPlaceholderPage("Voyages", "Gérer les voyages");
-const SeatsPage = createPlaceholderPage("Sièges", "Gérer les sièges");
-const TicketsPage = createPlaceholderPage("Billets", "Gérer les billets");
-const ReservationsPage = createPlaceholderPage("Réservations", "Gérer les réservations");
-
-const pageComponents: Record<string, React.ComponentType> = {
-  "dashboard": Dashboard,
-  "drivers": DriversPage,
-  "vehicles": VehiclesPage,
-  "stations": StationsPage,
-  "schedules": SchedulesPage,
-  "trips": TripsPage,
-  "seats": SeatsPage,
-  "tickets": TicketsPage,
-  "reservations": ReservationsPage,
-};
-
-const items: ShellNavItem[] = transportMenuItems.map((item) => ({
-  ...item,
-  component: pageComponents[item.key] || Dashboard,
-}));
 
 function App() {
   const navigate = useNavigate();
@@ -89,11 +63,9 @@ function App() {
 
   return (
     <AppLayout config={config}>
-      <ModuleShell
-        title={transportModuleInfo.title}
-        breadcrumbPath={transportModuleInfo.breadcrumbPath}
-        items={items}
-        defaultSelected="dashboard"
+      <TransportShell
+        title="Transport"
+        breadcrumbPath="/"
         enableSearch
       />
     </AppLayout>

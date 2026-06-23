@@ -1,19 +1,14 @@
-import { FrontModule } from "@/app/ModuleRegistry";
+import { createUserModule } from "@kwim/modules-user";
 
-/**
- * User module — same structure as HR module.
- * - UserShell: shell with "Gestion Utilisateurs" (tabbed view)
- * - UserTabbedView: tabs for Utilisateurs, Groupes, Rôles, Sessions
- * - pages/index: exports UserNew, GroupNew, RoleNew, UserSessionNew
- */
-export const userModule: FrontModule = {
-  name: "user",
-  routes: [],
-  menu: [],
-  permissions: ["user.read", "user.create", "user.update", "user.delete"],
-};
+export const userModule = createUserModule();
 
-export { default as UserShell } from "./UserShell";
-export { default as UserTabbedView } from "./UserTabbedView";
-export { default as UserManagement } from "./pages/UserManagement";
-export { UserNew, GroupNew, RoleNew, UserSessionNew } from "./pages";
+export {
+  UserShell,
+  UserTabbedView,
+  UserManagement,
+  UserNew,
+  GroupNew,
+  RoleNew,
+  UserSessionNew,
+  USER_PERMISSIONS,
+} from "@kwim/modules-user";

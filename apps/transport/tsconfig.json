@@ -10,7 +10,8 @@
       "@kwim/core": ["../../packages/core/src/index.ts"],
       "@kwim/shared-ui": ["../../packages/shared-ui/src/index.ts"],
       "@kwim/shared-ui/*": ["../../packages/shared-ui/src/*"],
-      "@kwim/utils": ["../../packages/utils/src/index.ts"]
+      "@kwim/utils": ["../../packages/utils/src/index.ts"],
+      "@kwim/modules-transport": ["../../packages/modules/transport/src/index.ts"]
     }
   },
   "include": ["src"]

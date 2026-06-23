@@ -1,4 +1,5 @@
 @import '../../../packages/shared-ui/src/styles/theme.css';
+@import 'mapbox-gl/dist/mapbox-gl.css';
 
 @tailwind base;
 @tailwind components;

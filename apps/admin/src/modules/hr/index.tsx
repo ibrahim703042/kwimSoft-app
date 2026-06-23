@@ -1,12 +1,11 @@
 /**
- * Unified HR & People Management Module
- * Domain package: @kwim/modules-hr — presentation shells remain in admin.
+ * HR module — thin shim to @kwim/modules-hr
  */
 import { createHrModule } from "@kwim/modules-hr";
 import PageTitle from "@/components/utilitie/PageTitle";
-import HrShell from "./HrShell";
+import { UserTabbedView } from "@kwim/modules-user";
 
-export const hrModule = createHrModule({ PageTitle, HrShell });
+export const hrModule = createHrModule({ PageTitle, UserManagement: UserTabbedView });
 
 export {
   employeeApi,

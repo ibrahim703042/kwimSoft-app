@@ -18,6 +18,7 @@
     "@kwim/config": "workspace:*",
     "@kwim/api-client": "workspace:*",
     "@kwim/utils": "workspace:*",
+    "@kwim/modules-hr": "workspace:*",
     "@mui/material": "^6.1.7",
     "@mui/utils": "^6.1.7",
     "@emotion/react": "^11.13.3",

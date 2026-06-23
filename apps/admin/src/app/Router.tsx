@@ -6,8 +6,7 @@ import Login from "@/core/auth/login/Login";
 import ForgotPassword from "@/core/auth/login/ForgotPassword";
 import UpdatePassword from "@/core/auth/login/UpdatePassword";
 import NotFound from "@/components/others/app/NotFound";
-import ProfilePage from "@/modules/account/ProfilePage";
-import SettingsPage from "@/modules/account/SettingsPage";
+import { ProfilePage, SettingsPage } from "@kwim/modules-account";
 import PageTitle from "@/components/utilitie/PageTitle";
 import DiagnosticPage from "@/pages/DiagnosticPage";
 

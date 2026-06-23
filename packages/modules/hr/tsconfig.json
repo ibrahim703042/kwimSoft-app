@@ -1,0 +1,106 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "paths": {
+      "@kwim/shared-ui": [
+        "../../shared-ui/src/index.ts"
+      ],
+      "@kwim/shared-ui/ui": [
+        "../../shared-ui/src/components/ui/index.ts"
+      ],
+      "@kwim/shared-ui/alert-dialog": [
+        "../../shared-ui/src/components/ui/alert-dialog.tsx"
+      ],
+      "@kwim/shared-ui/badge": [
+        "../../shared-ui/src/components/ui/badge.tsx"
+      ],
+      "@kwim/shared-ui/breadcrumb": [
+        "../../shared-ui/src/components/ui/breadcrumb.tsx"
+      ],
+      "@kwim/shared-ui/button": [
+        "../../shared-ui/src/components/ui/button.tsx"
+      ],
+      "@kwim/shared-ui/calendar": [
+        "../../shared-ui/src/components/ui/calendar.tsx"
+      ],
+      "@kwim/shared-ui/card": [
+        "../../shared-ui/src/components/ui/card.tsx"
+      ],
+      "@kwim/shared-ui/checkbox": [
+        "../../shared-ui/src/components/ui/checkbox.tsx"
+      ],
+      "@kwim/shared-ui/dialog": [
+        "../../shared-ui/src/components/ui/dialog.tsx"
+      ],
+      "@kwim/shared-ui/dropdown-menu": [
+        "../../shared-ui/src/components/ui/dropdown-menu.tsx"
+      ],
+      "@kwim/shared-ui/form": [
+        "../../shared-ui/src/components/ui/form.tsx"
+      ],
+      "@kwim/shared-ui/input": [
+        "../../shared-ui/src/components/ui/input.tsx"
+      ],
+      "@kwim/shared-ui/label": [
+        "../../shared-ui/src/components/ui/label.tsx"
+      ],
+      "@kwim/shared-ui/pagination": [
+        "../../shared-ui/src/components/ui/pagination.tsx"
+      ],
+      "@kwim/shared-ui/popover": [
+        "../../shared-ui/src/components/ui/popover.tsx"
+      ],
+      "@kwim/shared-ui/radio-group": [
+        "../../shared-ui/src/components/ui/radio-group.tsx"
+      ],
+      "@kwim/shared-ui/select": [
+        "../../shared-ui/src/components/ui/select.tsx"
+      ],
+      "@kwim/shared-ui/table": [
+        "../../shared-ui/src/components/ui/table.tsx"
+      ],
+      "@kwim/shared-ui/tabs": [
+        "../../shared-ui/src/components/ui/tabs.tsx"
+      ],
+      "@kwim/shared-ui/textarea": [
+        "../../shared-ui/src/components/ui/textarea.tsx"
+      ],
+      "@kwim/shared-ui/toast": [
+        "../../shared-ui/src/components/ui/toast.tsx"
+      ],
+      "@kwim/shared-ui/toaster": [
+        "../../shared-ui/src/components/ui/toaster.tsx"
+      ],
+      "@kwim/shared-ui/tooltip": [
+        "../../shared-ui/src/components/ui/tooltip.tsx"
+      ],
+      "@kwim/core": [
+        "../../core/src/index.ts"
+      ],
+      "@kwim/api-client": [
+        "../../api-client/src/index.ts"
+      ],
+      "@kwim/config": [
+        "../../config/src/index.ts"
+      ],
+      "@kwim/modules-user": [
+        "../user/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
+}
